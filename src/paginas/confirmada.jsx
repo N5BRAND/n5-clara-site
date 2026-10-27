@@ -2,6 +2,8 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig, motion } from 'motion/react'
 import Simbolo from '../marca/Simbolo.jsx'
+import { iniciarPixel, evento } from '../legal/pixel.js'
+import { VALOR_EUROS } from '../logica/pagamento.js'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
@@ -28,6 +30,15 @@ function Confirmada() {
     </main>
   )
 }
+
+/* Purchase uma vez por sessão, mesmo que a página seja recarregada */
+iniciarPixel()
+try {
+  if (!sessionStorage.getItem('n5-compra-registada')) {
+    evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' })
+    sessionStorage.setItem('n5-compra-registada', '1')
+  }
+} catch { /* sem armazenamento: não regista */ }
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

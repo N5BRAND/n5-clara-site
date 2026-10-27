@@ -6,6 +6,7 @@ import { codificar } from '../logica/netlify.js'
 import Prioridades from './Prioridades.jsx'
 import PreReserva from './PreReserva.jsx'
 import Mensalidade from './Mensalidade.jsx'
+import { evento } from '../legal/pixel.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
@@ -80,6 +81,7 @@ function Formulario() {
         body: codificar({ 'form-name': 'lista-clara', ...d, 'empresa-site': e.target.elements['empresa-site'].value }),
       })
       if (!r.ok) throw new Error(String(r.status))
+      evento('Lead')
       setEstado('prioridades')
     } catch {
       setEstado('falhou')

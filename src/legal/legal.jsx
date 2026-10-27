@@ -1,11 +1,14 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { iniciarPixel } from './pixel.js'
 import { MotionConfig } from 'motion/react'
 import PaginaLegal from './PaginaLegal.jsx'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
 import '../estilos/legal.css'
+
+iniciarPixel()
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
