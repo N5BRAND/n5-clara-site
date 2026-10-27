@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
-import { LINK_PRE_RESERVA, VALOR_PRE_RESERVA, METODOS, linkValido } from '../logica/pagamento.js'
+import { LINK_PRE_RESERVA, VALOR_PRE_RESERVA, VALOR_LANCAMENTO, METODOS, linkValido } from '../logica/pagamento.js'
 
-/* passo 3, depois das prioridades: pagar a pré-reserva na Stripe ou deixar para depois */
+/* passo 3, depois das prioridades: pagar a pré-reserva na Stripe; não há opção de pagar depois */
 export default function PreReserva({ aoAcabar }) {
   const temLink = linkValido(LINK_PRE_RESERVA)
 
@@ -10,7 +10,10 @@ export default function PreReserva({ aoAcabar }) {
       <p className="prioridades-feito">✓ Estás na lista.</p>
       <h3>Último passo: conclui a tua inscrição</h3>
       <div className="pre-reserva-valor">
-        <span>{VALOR_PRE_RESERVA}</span>
+        <div className="pre-reserva-preco">
+          <span>{VALOR_PRE_RESERVA}</span>
+          <small>No lançamento: {VALOR_LANCAMENTO}</small>
+        </div>
         <ul>
           <li>Entras no primeiro dia, a 1 de dezembro</li>
           <li>Descontada na primeira mensalidade</li>
@@ -28,7 +31,7 @@ export default function PreReserva({ aoAcabar }) {
       ) : (
         <p className="pre-reserva-nota pre-reserva-nota--aviso">O pagamento abre nos próximos dias. Enviamos-te o link por email assim que estiver ativo.</p>
       )}
-      <button type="button" className="prioridades-saltar" onClick={aoAcabar}>{temLink ? 'Prefiro pagar depois' : 'Concluir'}</button>
+      {!temLink && <button type="button" className="prioridades-saltar" onClick={aoAcabar}>Concluir</button>}
     </motion.div>
   )
 }

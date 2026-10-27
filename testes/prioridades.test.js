@@ -23,11 +23,12 @@ describe('prioridades', () => {
   })
 })
 
-import { linkValido, VALOR_PRE_RESERVA, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
+import { linkValido, VALOR_PRE_RESERVA, VALOR_LANCAMENTO, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
 
 describe('link da pré-reserva', () => {
   it('a pré-reserva da Clara é de 27 €', () => {
     expect(VALOR_PRE_RESERVA).toBe('27 €')
+    expect(VALOR_LANCAMENTO).toBe('53 €/mês')
   })
   it('só aceita links de pagamento da Stripe', () => {
     expect(linkValido(LINK_PRE_RESERVA)).toBe(true)

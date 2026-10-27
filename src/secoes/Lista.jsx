@@ -182,6 +182,7 @@ export default function Lista() {
             <div className="prevenda-reserva-valor">
               <small>Pré-reserva</small>
               <span>27 €</span>
+              <em>No lançamento: 53 €/mês</em>
             </div>
             <ul className="prevenda-reserva-condicoes">
               <li>Entras no primeiro dia, a 1 de dezembro</li>
