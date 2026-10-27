@@ -1,4 +1,4 @@
-import { enviarParaGhl } from './ghl.js'
+import { enviarParaGhl } from '../ghl.js'
 
 /* corre a cada inscrição válida dos formulários da Netlify (o spam fica de fora).
    Precisa de GHL_TOKEN e GHL_LOCATION_ID nas variáveis do site; sem elas, não faz nada. */

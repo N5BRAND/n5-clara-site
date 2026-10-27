@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { paraGhl, telefone, enviarParaGhl } from '../netlify/functions/ghl.js'
+import { paraGhl, telefone, enviarParaGhl } from '../netlify/ghl.js'
 
 describe('GHL', () => {
   it('passa a inscrição da lista com o plano e quem indicou', () => {
