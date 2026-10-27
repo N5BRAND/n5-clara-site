@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { LANCAMENTO, tempoAte } from '../logica/contagem.js'
 import { validarInscricao, PLANOS } from '../logica/validar.js'
 import { codificar } from '../logica/netlify.js'
+import Prioridades from './Prioridades.jsx'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
@@ -50,7 +51,7 @@ function Campo({ nome, rotulo, erro, ...resto }) {
 function Formulario() {
   const [d, setD] = useState(VAZIO)
   const [erros, setErros] = useState({})
-  const [estado, setEstado] = useState('pronto') // pronto | a-enviar | enviado | falhou
+  const [estado, setEstado] = useState('pronto') // pronto | a-enviar | prioridades | enviado | falhou
 
   /* os botões dos planos escolhem o plano aqui */
   useEffect(() => {
@@ -77,7 +78,7 @@ function Formulario() {
         body: codificar({ 'form-name': 'lista-clara', ...d, 'empresa-site': e.target.elements['empresa-site'].value }),
       })
       if (!r.ok) throw new Error(String(r.status))
-      setEstado('enviado')
+      setEstado('prioridades')
     } catch {
       setEstado('falhou')
     }
@@ -96,6 +97,8 @@ function Formulario() {
               <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
             </div>
           </motion.div>
+        ) : estado === 'prioridades' ? (
+          <Prioridades key="prioridades" email={d.email.trim()} titulo="Em que é que a Clara te ajudava mais?" aoAcabar={() => setEstado('enviado')} />
         ) : (
           <motion.form key="form" name="lista-clara" onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
             <h3>Entra na lista de espera</h3>

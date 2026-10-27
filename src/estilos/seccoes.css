@@ -267,3 +267,20 @@
 .lista-indicar { display: grid; gap: 12px; justify-items: center; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--linha, rgba(21, 24, 29, 0.12)); }
 .lista-indicar p { margin: 0; font-size: 15px; }
 @media (max-width: 600px) { .lista-oferta { grid-template-columns: 1fr; } }
+
+/* passo 2 da inscrição: prioridades */
+.prioridades { display: grid; gap: 12px; }
+.prioridades-feito { margin: 0; font-weight: 700; color: var(--dourado-escuro); }
+.prioridades h3 { margin: 0; }
+.prioridades-lista { display: grid; gap: 8px; }
+.prioridade { display: flex; gap: 12px; align-items: center; width: 100%; padding: 12px 14px; border-radius: 14px; border: 1.5px solid rgba(21, 24, 29, 0.14); background: #fff; color: var(--tinta); font: inherit; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s, opacity 0.2s; }
+.prioridade:hover:not(:disabled) { border-color: var(--dourado); }
+.prioridade:disabled { opacity: 0.45; cursor: not-allowed; }
+.prioridade--ligada { border-color: var(--dourado); background: rgba(232, 161, 60, 0.14); }
+.prioridade-marca { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(21, 24, 29, 0.25); font-size: 13px; font-weight: 800; }
+.prioridade--ligada .prioridade-marca { background: var(--dourado); border-color: var(--dourado); }
+.prioridades select { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(21, 24, 29, 0.16); background: #fff; font: inherit; }
+.prioridades-botoes { display: grid; gap: 6px; justify-items: center; }
+.prioridades-botoes .prevenda-botao { width: 100%; }
+.prioridades-botoes .prevenda-botao:disabled { opacity: 0.5; cursor: not-allowed; }
+.prioridades-saltar { border: 0; background: none; color: var(--suave); font: inherit; font-size: 14px; text-decoration: underline; cursor: pointer; padding: 6px; }
