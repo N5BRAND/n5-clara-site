@@ -9,6 +9,7 @@ import Planos from './secoes/Planos.jsx'
 import Cresce from './secoes/Cresce.jsx'
 import Lista from './secoes/Lista.jsx'
 import Rodape from './secoes/Rodape.jsx'
+import AvisoCookies from './legal/AvisoCookies.jsx'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Lista />
       </main>
       <Rodape />
+      <AvisoCookies />
     </>
   )
 }

@@ -110,7 +110,7 @@ function Formulario() {
             </div>
             <label className={`consentimento ${erros.consentimento ? 'campo--erro' : ''}`}>
               <input type="checkbox" name="consentimento" checked={d.consentimento} onChange={muda} />
-              <span>Autorizo a Nº 5 a guardar estes dados e a contactar-me sobre o lançamento da N5 Clara.</span>
+              <span>Autorizo a Nº 5 a guardar estes dados e a contactar-me sobre o lançamento da N5 Clara, nos termos da <a href="/privacidade/" target="_blank" rel="noreferrer">política de privacidade</a>.</span>
             </label>
             {erros.consentimento && <small className="erro-solto">{erros.consentimento}</small>}
             <button className="botao prevenda-botao" type="submit" disabled={estado === 'a-enviar'}>
