@@ -8,8 +8,12 @@ import PreReserva from './PreReserva.jsx'
 import Mensalidade from './Mensalidade.jsx'
 import { evento } from '../legal/pixel.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
+import { ESGOTADO } from '../logica/pagamento.js'
 
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
+
+/* com as 25 pré-reservas esgotadas, quem se inscreve vai para a lista de espera (30 vagas por semana) */
+const FORMULARIO = ESGOTADO ? 'lista-espera' : 'lista-clara'
 
 /* mensagem para partilhar com colegas; leva só o endereço do site, sem dados de ninguém */
 const PARTILHA = 'Entrei na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://clara.numerocinco.pt/#lista'
@@ -78,7 +82,7 @@ function Formulario() {
       const r = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': 'lista-clara', ...d, 'empresa-site': e.target.elements['empresa-site'].value }),
+        body: codificar({ 'form-name': FORMULARIO, ...d, 'empresa-site': e.target.elements['empresa-site'].value }),
       })
       if (!r.ok) throw new Error(String(r.status))
       evento('Lead')
@@ -94,21 +98,21 @@ function Formulario() {
         {estado === 'enviado' ? (
           <motion.div key="ok" className="prevenda-ok" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
             <ClaraAvatar tamanho={84} viva />
-            <h3>Estás na lista.</h3>
-            <p>A Clara avisa-te assim que abrirmos. Dá cá cinco 🖐️</p>
+            <h3>{ESGOTADO ? 'Estás na lista de espera.' : 'Estás na lista.'}</h3>
+            <p>{ESGOTADO ? 'A partir de 1 de dezembro abrimos 30 vagas por semana, pela ordem da lista. A Clara avisa-te por email quando chegar a tua vez. Dá cá cinco 🖐️' : 'A Clara avisa-te assim que abrirmos. Dá cá cinco 🖐️'}</p>
             <div className="lista-indicar">
               <p><b>Queres passar à frente na ordem de entrada?</b> Traz 3 colegas: pede-lhes que se inscrevam e ponham o teu email em «Quem te indicou».</p>
               <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
             </div>
           </motion.div>
         ) : estado === 'prioridades' ? (
-          <Prioridades key="prioridades" email={d.email.trim()} titulo="Em que é que a Clara te ajudava mais?" aoAcabar={() => setEstado('pre-reserva')} />
+          <Prioridades key="prioridades" email={d.email.trim()} titulo="Em que é que a Clara te ajudava mais?" aoAcabar={() => setEstado(ESGOTADO ? 'enviado' : 'pre-reserva')} />
         ) : estado === 'pre-reserva' ? (
           <PreReserva key="pre-reserva" aoAcabar={() => setEstado('enviado')} />
         ) : (
-          <motion.form key="form" name="lista-clara" onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
-            <h3>Inscreve-te na N5 Clara</h3>
-            <p className="prevenda-form-sub">A inscrição é uma pré-reserva de 27 €, descontada na primeira mensalidade. Primeiro os teus dados, depois o pagamento.</p>
+          <motion.form key="form" name={FORMULARIO} onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
+            <h3>{ESGOTADO ? 'Entra na lista de espera' : 'Inscreve-te na N5 Clara'}</h3>
+            <p className="prevenda-form-sub">{ESGOTADO ? 'As 25 licenças com pré-reserva esgotaram. Deixa os teus dados e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : 'A inscrição é uma pré-reserva de 27 €, descontada na primeira mensalidade. Primeiro os teus dados, depois o pagamento.'}</p>
             <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>
             <div className="prevenda-campos">
               <Campo nome="nome" rotulo="Nome" value={d.nome} onChange={muda} erro={erros.nome} autoComplete="name" />
@@ -131,7 +135,7 @@ function Formulario() {
             </label>
             {erros.consentimento && <small className="erro-solto">{erros.consentimento}</small>}
             <button className="botao prevenda-botao" type="submit" disabled={estado === 'a-enviar'}>
-              {estado === 'a-enviar' ? 'A enviar…' : 'Quero a Clara'}
+              {estado === 'a-enviar' ? 'A enviar…' : ESGOTADO ? 'Quero entrar na lista' : 'Quero a Clara'}
             </button>
             {estado === 'falhou' && <p className="erro-solto">Não conseguimos enviar. Tenta outra vez daqui a pouco.</p>}
           </motion.form>
@@ -146,13 +150,20 @@ export default function Lista() {
     <section id="lista" className="seccao escuro prevenda">
       <div className="contentor prevenda-grelha prevenda-grelha--coluna">
         <div className="prevenda-texto">
-          <p className="eyebrow">Inscrição</p>
+          <p className="eyebrow">{ESGOTADO ? 'Lista de espera' : 'Inscrição'}</p>
           <h2>1 de dezembro. A Clara começa a trabalhar contigo.</h2>
           <Contagem />
+          {ESGOTADO ? (
+            <p className="prevenda-lead">
+              As 25 licenças com pré-reserva esgotaram e entram a 1 de dezembro. A seguir, abrimos 30 vagas por semana, pela ordem da lista de espera:
+              entra já na lista e és dos próximos a ter a tua assistente comercial, com leads respondidas, dia organizado e coaching das tuas chamadas. Sem fidelização.
+            </p>
+          ) : (
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
             Há 25 licenças reservadas, com pré-reserva de 27 €: entras no primeiro dia e tens 25% de desconto nas 2 primeiras mensalidades, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas. Sem fidelização.
           </p>
+          )}
           <div className="lista-oferta">
             <motion.div
               className="lista-oferta-cartao lista-oferta-cartao--destaque"
@@ -160,9 +171,9 @@ export default function Lista() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <small>Desconto</small>
-              <b>25% nos 2 primeiros meses</b>
-              <p>Para quem faz a pré-reserva antes de 1 de dezembro: 39 € em vez de 53 € nas 2 primeiras mensalidades do plano Clara.</p>
+              <small>{ESGOTADO ? 'Lista de espera' : 'Desconto'}</small>
+              <b>{ESGOTADO ? '30 vagas por semana' : '25% nos 2 primeiros meses'}</b>
+              <p>{ESGOTADO ? 'A partir de 1 de dezembro, pela ordem da lista. Avisamos-te por email quando chegar a tua vez.' : 'Para quem faz a pré-reserva antes de 1 de dezembro: 39 € em vez de 53 € nas 2 primeiras mensalidades do plano Clara.'}</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao"
@@ -172,8 +183,8 @@ export default function Lista() {
               transition={{ delay: 0.1 }}
             >
               <small>Licenças reservadas</small>
-              <b>Só 25</b>
-              <p>As 25 licenças com pré-reserva entram a 1 de dezembro. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
+              <b>{ESGOTADO ? 'Esgotadas' : 'Só 25'}</b>
+              <p>{ESGOTADO ? 'As 25 licenças com pré-reserva entram a 1 de dezembro.' : 'As 25 licenças com pré-reserva entram a 1 de dezembro. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.'}</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao"
@@ -187,8 +198,8 @@ export default function Lista() {
               <p>Passas à frente na ordem de entrada.</p>
             </motion.div>
           </div>
-          <p className="prevenda-porque"><b>Porquê só 25 licenças?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para o fazermos bem, reservamos 25 licenças para o primeiro dia. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
-          <motion.div
+          <p className="prevenda-porque"><b>{ESGOTADO ? 'Porquê por vagas?' : 'Porquê só 25 licenças?'}</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para o fazermos bem, reservamos 25 licenças para o primeiro dia. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
+          {!ESGOTADO && <motion.div
             className="prevenda-reserva prevenda-reserva--explicada"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -218,7 +229,7 @@ export default function Lista() {
               <li>Reembolsável após o dia do lançamento</li>
             </ul>
             </div>
-          </motion.div>
+          </motion.div>}
           <Formulario />
         </div>
       </div>

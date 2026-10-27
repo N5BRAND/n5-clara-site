@@ -9,6 +9,12 @@ describe('GHL', () => {
     expect(r.nota).toContain('Indicado por: ana@rede.pt')
   })
 
+  it('põe na lista de espera quem chega depois de esgotarem as 25', () => {
+    const r = paraGhl('lista-espera', { nome: 'Rui', email: 'rui@rede.pt', telefone: '', agencia: 'Rede', plano: 'elite', indicado_por: '' })
+    expect(r.etiquetas).toEqual(['n5-clara', 'lista-espera', 'plano-elite'])
+    expect(r.nota).toContain('30 vagas por semana')
+  })
+
   it('passa as prioridades numa nota', () => {
     const r = paraGhl('prioridades', { email: 'a@b.pt', prioridades: 'Responder às leads; Organizar o dia' })
     expect(r.contacto).toEqual({ email: 'a@b.pt' })

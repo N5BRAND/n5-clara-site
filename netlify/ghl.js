@@ -26,6 +26,11 @@ const FORMULARIOS = {
     etiquetas: [ETIQUETA, 'lista-clara', `plano-${d.plano || 'nao-sei'}`, ...(d.indicado_por ? ['indicado'] : [])],
     nota: [`Inscrição na lista da ${PRODUTO}.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...(d.indicado_por ? [`Indicado por: ${d.indicado_por}`] : [])].join('\n'),
   }),
+  'lista-espera': d => ({
+    contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), companyName: d.agencia, source: `Site ${PRODUTO}` },
+    etiquetas: [ETIQUETA, 'lista-espera', `plano-${d.plano || 'nao-sei'}`, ...(d.indicado_por ? ['indicado'] : [])],
+    nota: [`Lista de espera da ${PRODUTO} (as 25 pré-reservas esgotaram): entra pela ordem da lista, 30 vagas por semana a partir de 1 de dezembro.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...(d.indicado_por ? [`Indicado por: ${d.indicado_por}`] : [])].join('\n'),
+  }),
   prioridades: d => ({
     contacto: { email: d.email },
     etiquetas: [ETIQUETA, 'prioridades-respondidas'],

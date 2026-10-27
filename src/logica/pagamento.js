@@ -15,3 +15,7 @@ export const METODOS = ['MB WAY', 'Multibanco', 'Cartão', 'Apple Pay', 'Google 
 
 /* só aceita links da Stripe, para o botão nunca levar a outro sítio */
 export const linkValido = url => /^https:\/\/(buy|checkout)\.stripe\.com\/[\w/-]+$/.test(String(url || ''))
+
+/* quando as 25 licenças esgotam, o site deixa de levar ao pagamento. Liga-se com VITE_ESGOTADO=1 nas variáveis
+   da Netlify e volta-se a publicar; desligado, o site fica como está */
+export const ESGOTADO = import.meta.env.VITE_ESGOTADO === '1'
