@@ -282,3 +282,9 @@
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
 }
 .plano--rasto .plano-rasto { opacity: 1; }
+
+/* «Um dia com a Clara»: só o momento atual, um de cada vez */
+.dia-etapa { display: flex; align-items: center; gap: 12px; min-height: 46px; }
+.dia-etapa-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; background: var(--tinta); color: var(--creme); font-weight: 700; font-size: 16px; }
+.dia-etapa-hora { font-family: var(--mono); font-size: 13px; color: var(--dourado); }
+.dia-etapa-conta { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--suave); }

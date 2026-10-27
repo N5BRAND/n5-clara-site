@@ -10,7 +10,7 @@ import '../estilos/seccoes.css'
 import '../estilos/legal.css'
 
 /* mensagem para partilhar com colegas; leva só o endereço do site, sem dados de ninguém */
-const PARTILHA = 'Inscrevi-me na N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://n5-clara.netlify.app/#lista'
+const PARTILHA = 'Inscrevi-me na N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://clara.numerocinco.pt/#lista'
 
 /* página para onde a Stripe devolve quem pagou a pré-reserva */
 function Confirmada() {
@@ -20,8 +20,8 @@ function Confirmada() {
         <Simbolo fundo="escuro" largura={96} desenhar />
         <motion.div className="confirmada-texto" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
           <p className="eyebrow">Inscrição confirmada</p>
-          <h1>A tua vaga está garantida.</h1>
-          <p>Abrimos 30 vagas por semana a partir de 1 de dezembro, pela ordem do pagamento, e avisamos-te por email do dia em que a Clara começa a trabalhar contigo. Tens 25% de desconto nas 2 primeiras mensalidades do plano Clara (39 € em vez de 53 €), o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 12 formações por ano. Os 27 € saem da primeira mensalidade.</p>
+          <h1>A tua licença está garantida.</h1>
+          <p>És um dos 25 consultores que entram no primeiro dia: a 1 de dezembro a Clara começa a trabalhar contigo. Tens 25% de desconto nas 2 primeiras mensalidades do plano Clara e os 27 € já saem da 1.ª: pagas 12 € no 1.º mês, 39 € no 2.º e 53 € a partir do 3.º. Tens também o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas, para ti e para a tua equipa.</p>
           <p>Se escolheste Multibanco, a inscrição fica feita assim que pagares a referência. Queres passar à frente na ordem de entrada? Traz 3 colegas.</p>
           <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
           <a className="confirmada-voltar" href="/">Voltar ao site</a>

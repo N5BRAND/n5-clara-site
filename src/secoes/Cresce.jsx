@@ -24,10 +24,10 @@ export default function Cresce() {
           </div>
 
           <motion.div className="cresce-bloco cresce-bloco--destino" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ type: 'spring', stiffness: 120, damping: 20, delay: 0.15 }}>
-            <span className="eyebrow">No N5 Imobiliário</span>
-            <h3>Quando a agência cresce, entras sem recomeçar</h3>
-            <p>Tudo passa para a ficha única da agência e a Clara continua contigo. O que trouxeste é teu.</p>
-            <a className="cresce-link" href="https://n5-agentic-os.netlify.app" target="_blank" rel="noreferrer">Conhecer o N5 Imobiliário →</a>
+            <span className="eyebrow">Para a agência toda</span>
+            <h3>Quando quiseres levar a agência inteira, os teus dados vão contigo</h3>
+            <p>A Clara é para ti ou para a tua equipa até 5 consultores. O N5 Imobiliário é o sistema da Nº5 para a agência toda: comercial, crédito, jurídico, financeiro e broker. Se a agência quiser dar esse passo, migramos todos os teus dados e ninguém recomeça do zero. A agência inteira passa a ter a estrutura da Nº5.</p>
+            <a className="cresce-link" href="https://agentic.numerocinco.pt" target="_blank" rel="noreferrer">Conhecer o N5 Imobiliário →</a>
           </motion.div>
         </div>
       </div>

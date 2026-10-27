@@ -1,7 +1,7 @@
 /* o que muda de site para site nas páginas legais */
 export const PRODUTO = {
   nome: 'N5 Clara',
-  url: 'https://n5-clara.netlify.app',
+  url: 'https://clara.numerocinco.pt',
   formulario: 'lista de espera',
   campos: ['nome', 'email', 'telefone (opcional)', 'agência ou rede onde trabalhas', 'plano que te interessa', 'email do colega que te indicou (opcional)', 'as prioridades que escolhes (opcional, no passo seguinte)'],
   finalidades: [
@@ -11,6 +11,6 @@ export const PRODUTO = {
     'perceber em que é que a Clara mais te ajudava, para te mostrarmos isso primeiro e decidirmos o que desenvolver primeiro;',
     'contactar-te sobre o lançamento, previsto para 1 de dezembro de 2026.',
   ],
-  reserva: { valor: '27 €', garante: 'um lugar na ordem de entrada (abrimos 30 vagas por semana a partir de 1 de dezembro de 2026, pela ordem do pagamento), 25% de desconto nas 2 primeiras mensalidades do plano Clara, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 12 formações por ano' },
-  oferta: 'A inscrição na N5 Clara é uma pré-reserva de 27 €, descontada na primeira mensalidade e reembolsável após o dia do lançamento nas condições do ponto 4. Quem faz a pré-reserva tem 25% de desconto nas 2 primeiras mensalidades do plano Clara (39 € por mês em vez dos 53 € anunciados para o lançamento), o copiloto para o CRM da sua marca, uma sessão de configuração com a equipa da Nº5 e 12 formações por ano incluídas. Os preços dos restantes planos são anunciados no lançamento. A partir de 1 de dezembro de 2026 abrimos 30 vagas por semana: primeiro para quem fez a pré-reserva, pela ordem do pagamento, e depois para quem deixou só o contacto, pela ordem da lista. Quem indicar 3 colegas que se inscrevam passa à frente na ordem de entrada. O pagamento é feito na Stripe e recebido pela 4IMPROVEMENTS, LDA, que aparece no extrato.',
+  reserva: { valor: '27 €', garante: 'uma das 25 licenças reservadas, com entrada no primeiro dia (1 de dezembro de 2026), 25% de desconto nas 2 primeiras mensalidades do plano Clara, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas para ti e para a tua equipa até 5 consultores' },
+  oferta: 'A inscrição na N5 Clara é uma pré-reserva de 27 €, descontada na primeira mensalidade e reembolsável após o dia do lançamento nas condições do ponto 4. Quem faz a pré-reserva antes de 1 de dezembro de 2026 tem 25% de desconto nas 2 primeiras mensalidades do plano Clara (39 € por mês em vez dos 53 € anunciados para o lançamento). Os 27 € são descontados na primeira mensalidade depois de aplicado o desconto: 12 € no primeiro mês, 39 € no segundo e 53 € a partir do terceiro. Inclui também o copiloto para o CRM da sua marca, uma sessão de configuração com a equipa da Nº5 e 2 formações para o consultor e a sua equipa até 5 consultores. Os preços dos restantes planos são anunciados no lançamento. A pré-reserva está limitada a 25 licenças, que entram a 1 de dezembro de 2026. Depois, abrimos 30 vagas por semana para quem deixou o contacto, pela ordem da lista. Não há período de fidelização: a subscrição pode ser cancelada a qualquer momento. Quem indicar 3 colegas que se inscrevam passa à frente na ordem de entrada. O pagamento é feito na Stripe e recebido pela 4IMPROVEMENTS, LDA, que aparece no extrato.',
 }

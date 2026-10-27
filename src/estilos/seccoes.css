@@ -351,3 +351,13 @@
 .lista-oferta { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .mensalidade-nota { font-size: 12px; font-weight: 600; color: var(--suave); }
 .pre-reserva-valor .mensalidade-nota { color: var(--creme); opacity: 0.72; }
+
+/* quanto se paga, mês a mês, com a pré-reserva */
+.prevenda-pagamentos { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.prevenda-pagamentos li { display: grid; gap: 2px; padding: 12px 14px; border-radius: 14px; background: rgba(21, 24, 29, 0.05); }
+.prevenda-pagamentos small { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dourado-escuro); }
+.prevenda-pagamentos b { font-family: var(--titulo); font-weight: 800; font-size: 26px; line-height: 1.1; letter-spacing: -0.03em; }
+.prevenda-pagamentos span { font-size: 12px; color: var(--suave); }
+.prevenda-pagamentos li:nth-child(2) { background: var(--dourado); }
+.prevenda-pagamentos li:nth-child(2) small, .prevenda-pagamentos li:nth-child(2) span { color: rgba(21, 24, 29, 0.75); }
+@media (max-width: 600px) { .prevenda-pagamentos { grid-template-columns: 1fr 1fr; } }

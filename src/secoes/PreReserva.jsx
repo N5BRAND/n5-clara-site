@@ -19,11 +19,11 @@ export default function PreReserva({ aoAcabar }) {
           <Mensalidade />
         </div>
         <ul>
-          <li>25% de desconto nas 2 primeiras mensalidades</li>
-          <li>Prioridade: 30 vagas por semana, pela ordem do pagamento</li>
-          <li>Copiloto do CRM, sessão de configuração e 12 formações por ano</li>
-          <li>Descontada na primeira mensalidade</li>
-          <li>Reembolsável após o dia do lançamento</li>
+          <li>25% nas 2 primeiras mensalidades: 12 € no 1.º mês, 39 € no 2.º</li>
+          <li>Uma das 25 licenças: entras no primeiro dia</li>
+          <li>Copiloto do CRM, sessão de configuração e 2 formações incluídas</li>
+          <li>Os 27 € saem da 1.ª mensalidade, já com o desconto</li>
+          <li>Sem fidelização. Reembolsável após o dia do lançamento</li>
         </ul>
       </div>
       <div className="pre-reserva-metodos" aria-label="Formas de pagamento">

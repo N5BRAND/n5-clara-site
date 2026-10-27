@@ -61,12 +61,6 @@ export default function Dia() {
 
   if (reduzir) return <DiaEstatico />
 
-  const irPara = i => {
-    const el = ref.current
-    if (!el) return
-    const percurso = el.offsetHeight - window.innerHeight
-    window.scrollTo({ top: el.offsetTop + percurso * (i / CENAS.length) + 4, behavior: 'smooth' })
-  }
 
   const cena = CENAS[estado.indice]
 
@@ -80,22 +74,23 @@ export default function Dia() {
               <span className="eyebrow">Um dia com a Clara</span>
               <motion.span className="dia-relogio-hora">{hora}</motion.span>
             </div>
-            <ol className="demo-indice" aria-label="Momentos do dia">
-              {CENAS.map((c, i) => (
-                <li key={c.id}>
-                  <button
-                    type="button"
-                    onClick={() => irPara(i)}
-                    className={i === estado.indice ? 'ativo' : i < estado.indice ? 'feito' : ''}
-                    aria-current={i === estado.indice ? 'step' : undefined}
-                  >
-                    {i === estado.indice && <motion.span layoutId="dia-ativo" className="demo-indice-marca" />}
-                    <span className="demo-indice-n">{c.hora}</span>
-                    <span className="demo-indice-nome">{c.curto}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
+            {/* só o momento atual, um de cada vez */}
+            <div className="dia-etapa" aria-live="polite">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={cena.id}
+                  className="dia-etapa-chip"
+                  initial={{ opacity: 0, y: 12, filter: 'blur(4px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -12, filter: 'blur(4px)' }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                >
+                  <span className="dia-etapa-hora">{cena.hora}</span>
+                  <span>{cena.curto}</span>
+                </motion.span>
+              </AnimatePresence>
+              <span className="dia-etapa-conta">{estado.indice + 1} de {CENAS.length}</span>
+            </div>
             <AnimatePresence mode="wait" custom={estado.dir} initial={false}>
               <motion.div
                 key={cena.id}

@@ -12,7 +12,7 @@ import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
 
 /* mensagem para partilhar com colegas; leva só o endereço do site, sem dados de ninguém */
-const PARTILHA = 'Entrei na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://n5-clara.netlify.app/#lista'
+const PARTILHA = 'Entrei na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://clara.numerocinco.pt/#lista'
 
 function Contagem() {
   const [t, setT] = useState(() => tempoAte(LANCAMENTO))
@@ -151,7 +151,7 @@ export default function Lista() {
           <Contagem />
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
-            A inscrição é uma pré-reserva de 27 €: garante a tua vaga, 25% de desconto nas 2 primeiras mensalidades, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 12 formações por ano.
+            Há 25 licenças reservadas, com pré-reserva de 27 €: entras no primeiro dia e tens 25% de desconto nas 2 primeiras mensalidades, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas. Sem fidelização.
           </p>
           <div className="lista-oferta">
             <motion.div
@@ -161,8 +161,8 @@ export default function Lista() {
               viewport={{ once: true }}
             >
               <small>Desconto</small>
-              <b>25% em 2 meses</b>
-              <p>39 € por mês em vez de 53 € nas 2 primeiras mensalidades do plano Clara.</p>
+              <b>25% nos 2 primeiros meses</b>
+              <p>Para quem faz a pré-reserva antes de 1 de dezembro: 39 € em vez de 53 € nas 2 primeiras mensalidades do plano Clara.</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao"
@@ -171,9 +171,9 @@ export default function Lista() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              <small>Acesso por vagas</small>
-              <b>30 por semana</b>
-              <p>As primeiras 30 inscrições entram a 1 de dezembro e as seguintes nas semanas a seguir, pela ordem do pagamento. Quem deixa só o contacto entra depois.</p>
+              <small>Licenças reservadas</small>
+              <b>Só 25</b>
+              <p>As 25 licenças com pré-reserva entram a 1 de dezembro. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao"
@@ -187,7 +187,7 @@ export default function Lista() {
               <p>Passas à frente na ordem de entrada.</p>
             </motion.div>
           </div>
-          <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Conseguimos fazê-lo a 30 consultores por semana, por isso abrimos 30 vagas por semana a partir de 1 de dezembro: primeiro para quem se inscreve com a pré-reserva, pela ordem do pagamento, e depois para quem deixou só o contacto.</p>
+          <p className="prevenda-porque"><b>Porquê só 25 licenças?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para o fazermos bem, reservamos 25 licenças para o primeiro dia. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
           <motion.div
             className="prevenda-reserva prevenda-reserva--explicada"
             initial={{ opacity: 0, y: 20 }}
@@ -195,7 +195,13 @@ export default function Lista() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <p className="prevenda-reserva-titulo">Todos os consultores que fizerem a pré-reserva de 27 € têm <b>25% de desconto nas 2 primeiras mensalidades</b>: 39 € por mês em vez de 53 € no plano Clara.</p>
+            <p className="prevenda-reserva-titulo">Faz a pré-reserva de 27 € antes de 1 de dezembro, numa das 25 licenças reservadas, e tens <b>25% de desconto nas 2 primeiras mensalidades</b> do plano Clara. Os 27 € que pagas agora são descontados na 1.ª mensalidade, já com o desconto.</p>
+            <ol className="prevenda-pagamentos" aria-label="Quanto pagas, mês a mês">
+              <li><small>Agora</small><b>27 €</b><span>pré-reserva</span></li>
+              <li><small>1.º mês</small><b>12 €</b><span>39 € menos os 27 €</span></li>
+              <li><small>2.º mês</small><b>39 €</b><span>com 25% de desconto</span></li>
+              <li><small>A partir do 3.º</small><b>53 €</b><span>valor do plano Clara</span></li>
+            </ol>
             <div className="prevenda-reserva-linha">
             <div className="prevenda-reserva-valor">
               <small>Pré-reserva</small>
@@ -203,11 +209,12 @@ export default function Lista() {
               <Mensalidade />
             </div>
             <ul className="prevenda-reserva-condicoes">
-              <li>Prioridade na entrada: 30 vagas por semana, pela ordem do pagamento</li>
+              <li>Uma das 25 licenças reservadas: entras no primeiro dia, a 1 de dezembro</li>
               <li>Copiloto para o CRM da tua marca incluído</li>
               <li>Sessão de configuração com a equipa da Nº5</li>
-              <li>12 formações por ano incluídas</li>
-              <li>Os 27 € são descontados na primeira mensalidade</li>
+              <li>2 formações incluídas, para ti e para a tua equipa até 5 consultores</li>
+              <li>Os 27 € são descontados na 1.ª mensalidade, já com o desconto</li>
+              <li>Sem fidelização: cancelas quando quiseres</li>
               <li>Reembolsável após o dia do lançamento</li>
             </ul>
             </div>

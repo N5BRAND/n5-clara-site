@@ -119,6 +119,7 @@ export default function Planos() {
         <div className="seccao-cabeca">
           <p className="eyebrow">Planos</p>
           <h2>Três planos. Escolhe o que se parece contigo.</h2>
+          <p>Sem fidelização: cancelas quando quiseres.</p>
         </div>
         <div className="planos-grelha">
           {PLANOS.map((p, i) => <Plano key={p.id} p={p} i={i} />)}

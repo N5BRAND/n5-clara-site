@@ -120,7 +120,7 @@ function Termos() {
         <p>A pré-reserva é um pagamento antecipado de {PRODUTO.reserva.valor} que te garante {PRODUTO.reserva.garante}. É feita no âmbito da tua atividade profissional, é paga na Stripe e é recebida pela 4IMPROVEMENTS, LDA. O valor é descontado na primeira mensalidade.</p>
         <p>Só há reembolso num destes casos, e o pedido só pode ser feito a partir do dia previsto para o lançamento, 1 de dezembro de 2026:</p>
         <ul>
-          <li>o lançamento não acontece ou é adiado mais de 90 dias em relação a essa data, ou a tua vaga só abre mais de 90 dias depois dela;</li>
+          <li>o lançamento não acontece ou é adiado mais de 90 dias em relação a essa data;</li>
           <li>por uma impossibilidade técnica da nossa parte, não conseguimos pôr o serviço a funcionar para ti e não resolvemos o problema em 30 dias a contar do teu pedido por escrito;</li>
           <li>deixamos de comercializar o {PRODUTO.nome} antes de começares a usá-lo.</li>
         </ul>
