@@ -49,6 +49,7 @@ function Privacidade() {
       <Seccao id="fornecedores" n="5" titulo="Quem mais trata os dados">
         <ul className="forn">
           <li><strong>Netlify</strong>, nos EUA: alojamento do site e receção das inscrições do formulário.</li>
+          <li><strong>HighLevel (LeadConnector)</strong>, nos EUA: gestão dos contactos e envio dos emails e mensagens sobre o lançamento.</li>
           <li><strong>Stripe Payments Europe</strong>, na Irlanda: pagamento da pré-reserva. Os dados do cartão, do MB WAY ou do Multibanco ficam só na Stripe.</li>
           <li><strong>Google</strong> (Gmail): caixa de correio onde recebemos os teus pedidos e de onde te podemos escrever.</li>
           <li><strong>Meta Platforms Ireland</strong>: só se aceitares os cookies de marketing (ver <a href="#cookies">ponto 8</a>).</li>
