@@ -10,6 +10,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         privacidade: resolve(__dirname, 'privacidade/index.html'),
         termos: resolve(__dirname, 'termos/index.html'),
+        confirmada: resolve(__dirname, 'pre-reserva-confirmada/index.html'),
       },
     },
   },

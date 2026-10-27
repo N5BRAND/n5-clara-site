@@ -7,6 +7,7 @@ import { codificar } from '../logica/netlify.js'
 export default function Prioridades({ email, titulo, aoAcabar }) {
   const [escolhidas, setEscolhidas] = useState([])
   const [crm, setCrm] = useState('')
+  const [crmOutro, setCrmOutro] = useState('')
   const [aEnviar, setAEnviar] = useState(false)
   const cheio = escolhidas.length >= MAX_PRIORIDADES
 
@@ -16,7 +17,7 @@ export default function Prioridades({ email, titulo, aoAcabar }) {
       await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': 'prioridades', email, prioridades: textoPrioridades(escolhidas), ...(CRMS ? { crm } : {}), 'empresa-site': '' }),
+        body: codificar({ 'form-name': 'prioridades', email, prioridades: textoPrioridades(escolhidas), ...(CRMS ? { crm: crm === 'Outro' && crmOutro.trim() ? `Outro: ${crmOutro.trim()}` : crm } : {}), 'empresa-site': '' }),
       })
     } catch {
       // a inscrição já ficou feita no passo 1; as prioridades são um extra e não bloqueiam ninguém
@@ -56,6 +57,12 @@ export default function Prioridades({ email, titulo, aoAcabar }) {
             {CRMS.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </label>
+      )}
+      {CRMS && crm === 'Outro' && (
+        <motion.label className="campo" initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}>
+          <span>Qual é o CRM?</span>
+          <input name="crm-outro" value={crmOutro} onChange={e => setCrmOutro(e.target.value)} placeholder="Escreve o nome do CRM" autoComplete="off" autoFocus />
+        </motion.label>
       )}
       <div className="prioridades-botoes">
         <button type="button" className="botao prevenda-botao" disabled={!escolhidas.length || aEnviar} onClick={enviar}>

@@ -4,12 +4,13 @@ import { LANCAMENTO, tempoAte } from '../logica/contagem.js'
 import { validarInscricao, PLANOS } from '../logica/validar.js'
 import { codificar } from '../logica/netlify.js'
 import Prioridades from './Prioridades.jsx'
+import PreReserva from './PreReserva.jsx'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
 
 /* mensagem para partilhar com colegas; leva só o endereço do site, sem dados de ninguém */
-const PARTILHA = 'Inscrevi-me na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te e põe o meu email em «Quem te indicou»: https://n5-clara.netlify.app/#lista'
+const PARTILHA = 'Entrei na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://n5-clara.netlify.app/#lista'
 
 function Contagem() {
   const [t, setT] = useState(() => tempoAte(LANCAMENTO))
@@ -51,7 +52,7 @@ function Campo({ nome, rotulo, erro, ...resto }) {
 function Formulario() {
   const [d, setD] = useState(VAZIO)
   const [erros, setErros] = useState({})
-  const [estado, setEstado] = useState('pronto') // pronto | a-enviar | prioridades | enviado | falhou
+  const [estado, setEstado] = useState('pronto') // pronto | a-enviar | prioridades | pre-reserva | enviado | falhou
 
   /* os botões dos planos escolhem o plano aqui */
   useEffect(() => {
@@ -98,11 +99,13 @@ function Formulario() {
             </div>
           </motion.div>
         ) : estado === 'prioridades' ? (
-          <Prioridades key="prioridades" email={d.email.trim()} titulo="Em que é que a Clara te ajudava mais?" aoAcabar={() => setEstado('enviado')} />
+          <Prioridades key="prioridades" email={d.email.trim()} titulo="Em que é que a Clara te ajudava mais?" aoAcabar={() => setEstado('pre-reserva')} />
+        ) : estado === 'pre-reserva' ? (
+          <PreReserva key="pre-reserva" aoAcabar={() => setEstado('enviado')} />
         ) : (
           <motion.form key="form" name="lista-clara" onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
-            <h3>Entra na lista de espera</h3>
-            <p className="prevenda-form-sub">Sem compromisso. O acesso abre por vagas, pela ordem da lista.</p>
+            <h3>Inscreve-te na N5 Clara</h3>
+            <p className="prevenda-form-sub">A inscrição é uma pré-reserva de 27 €, descontada na primeira mensalidade. Primeiro os teus dados, depois o pagamento.</p>
             <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>
             <div className="prevenda-campos">
               <Campo nome="nome" rotulo="Nome" value={d.nome} onChange={muda} erro={erros.nome} autoComplete="name" />
@@ -140,10 +143,11 @@ export default function Lista() {
     <section id="lista" className="seccao escuro prevenda">
       <div className="contentor prevenda-grelha">
         <div className="prevenda-texto">
-          <p className="eyebrow">Lista de espera</p>
+          <p className="eyebrow">Inscrição</p>
           <h2>1 de dezembro. A Clara começa a trabalhar contigo.</h2>
           <p className="prevenda-lead">
-            Entra na lista de espera e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
+            Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
+            A inscrição é uma pré-reserva de 27 € e garante-te o primeiro dia.
           </p>
           <div className="lista-oferta">
             <motion.div
@@ -154,7 +158,7 @@ export default function Lista() {
             >
               <small>Acesso por vagas</small>
               <b>Pela ordem da lista</b>
-              <p>A Clara abre em vagas a 1 de dezembro. Quem entra primeiro na lista, começa primeiro.</p>
+              <p>Quem deixa só o contacto fica na lista de espera e entra por vagas a partir de 1 de dezembro. Quem entra primeiro na lista, começa primeiro.</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao lista-oferta-cartao--destaque"
@@ -168,6 +172,23 @@ export default function Lista() {
               <p>Entras na primeira vaga e tens uma sessão de configuração 1:1, só para ti.</p>
             </motion.div>
           </div>
+          <motion.div
+            className="prevenda-reserva"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="prevenda-reserva-valor">
+              <small>Pré-reserva</small>
+              <span>27 €</span>
+            </div>
+            <ul className="prevenda-reserva-condicoes">
+              <li>Entras no primeiro dia, a 1 de dezembro</li>
+              <li>Descontada na primeira mensalidade</li>
+              <li>Reembolsável após o dia do lançamento</li>
+            </ul>
+          </motion.div>
           <Contagem />
         </div>
         <Formulario />

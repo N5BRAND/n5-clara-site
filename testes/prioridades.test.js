@@ -22,3 +22,17 @@ describe('prioridades', () => {
     expect(textoPrioridades([b.id, a.id])).toBe(`${b.texto}; ${a.texto}`)
   })
 })
+
+import { linkValido, VALOR_PRE_RESERVA, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
+
+describe('link da pré-reserva', () => {
+  it('a pré-reserva da Clara é de 27 €', () => {
+    expect(VALOR_PRE_RESERVA).toBe('27 €')
+  })
+  it('só aceita links de pagamento da Stripe', () => {
+    expect(linkValido(LINK_PRE_RESERVA)).toBe(true)
+    expect(linkValido('https://buy.stripe.com/abc123XYZ')).toBe(true)
+    expect(linkValido('')).toBe(false)
+    expect(linkValido('https://buy.stripe.com.exemplo.pt/abc')).toBe(false)
+  })
+})

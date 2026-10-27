@@ -49,6 +49,7 @@ function Privacidade() {
       <Seccao id="fornecedores" n="5" titulo="Quem mais trata os dados">
         <ul className="forn">
           <li><strong>Netlify</strong>, nos EUA: alojamento do site e receção das inscrições do formulário.</li>
+          <li><strong>Stripe Payments Europe</strong>, na Irlanda: pagamento da pré-reserva. Os dados do cartão, do MB WAY ou do Multibanco ficam só na Stripe.</li>
           <li><strong>Google</strong> (Gmail): caixa de correio onde recebemos os teus pedidos e de onde te podemos escrever.</li>
           <li><strong>Meta Platforms Ireland</strong>: só se aceitares os cookies de marketing (ver <a href="#cookies">ponto 8</a>).</li>
         </ul>
@@ -106,8 +107,8 @@ function Termos() {
         <p>As funcionalidades descritas e mostradas podem evoluir até ao lançamento. Os nomes de pessoas, os valores e as conversas usados nas demonstrações servem para mostrar como o produto funciona e não correspondem a pessoas nem a negócios reais.</p>
       </Seccao>
 
-      <Seccao id="inscricao" n="3" titulo="A inscrição na lista de espera">
-        <p>A inscrição é gratuita e não te obriga a comprar nada. Não é uma encomenda nem um contrato de prestação de serviços.</p>
+      <Seccao id="inscricao" n="3" titulo="A lista de espera e a inscrição">
+        <p>Deixar os teus dados na lista de espera é gratuito e não te obriga a comprar nada. Não é uma encomenda nem um contrato de prestação de serviços.</p>
         {PRODUTO.oferta && (
           <p>{PRODUTO.oferta} As condições concretas são apresentadas por escrito no lançamento e só se aplicam se as aceitares nessa altura.</p>
         )}
