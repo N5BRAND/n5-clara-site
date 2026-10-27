@@ -59,7 +59,7 @@ export const CENAS = [
     curto: 'Chamada',
     passos: 5,
     eyebrow: '11:30 · Chamada',
-    titulo: 'Ligas a partir da ficha. A Clara ouve e diz-te como fechar.',
+    titulo: 'Ligas a partir da tua app da Clara. A Clara ouve e diz-te como fechar.',
     texto: 'Cada chamada fica na ficha do cliente, transcrita e analisada. No fim sabes o que correu bem, o que melhorar e o próximo passo.',
     canal: { nome: 'Clara', sub: 'a tua assistente' },
     mensagens: [
