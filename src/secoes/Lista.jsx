@@ -5,7 +5,10 @@ import { validarInscricao, PLANOS } from '../logica/validar.js'
 import { codificar } from '../logica/netlify.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 
-const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', consentimento: false }
+const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
+
+/* mensagem para partilhar com colegas; leva só o endereço do site, sem dados de ninguém */
+const PARTILHA = 'Inscrevi-me na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te e põe o meu email em «Quem te indicou»: https://n5-clara.netlify.app/#lista'
 
 function Contagem() {
   const [t, setT] = useState(() => tempoAte(LANCAMENTO))
@@ -88,17 +91,22 @@ function Formulario() {
             <ClaraAvatar tamanho={84} viva />
             <h3>Estás na lista.</h3>
             <p>A Clara avisa-te assim que abrirmos. Dá cá cinco 🖐️</p>
+            <div className="lista-indicar">
+              <p><b>Queres entrar na primeira vaga?</b> Traz 3 colegas: pede-lhes que se inscrevam e ponham o teu email em «Quem te indicou».</p>
+              <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
+            </div>
           </motion.div>
         ) : (
           <motion.form key="form" name="lista-clara" onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
             <h3>Entra na lista de espera</h3>
-            <p className="prevenda-form-sub">Sem compromisso. És dos primeiros a saber quando a Clara abrir.</p>
+            <p className="prevenda-form-sub">Sem compromisso. O acesso abre por vagas, pela ordem da lista.</p>
             <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>
             <div className="prevenda-campos">
               <Campo nome="nome" rotulo="Nome" value={d.nome} onChange={muda} erro={erros.nome} autoComplete="name" />
               <Campo nome="email" rotulo="Email" type="email" value={d.email} onChange={muda} erro={erros.email} autoComplete="email" />
               <Campo nome="telefone" rotulo="Telefone (opcional)" type="tel" value={d.telefone} onChange={muda} erro={erros.telefone} autoComplete="tel" />
               <Campo nome="agencia" rotulo="Agência ou rede" value={d.agencia} onChange={muda} erro={erros.agencia} autoComplete="organization" />
+              <Campo nome="indicado_por" rotulo="Quem te indicou? (email, opcional)" type="email" value={d.indicado_por} onChange={muda} erro={erros.indicado_por} autoComplete="off" />
               <label className={`campo campo--plano ${erros.plano ? 'campo--erro' : ''}`}>
                 <span>Plano que te interessa</span>
                 <select name="plano" value={d.plano} onChange={muda} aria-invalid={!!erros.plano}>
@@ -134,6 +142,29 @@ export default function Lista() {
           <p className="prevenda-lead">
             Entra na lista de espera e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
           </p>
+          <div className="lista-oferta">
+            <motion.div
+              className="lista-oferta-cartao"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <small>Acesso por vagas</small>
+              <b>Pela ordem da lista</b>
+              <p>A Clara abre em vagas a 1 de dezembro. Quem entra primeiro na lista, começa primeiro.</p>
+            </motion.div>
+            <motion.div
+              className="lista-oferta-cartao lista-oferta-cartao--destaque"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+            >
+              <small>Indicações</small>
+              <b>Traz 3 colegas</b>
+              <p>Entras na primeira vaga e tens uma sessão de configuração 1:1, só para ti.</p>
+            </motion.div>
+          </div>
           <Contagem />
         </div>
         <Formulario />

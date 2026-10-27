@@ -109,7 +109,7 @@ function Termos() {
       <Seccao id="inscricao" n="3" titulo="A inscrição na lista de espera">
         <p>A inscrição é gratuita e não te obriga a comprar nada. Não é uma encomenda nem um contrato de prestação de serviços.</p>
         {PRODUTO.oferta && (
-          <p>{PRODUTO.oferta} As condições concretas da pré-venda são apresentadas por escrito quando esta abrir e só se aplicam se as aceitares nessa altura.</p>
+          <p>{PRODUTO.oferta} As condições concretas são apresentadas por escrito no lançamento e só se aplicam se as aceitares nessa altura.</p>
         )}
         <p>Os dados que nos dás na inscrição são tratados como descrito na <a href="/privacidade/">política de privacidade</a>. Podes sair da lista a qualquer momento escrevendo para <Email />.</p>
       </Seccao>

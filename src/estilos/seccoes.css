@@ -254,3 +254,16 @@
 .video-play-botao { display: grid; place-items: center; width: clamp(64px, 9vw, 96px); aspect-ratio: 1; border-radius: 50%; background: var(--dourado); box-shadow: 0 12px 40px rgba(21, 24, 29, 0.35); }
 .video-play-botao svg { width: 42%; fill: var(--tinta); margin-left: 6%; }
 @media (max-width: 600px) { .video-moldura { border-radius: 14px; } }
+
+/* oferta da lista de espera: vagas e indicações */
+.lista-oferta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lista-oferta-cartao { display: grid; gap: 6px; align-content: start; padding: 20px 22px; border-radius: 18px; border: 1px solid rgba(245, 244, 240, 0.14); }
+.lista-oferta-cartao small { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dourado); }
+.lista-oferta-cartao b { font-family: var(--titulo); font-weight: 800; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.05; letter-spacing: -0.03em; }
+.lista-oferta-cartao p { margin: 0; font-size: 15px; color: rgba(245, 244, 240, 0.72); }
+.lista-oferta-cartao--destaque { background: var(--dourado); border-color: var(--dourado); color: var(--tinta); }
+.lista-oferta-cartao--destaque small { color: rgba(21, 24, 29, 0.7); }
+.lista-oferta-cartao--destaque p { color: rgba(21, 24, 29, 0.78); }
+.lista-indicar { display: grid; gap: 12px; justify-items: center; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--linha, rgba(21, 24, 29, 0.12)); }
+.lista-indicar p { margin: 0; font-size: 15px; }
+@media (max-width: 600px) { .lista-oferta { grid-template-columns: 1fr; } }

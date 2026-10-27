@@ -201,7 +201,7 @@
   border: 1.5px solid var(--linha-forte); background: #fff; color: var(--tinta);
 }
 .campo--plano select:focus { outline: none; border-color: var(--dourado); box-shadow: 0 0 0 4px var(--dourado-claro); }
-.prevenda-campos .campo:nth-child(5) { grid-column: 1 / -1; }
+.prevenda-campos .campo--plano { grid-column: 1 / -1; }
 .prevenda-ok .clara-avatar { font-size: 50px; }
 
 /* ===== telemóvel ===== */

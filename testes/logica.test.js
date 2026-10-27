@@ -34,6 +34,12 @@ describe('validarInscricao', () => {
     expect(validarInscricao({ ...base, plano: 'gold' }).erros.plano).toBeTruthy()
     expect(validarInscricao({ ...base, plano: 'nao-sei' }).ok).toBe(true)
   })
+  it('quem te indicou é opcional, mas tem de ser o email válido de outra pessoa', () => {
+    expect(validarInscricao({ ...base, indicado_por: '' }).ok).toBe(true)
+    expect(validarInscricao({ ...base, indicado_por: 'ana@agencia.pt' }).ok).toBe(true)
+    expect(validarInscricao({ ...base, indicado_por: 'ana@' }).erros.indicado_por).toBeTruthy()
+    expect(validarInscricao({ ...base, indicado_por: base.email.toUpperCase() }).erros.indicado_por).toBeTruthy()
+  })
 })
 
 describe('tempoAte e codificar', () => {
