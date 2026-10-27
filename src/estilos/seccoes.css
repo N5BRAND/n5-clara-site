@@ -335,3 +335,14 @@
 .pre-reserva-aceito { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--suave); cursor: pointer; }
 .pre-reserva-aceito input { margin-top: 2px; accent-color: var(--dourado); }
 .pre-reserva .prevenda-botao:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* inscrição numa só coluna: anúncio, contagem, oferta, porquê por vagas, pré-reserva e formulário */
+.prevenda-grelha--coluna { grid-template-columns: 1fr; max-width: 880px; }
+.prevenda-grelha--coluna .prevenda-form { min-height: 0; margin-top: 10px; }
+.prevenda-reserva--explicada { flex-direction: column; align-items: stretch; gap: 16px; }
+.prevenda-reserva-titulo { margin: 0; font-size: clamp(17px, 1.5vw, 19px); font-weight: 600; line-height: 1.45; }
+.prevenda-reserva-titulo b { font-weight: 800; box-shadow: inset 0 -0.45em 0 rgba(232, 161, 60, 0.35); }
+.prevenda-reserva-linha { display: flex; gap: 22px; align-items: center; padding-top: 16px; border-top: 1px solid rgba(21, 24, 29, 0.12); }
+@media (max-width: 600px) {
+  .prevenda-reserva-linha { flex-direction: column; align-items: flex-start; gap: 14px; }
+}

@@ -144,10 +144,11 @@ function Formulario() {
 export default function Lista() {
   return (
     <section id="lista" className="seccao escuro prevenda">
-      <div className="contentor prevenda-grelha">
+      <div className="contentor prevenda-grelha prevenda-grelha--coluna">
         <div className="prevenda-texto">
           <p className="eyebrow">Inscrição</p>
           <h2>1 de dezembro. A Clara começa a trabalhar contigo.</h2>
+          <Contagem />
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
             A inscrição é uma pré-reserva de 27 € e garante a tua vaga: as primeiras 30 entram a 1 de dezembro.
@@ -177,12 +178,14 @@ export default function Lista() {
           </div>
           <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Conseguimos fazê-lo a 30 consultores por semana, por isso abrimos 30 vagas por semana a partir de 1 de dezembro: primeiro para quem se inscreve com a pré-reserva, pela ordem do pagamento, e depois para quem deixou só o contacto.</p>
           <motion.div
-            className="prevenda-reserva"
+            className="prevenda-reserva prevenda-reserva--explicada"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
+            <p className="prevenda-reserva-titulo">Todos os consultores que fizerem a pré-reserva de 27 € <b>garantem a vaga antes de quem deixa só o contacto</b>: as primeiras 30 entram a 1 de dezembro e os 27 € saem da primeira mensalidade de 53 €.</p>
+            <div className="prevenda-reserva-linha">
             <div className="prevenda-reserva-valor">
               <small>Pré-reserva</small>
               <span>27 €</span>
@@ -193,10 +196,10 @@ export default function Lista() {
               <li>Descontada na primeira mensalidade</li>
               <li>Reembolsável após o dia do lançamento</li>
             </ul>
+            </div>
           </motion.div>
-          <Contagem />
+          <Formulario />
         </div>
-        <Formulario />
       </div>
     </section>
   )
