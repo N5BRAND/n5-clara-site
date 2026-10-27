@@ -47,3 +47,9 @@
 .legal ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 .legal a { color: var(--dourado-escuro); }
 .legal section { scroll-margin-top: 24px; }
+
+/* o botão do Quinto fica no canto de baixo à direita: em ecrãs estreitos taparia os botões do aviso de cookies,
+   por isso só aparece depois de a pessoa responder ao aviso */
+@media (max-width: 560px) {
+  body:has(.cookies) .n5q { display: none; }
+}
