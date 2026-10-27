@@ -248,3 +248,37 @@
 .plano--destaque .plano-capacidade { border-top-color: rgba(245, 244, 240, 0.14); }
 .plano--destaque .plano-capacidade-rotulo { color: rgba(245, 244, 240, 0.6); }
 .plano--destaque .plano-capacidade-barra { background: rgba(245, 244, 240, 0.14); }
+
+/* linha do MCP: símbolos do ChatGPT e do Claude no lugar do visto */
+.plano li.plano-mcp { align-items: center; font-weight: 700; }
+.plano li.plano-mcp::before { content: none; }
+.plano-mcp-logos { display: inline-flex; gap: 6px; flex: none; }
+.plano--destaque .plano-mcp-logos { color: var(--creme); }
+
+/* botões dos planos: laranja com letras brancas ao passar o rato */
+.plano-botao { transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
+.plano .plano-botao:hover { background: var(--dourado); color: #fff; box-shadow: inset 0 0 0 1.5px var(--dourado); }
+
+/* rasto à volta da borda, no sentido do relógio, com um brilho leve */
+.plano-rasto { position: absolute; inset: -1px; z-index: 1; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity 0.35s ease; filter: drop-shadow(0 0 6px rgba(232, 161, 60, 0.75)); }
+.plano-rasto span {
+  position: absolute; inset: 0; border-radius: inherit; padding: 2px;
+  background: conic-gradient(from calc(var(--angulo, 0deg) - 90deg), rgba(232, 161, 60, 0) 0deg, rgba(232, 161, 60, 0.95) 88deg, rgba(255, 255, 255, 0.9) 90deg, rgba(232, 161, 60, 0) 90.5deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.plano--rasto .plano-rasto { opacity: 1; }
+
+/* «Clara» a sair da borda como fumo */
+.plano-fumo {
+  position: absolute; z-index: 2; pointer-events: none; white-space: nowrap;
+  font-family: var(--titulo); font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: var(--dourado);
+  animation: plano-fumo 1.9s ease-out forwards;
+}
+.plano--destaque .plano-fumo { color: var(--creme); }
+@keyframes plano-fumo {
+  0% { opacity: 0; filter: blur(2px); transform: translate(-50%, -50%) scale(0.85); }
+  20% { opacity: 0.45; filter: blur(0.5px); }
+  100% { opacity: 0; filter: blur(8px); transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.4); }
+}
