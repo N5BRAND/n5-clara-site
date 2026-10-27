@@ -169,7 +169,7 @@
 .plano h3 { font-size: clamp(26px, 2.4vw, 34px); }
 .plano-para { color: var(--suave); }
 .plano-antes { font-weight: 700; font-size: 14px; color: var(--dourado-escuro); }
-.plano ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; flex: 1; }
+.plano ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; flex: 1; align-content: start; }
 .plano li { display: flex; gap: 10px; font-size: 15px; }
 .plano li::before { content: '✓'; color: var(--dourado-escuro); font-weight: 700; }
 .plano-botao { justify-content: center; margin-top: 8px; }

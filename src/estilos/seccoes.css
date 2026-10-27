@@ -346,3 +346,8 @@
 @media (max-width: 600px) {
   .prevenda-reserva-linha { flex-direction: column; align-items: flex-start; gap: 14px; }
 }
+
+/* três cartões na oferta: desconto, vagas e indicações */
+.lista-oferta { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.mensalidade-nota { font-size: 12px; font-weight: 600; color: var(--suave); }
+.pre-reserva-valor .mensalidade-nota { color: var(--creme); opacity: 0.72; }

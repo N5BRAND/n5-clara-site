@@ -151,29 +151,40 @@ export default function Lista() {
           <Contagem />
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
-            A inscrição é uma pré-reserva de 27 € e garante a tua vaga: as primeiras 30 entram a 1 de dezembro.
+            A inscrição é uma pré-reserva de 27 €: garante a tua vaga, 25% de desconto durante um ano, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 12 formações por ano.
           </p>
           <div className="lista-oferta">
+            <motion.div
+              className="lista-oferta-cartao lista-oferta-cartao--destaque"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <small>Desconto</small>
+              <b>25% durante um ano</b>
+              <p>39 € por mês em vez de 53 € nas primeiras 12 mensalidades do plano Clara.</p>
+            </motion.div>
             <motion.div
               className="lista-oferta-cartao"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
             >
               <small>Acesso por vagas</small>
               <b>30 por semana</b>
               <p>As primeiras 30 inscrições entram a 1 de dezembro e as seguintes nas semanas a seguir, pela ordem do pagamento. Quem deixa só o contacto entra depois.</p>
             </motion.div>
             <motion.div
-              className="lista-oferta-cartao lista-oferta-cartao--destaque"
+              className="lista-oferta-cartao"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
+              transition={{ delay: 0.2 }}
             >
               <small>Indicações</small>
               <b>Traz 3 colegas</b>
-              <p>Passas à frente na ordem de entrada e tens uma sessão de configuração 1:1, só para ti.</p>
+              <p>Passas à frente na ordem de entrada.</p>
             </motion.div>
           </div>
           <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Conseguimos fazê-lo a 30 consultores por semana, por isso abrimos 30 vagas por semana a partir de 1 de dezembro: primeiro para quem se inscreve com a pré-reserva, pela ordem do pagamento, e depois para quem deixou só o contacto.</p>
@@ -184,7 +195,7 @@ export default function Lista() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <p className="prevenda-reserva-titulo">Todos os consultores que fizerem a pré-reserva de 27 € <b>garantem a vaga antes de quem deixa só o contacto</b>: as primeiras 30 entram a 1 de dezembro e os 27 € saem da primeira mensalidade de 53 €.</p>
+            <p className="prevenda-reserva-titulo">Todos os consultores que fizerem a pré-reserva de 27 € têm <b>25% de desconto durante 12 mensalidades</b>: um ano a pagar 39 € por mês em vez de 53 € no plano Clara.</p>
             <div className="prevenda-reserva-linha">
             <div className="prevenda-reserva-valor">
               <small>Pré-reserva</small>
@@ -192,8 +203,11 @@ export default function Lista() {
               <Mensalidade />
             </div>
             <ul className="prevenda-reserva-condicoes">
-              <li>30 vagas por semana, a partir de 1 de dezembro, pela ordem do pagamento</li>
-              <li>Descontada na primeira mensalidade</li>
+              <li>Prioridade na entrada: 30 vagas por semana, pela ordem do pagamento</li>
+              <li>Copiloto para o CRM da tua marca incluído</li>
+              <li>Sessão de configuração com a equipa da Nº5</li>
+              <li>12 formações por ano incluídas</li>
+              <li>Os 27 € são descontados na primeira mensalidade</li>
               <li>Reembolsável após o dia do lançamento</li>
             </ul>
             </div>

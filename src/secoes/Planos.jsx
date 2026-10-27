@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 const PLANOS = [
   {
     id: 'clara', nome: 'Clara', para: 'Para teres o dia organizado e nenhuma lead perdida.',
-    inclui: ['Qualificação automática com o teu guião', 'Plano do dia por prioridade', 'Notas de voz que se registam sozinhas', 'Checklist de documentos por imóvel', 'Reativação de contactos parados', 'Copiloto para o CRM da tua marca'],
+    inclui: ['Qualificação automática com o teu guião', 'Plano do dia por prioridade', 'Notas de voz que se registam sozinhas', 'Checklist de documentos por imóvel', 'Reativação de contactos parados'],
   },
   {
     id: 'pro', nome: 'Clara Pro', para: 'Para quem investe em anúncios e quer tirar mais da base.',
@@ -13,7 +13,7 @@ const PLANOS = [
   {
     id: 'elite', nome: 'Clara Elite', para: 'Para quem vive ao telefone.', destaque: true,
     antes: 'Tudo do Pro, mais:',
-    inclui: ['Chamadas pela Clara com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', '500 minutos de chamadas incluídos'],
+    inclui: ['Chamadas pela Clara com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas incluídos'],
   },
 ]
 

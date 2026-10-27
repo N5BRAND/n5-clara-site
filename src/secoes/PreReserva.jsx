@@ -19,7 +19,9 @@ export default function PreReserva({ aoAcabar }) {
           <Mensalidade />
         </div>
         <ul>
-          <li>30 vagas por semana, a partir de 1 de dezembro, pela ordem do pagamento</li>
+          <li>25% de desconto durante 12 mensalidades</li>
+          <li>Prioridade: 30 vagas por semana, pela ordem do pagamento</li>
+          <li>Copiloto do CRM, sessão de configuração e 12 formações por ano</li>
           <li>Descontada na primeira mensalidade</li>
           <li>Reembolsável após o dia do lançamento</li>
         </ul>
