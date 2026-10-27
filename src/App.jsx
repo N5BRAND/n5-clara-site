@@ -1,5 +1,6 @@
 import Topo from './secoes/Topo.jsx'
 import Hero from './secoes/Hero.jsx'
+import Video from './secoes/Video.jsx'
 import Promessas from './secoes/Promessas.jsx'
 import Dia from './dia/Dia.jsx'
 import Agentes from './secoes/Agentes.jsx'
@@ -17,6 +18,7 @@ export default function App() {
       <Topo />
       <main>
         <Hero />
+        <Video />
         <Promessas />
         <Dia />
         <Agentes />
