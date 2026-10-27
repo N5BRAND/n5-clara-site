@@ -188,7 +188,20 @@
 .cresce-link:hover { text-decoration: underline; }
 .cresce-ponte { position: relative; height: 160px; overflow: hidden; }
 .cresce-ponte::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px dashed rgba(232, 161, 60, 0.5); }
-.cresce-pacote { position: absolute; left: 0; top: calc(50% - 15px); padding: 5px 12px; border-radius: 999px; background: var(--dourado); color: var(--tinta); font-size: 12px; font-weight: 700; white-space: nowrap; }
+/* cada palavra demora 3 s a atravessar e sai 1,1 s depois da anterior: ficam sempre separadas */
+.cresce-pacote { position: absolute; left: 0; top: calc(50% - 15px); padding: 5px 12px; border-radius: 999px; background: var(--dourado); color: var(--tinta); font-size: 12px; font-weight: 700; white-space: nowrap; opacity: 0; animation: cresce-viagem 5.5s linear infinite; animation-delay: calc(var(--i) * 1.1s - 5.5s); }
+@keyframes cresce-viagem {
+  0% { left: -30%; opacity: 0; }
+  6% { opacity: 1; }
+  48% { opacity: 1; }
+  54.5% { left: 100%; opacity: 0; }
+  100% { left: 100%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cresce-ponte { display: flex; flex-wrap: wrap; gap: 8px; align-content: center; justify-content: center; }
+  .cresce-ponte::before { content: none; }
+  .cresce-pacote { position: static; opacity: 1; animation: none; }
+}
 @media (max-width: 900px) {
   .cresce-grelha { grid-template-columns: 1fr; }
   .cresce-ponte { height: 70px; }
@@ -269,16 +282,3 @@
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
 }
 .plano--rasto .plano-rasto { opacity: 1; }
-
-/* «Clara» a sair da borda como fumo */
-.plano-fumo {
-  position: absolute; z-index: 2; pointer-events: none; white-space: nowrap;
-  font-family: var(--titulo); font-weight: 800; font-size: 15px; letter-spacing: -0.02em; color: var(--dourado);
-  animation: plano-fumo 1.9s ease-out forwards;
-}
-.plano--destaque .plano-fumo { color: var(--creme); }
-@keyframes plano-fumo {
-  0% { opacity: 0; filter: blur(2px); transform: translate(-50%, -50%) scale(0.85); }
-  20% { opacity: 0.45; filter: blur(0.5px); }
-  100% { opacity: 0; filter: blur(8px); transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.4); }
-}

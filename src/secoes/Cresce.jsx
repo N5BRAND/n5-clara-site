@@ -19,12 +19,7 @@ export default function Cresce() {
 
           <div className="cresce-ponte" aria-hidden="true">
             {PACOTES.map((p, i) => (
-              <motion.span
-                key={p}
-                className="cresce-pacote"
-                animate={{ x: ['-40%', '140%'], opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 3.2, repeat: Infinity, delay: i * 0.64, ease: 'easeInOut' }}
-              >{p}</motion.span>
+              <span key={p} className="cresce-pacote" style={{ '--i': i }}>{p}</span>
             ))}
           </div>
 

@@ -151,7 +151,7 @@ export default function Lista() {
           <Contagem />
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
-            A inscrição é uma pré-reserva de 27 €: garante a tua vaga, 25% de desconto durante um ano, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 12 formações por ano.
+            A inscrição é uma pré-reserva de 27 €: garante a tua vaga, 25% de desconto nas 2 primeiras mensalidades, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 12 formações por ano.
           </p>
           <div className="lista-oferta">
             <motion.div
@@ -161,8 +161,8 @@ export default function Lista() {
               viewport={{ once: true }}
             >
               <small>Desconto</small>
-              <b>25% durante um ano</b>
-              <p>39 € por mês em vez de 53 € nas primeiras 12 mensalidades do plano Clara.</p>
+              <b>25% em 2 meses</b>
+              <p>39 € por mês em vez de 53 € nas 2 primeiras mensalidades do plano Clara.</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao"
@@ -195,7 +195,7 @@ export default function Lista() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <p className="prevenda-reserva-titulo">Todos os consultores que fizerem a pré-reserva de 27 € têm <b>25% de desconto durante 12 mensalidades</b>: um ano a pagar 39 € por mês em vez de 53 € no plano Clara.</p>
+            <p className="prevenda-reserva-titulo">Todos os consultores que fizerem a pré-reserva de 27 € têm <b>25% de desconto nas 2 primeiras mensalidades</b>: 39 € por mês em vez de 53 € no plano Clara.</p>
             <div className="prevenda-reserva-linha">
             <div className="prevenda-reserva-valor">
               <small>Pré-reserva</small>

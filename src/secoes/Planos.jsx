@@ -36,25 +36,7 @@ function Capacidade({ vezes }) {
   )
 }
 
-/* um «Clara» que sai da borda no ponto onde vai o rasto e se desfaz como fumo */
-function largarFumo(cartao, angulo) {
-  const w = cartao.offsetWidth, h = cartao.offsetHeight
-  const rad = (angulo * Math.PI) / 180
-  const dx = Math.sin(rad), dy = -Math.cos(rad)
-  const t = Math.min(w / 2 / Math.max(Math.abs(dx), 1e-6), h / 2 / Math.max(Math.abs(dy), 1e-6))
-  const s = document.createElement('span')
-  s.className = 'plano-fumo'
-  s.setAttribute('aria-hidden', 'true')
-  s.textContent = 'Clara'
-  s.style.left = `${w / 2 + dx * t}px`
-  s.style.top = `${h / 2 + dy * t}px`
-  s.style.setProperty('--dx', `${dx * 28}px`)
-  s.style.setProperty('--dy', `${dy * 28 - 12}px`)
-  cartao.appendChild(s)
-  s.addEventListener('animationend', () => s.remove())
-}
-
-/* com o rato dentro do cartão, um rasto percorre a borda no sentido do relógio e vai largando «Clara»;
+/* com o rato dentro do cartão, um rasto percorre a borda no sentido do relógio;
    só em computadores com rato e sem «reduzir movimento» */
 function useRasto() {
   const ref = useRef(null)
@@ -63,15 +45,11 @@ function useRasto() {
     if (!cartao) return
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let angulo = 0, anterior = 0, ultimoFumo = 0, pedido = 0
+    let angulo = 0, anterior = 0, pedido = 0
     const passo = agora => {
       angulo = (angulo + (anterior ? agora - anterior : 16) * 0.11) % 360
       anterior = agora
       cartao.style.setProperty('--angulo', `${angulo}deg`)
-      if (agora - ultimoFumo > 420) {
-        ultimoFumo = agora
-        largarFumo(cartao, angulo)
-      }
       pedido = requestAnimationFrame(passo)
     }
     const entrar = () => {

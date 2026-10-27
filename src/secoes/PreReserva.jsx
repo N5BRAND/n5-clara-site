@@ -19,7 +19,7 @@ export default function PreReserva({ aoAcabar }) {
           <Mensalidade />
         </div>
         <ul>
-          <li>25% de desconto durante 12 mensalidades</li>
+          <li>25% de desconto nas 2 primeiras mensalidades</li>
           <li>Prioridade: 30 vagas por semana, pela ordem do pagamento</li>
           <li>Copiloto do CRM, sessão de configuração e 12 formações por ano</li>
           <li>Descontada na primeira mensalidade</li>
