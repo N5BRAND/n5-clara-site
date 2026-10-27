@@ -19,7 +19,7 @@ export default function PreReserva({ aoAcabar }) {
           <Mensalidade />
         </div>
         <ul>
-          <li>Entras no primeiro dia, a 1 de dezembro</li>
+          <li>30 vagas por semana, a partir de 1 de dezembro, pela ordem do pagamento</li>
           <li>Descontada na primeira mensalidade</li>
           <li>Reembolsável após o dia do lançamento</li>
         </ul>
@@ -33,7 +33,7 @@ export default function PreReserva({ aoAcabar }) {
             <input type="checkbox" checked={aceito} onChange={e => setAceito(e.target.checked)} />
             <span>Li e aceito as <a href="/termos/#pre-reserva" target="_blank" rel="noreferrer">condições da pré-reserva e do reembolso</a>.</span>
           </label>
-          {aceito ? <a className="botao prevenda-botao" href={LINK_PRE_RESERVA} onClick={() => evento('InitiateCheckout', { value: VALOR_EUROS, currency: 'EUR' })}>Pagar {VALOR_PRE_RESERVA} e entrar no primeiro dia</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {VALOR_PRE_RESERVA} e entrar no primeiro dia</button>}
+          {aceito ? <a className="botao prevenda-botao" href={LINK_PRE_RESERVA} onClick={() => evento('InitiateCheckout', { value: VALOR_EUROS, currency: 'EUR' })}>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</button>}
           <p className="pre-reserva-nota">Pagamento seguro na Stripe. Voltas a este site no fim.</p>
         </>
       ) : (

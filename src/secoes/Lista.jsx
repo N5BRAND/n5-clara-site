@@ -97,7 +97,7 @@ function Formulario() {
             <h3>Estás na lista.</h3>
             <p>A Clara avisa-te assim que abrirmos. Dá cá cinco 🖐️</p>
             <div className="lista-indicar">
-              <p><b>Queres entrar na primeira vaga?</b> Traz 3 colegas: pede-lhes que se inscrevam e ponham o teu email em «Quem te indicou».</p>
+              <p><b>Queres passar à frente na ordem de entrada?</b> Traz 3 colegas: pede-lhes que se inscrevam e ponham o teu email em «Quem te indicou».</p>
               <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
             </div>
           </motion.div>
@@ -150,7 +150,7 @@ export default function Lista() {
           <h2>1 de dezembro. A Clara começa a trabalhar contigo.</h2>
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
-            A inscrição é uma pré-reserva de 27 € e garante-te o primeiro dia.
+            A inscrição é uma pré-reserva de 27 € e garante a tua vaga: as primeiras 30 entram a 1 de dezembro.
           </p>
           <div className="lista-oferta">
             <motion.div
@@ -160,8 +160,8 @@ export default function Lista() {
               viewport={{ once: true }}
             >
               <small>Acesso por vagas</small>
-              <b>Pela ordem da lista</b>
-              <p>Quem deixa só o contacto fica na lista de espera e entra por vagas a partir de 1 de dezembro. Quem entra primeiro na lista, começa primeiro.</p>
+              <b>30 por semana</b>
+              <p>As primeiras 30 inscrições entram a 1 de dezembro e as seguintes nas semanas a seguir, pela ordem do pagamento. Quem deixa só o contacto entra depois.</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao lista-oferta-cartao--destaque"
@@ -172,10 +172,10 @@ export default function Lista() {
             >
               <small>Indicações</small>
               <b>Traz 3 colegas</b>
-              <p>Entras na primeira vaga e tens uma sessão de configuração 1:1, só para ti.</p>
+              <p>Passas à frente na ordem de entrada e tens uma sessão de configuração 1:1, só para ti.</p>
             </motion.div>
           </div>
-          <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para manter essa qualidade, abrimos o acesso aos poucos: quem se inscreve com a pré-reserva entra no primeiro dia e as vagas seguintes abrem conforme a equipa consegue acompanhar mais consultores.</p>
+          <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Conseguimos fazê-lo a 30 consultores por semana, por isso abrimos 30 vagas por semana a partir de 1 de dezembro: primeiro para quem se inscreve com a pré-reserva, pela ordem do pagamento, e depois para quem deixou só o contacto.</p>
           <motion.div
             className="prevenda-reserva"
             initial={{ opacity: 0, y: 20 }}
@@ -189,7 +189,7 @@ export default function Lista() {
               <Mensalidade />
             </div>
             <ul className="prevenda-reserva-condicoes">
-              <li>Entras no primeiro dia, a 1 de dezembro</li>
+              <li>30 vagas por semana, a partir de 1 de dezembro, pela ordem do pagamento</li>
               <li>Descontada na primeira mensalidade</li>
               <li>Reembolsável após o dia do lançamento</li>
             </ul>
