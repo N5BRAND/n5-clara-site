@@ -5,6 +5,7 @@ import { validarInscricao, PLANOS } from '../logica/validar.js'
 import { codificar } from '../logica/netlify.js'
 import Prioridades from './Prioridades.jsx'
 import PreReserva from './PreReserva.jsx'
+import Mensalidade from './Mensalidade.jsx'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
@@ -172,6 +173,7 @@ export default function Lista() {
               <p>Entras na primeira vaga e tens uma sessão de configuração 1:1, só para ti.</p>
             </motion.div>
           </div>
+          <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para manter essa qualidade, abrimos o acesso aos poucos: quem se inscreve com a pré-reserva entra no primeiro dia e as vagas seguintes abrem conforme a equipa consegue acompanhar mais consultores.</p>
           <motion.div
             className="prevenda-reserva"
             initial={{ opacity: 0, y: 20 }}
@@ -182,7 +184,7 @@ export default function Lista() {
             <div className="prevenda-reserva-valor">
               <small>Pré-reserva</small>
               <span>27 €</span>
-              <em>No lançamento: 53 €/mês</em>
+              <Mensalidade />
             </div>
             <ul className="prevenda-reserva-condicoes">
               <li>Entras no primeiro dia, a 1 de dezembro</li>

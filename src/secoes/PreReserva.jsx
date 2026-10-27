@@ -1,9 +1,12 @@
 import { motion } from 'motion/react'
-import { LINK_PRE_RESERVA, VALOR_PRE_RESERVA, VALOR_LANCAMENTO, METODOS, linkValido } from '../logica/pagamento.js'
+import { useState } from 'react'
+import Mensalidade from './Mensalidade.jsx'
+import { LINK_PRE_RESERVA, VALOR_PRE_RESERVA, METODOS, linkValido } from '../logica/pagamento.js'
 
 /* passo 3, depois das prioridades: pagar a pré-reserva na Stripe; não há opção de pagar depois */
 export default function PreReserva({ aoAcabar }) {
   const temLink = linkValido(LINK_PRE_RESERVA)
+  const [aceito, setAceito] = useState(false)
 
   return (
     <motion.div key="pre-reserva" className="pre-reserva" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
@@ -12,7 +15,7 @@ export default function PreReserva({ aoAcabar }) {
       <div className="pre-reserva-valor">
         <div className="pre-reserva-preco">
           <span>{VALOR_PRE_RESERVA}</span>
-          <small>No lançamento: {VALOR_LANCAMENTO}</small>
+          <Mensalidade />
         </div>
         <ul>
           <li>Entras no primeiro dia, a 1 de dezembro</li>
@@ -25,7 +28,11 @@ export default function PreReserva({ aoAcabar }) {
       </div>
       {temLink ? (
         <>
-          <a className="botao prevenda-botao" href={LINK_PRE_RESERVA}>Pagar {VALOR_PRE_RESERVA} e entrar no primeiro dia</a>
+          <label className="pre-reserva-aceito">
+            <input type="checkbox" checked={aceito} onChange={e => setAceito(e.target.checked)} />
+            <span>Li e aceito as <a href="/termos/#pre-reserva" target="_blank" rel="noreferrer">condições da pré-reserva e do reembolso</a>.</span>
+          </label>
+          {aceito ? <a className="botao prevenda-botao" href={LINK_PRE_RESERVA}>Pagar {VALOR_PRE_RESERVA} e entrar no primeiro dia</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {VALOR_PRE_RESERVA} e entrar no primeiro dia</button>}
           <p className="pre-reserva-nota">Pagamento seguro na Stripe. Voltas a este site no fim.</p>
         </>
       ) : (

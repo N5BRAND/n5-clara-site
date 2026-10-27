@@ -11,5 +11,6 @@ export const PRODUTO = {
     'perceber em que é que a Clara mais te ajudava, para te mostrarmos isso primeiro e decidirmos o que desenvolver primeiro;',
     'contactar-te sobre o lançamento, previsto para 1 de dezembro de 2026.',
   ],
+  reserva: { valor: '27 €', garante: 'a entrada no primeiro dia' },
   oferta: 'A inscrição na N5 Clara é uma pré-reserva de 27 €, descontada na primeira mensalidade e reembolsável após o dia do lançamento, e dá entrada no primeiro dia. Quem deixa só o contacto fica na lista de espera e entra por vagas, pela ordem da lista. O valor anunciado para o lançamento é de 53 € por mês. Quem indicar 3 colegas que se inscrevam entra na primeira vaga e tem uma sessão de configuração individual. O pagamento é feito na Stripe e recebido pela 4IMPROVEMENTS, LDA, que aparece no extrato.',
 }

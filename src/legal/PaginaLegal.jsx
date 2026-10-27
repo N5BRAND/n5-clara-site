@@ -110,24 +110,37 @@ function Termos() {
       <Seccao id="inscricao" n="3" titulo="A lista de espera e a inscrição">
         <p>Deixar os teus dados na lista de espera é gratuito e não te obriga a comprar nada. Não é uma encomenda nem um contrato de prestação de serviços.</p>
         {PRODUTO.oferta && (
-          <p>{PRODUTO.oferta} As condições concretas são apresentadas por escrito no lançamento e só se aplicam se as aceitares nessa altura.</p>
+          <p>{PRODUTO.oferta} As condições da pré-reserva estão no <a href="#pre-reserva">ponto 4</a>. As restantes condições do serviço são apresentadas por escrito no lançamento.</p>
         )}
         <p>Os dados que nos dás na inscrição são tratados como descrito na <a href="/privacidade/">política de privacidade</a>. Podes sair da lista a qualquer momento escrevendo para <Email />.</p>
       </Seccao>
 
-      <Seccao id="propriedade" n="4" titulo="Propriedade intelectual">
+      <Seccao id="pre-reserva" n="4" titulo="Pré-reserva e reembolso">
+        <p>A pré-reserva é um pagamento antecipado de {PRODUTO.reserva.valor} que te garante {PRODUTO.reserva.garante}. É feita no âmbito da tua atividade profissional, é paga na Stripe e é recebida pela 4IMPROVEMENTS, LDA. O valor é descontado na primeira mensalidade.</p>
+        <p>Só há reembolso num destes casos, e o pedido só pode ser feito a partir do dia previsto para o lançamento, 1 de dezembro de 2026:</p>
+        <ul>
+          <li>o lançamento não acontece ou é adiado mais de 90 dias em relação a essa data;</li>
+          <li>por uma impossibilidade técnica da nossa parte, não conseguimos pôr o serviço a funcionar para ti e não resolvemos o problema em 30 dias a contar do teu pedido por escrito;</li>
+          <li>deixamos de comercializar o {PRODUTO.nome} antes de começares a usá-lo.</li>
+        </ul>
+        <p>Fora destes casos, a pré-reserva não é reembolsável, incluindo quando mudas de ideias, não aderes no lançamento ou não usas o serviço.</p>
+        <p>O pedido faz-se por escrito para <Email />, até 30 dias depois do facto que o justifica. Devolvemos o valor pago, sem juros, pelo mesmo meio de pagamento ou por transferência bancária, até 30 dias depois de confirmarmos o pedido.</p>
+        <p>Ao pagar a pré-reserva, aceitas estas condições. Nada nestes termos afasta direitos que a lei te reconheça e que não possam ser afastados por acordo.</p>
+      </Seccao>
+
+      <Seccao id="propriedade" n="5" titulo="Propriedade intelectual">
         <p>Os textos, as ilustrações, o símbolo Nº5 e o resto do conteúdo do site pertencem à {EMPRESA.nome} ou são usados com autorização. Não os podes copiar nem usar para fins comerciais sem autorização escrita.</p>
       </Seccao>
 
-      <Seccao id="responsabilidade" n="5" titulo="Responsabilidade">
+      <Seccao id="responsabilidade" n="6" titulo="Responsabilidade">
         <p>Fazemos o possível para manter o site disponível e correto, mas não garantimos que esteja sempre acessível nem sem erros. O site pode ter ligações para sites de terceiros, pelos quais não somos responsáveis.</p>
       </Seccao>
 
-      <Seccao id="lei" n="6" titulo="Lei aplicável">
+      <Seccao id="lei" n="7" titulo="Lei aplicável">
         <p>Estes termos regem-se pela lei portuguesa. Qualquer litígio é resolvido pelos tribunais portugueses competentes.</p>
       </Seccao>
 
-      <Seccao id="alteracoes" n="7" titulo="Alterações a estes termos">
+      <Seccao id="alteracoes" n="8" titulo="Alterações a estes termos">
         <p>Se estes termos mudarem, publicamos aqui a versão nova, com a data de atualização no topo.</p>
       </Seccao>
     </>
