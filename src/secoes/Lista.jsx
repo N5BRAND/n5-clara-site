@@ -112,7 +112,7 @@ function Formulario() {
         ) : (
           <motion.form key="form" name={FORMULARIO} onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
             <h3>{ESGOTADO ? 'Entra na lista de espera' : 'Inscreve-te na N5 Clara'}</h3>
-            <p className="prevenda-form-sub">{ESGOTADO ? 'As 25 licenças com pré-reserva esgotaram. Deixa os teus dados e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : 'A inscrição é uma pré-reserva de 27 €, descontada na primeira mensalidade. Primeiro os teus dados, depois o pagamento.'}</p>
+            <p className="prevenda-form-sub">{ESGOTADO ? 'As 25 licenças com pré-reserva esgotaram. Deixa os teus dados e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : 'A inscrição é uma pré-reserva de 27 €, que paga a tua primeira mensalidade. Primeiro os teus dados, depois o pagamento.'}</p>
             <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>
             <div className="prevenda-campos">
               <Campo nome="nome" rotulo="Nome" value={d.nome} onChange={muda} erro={erros.nome} autoComplete="name" />
@@ -161,7 +161,7 @@ export default function Lista() {
           ) : (
           <p className="prevenda-lead">
             Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
-            Há 25 licenças reservadas, com pré-reserva de 27 €: entras no primeiro dia e tens 25% de desconto nas 2 primeiras mensalidades, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas. Sem fidelização.
+            Há 25 licenças reservadas, com pré-reserva de 27 €: entras no primeiro dia e tens 50% de desconto na primeira mensalidade, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas. Sem fidelização.
           </p>
           )}
           <div className="lista-oferta">
@@ -172,8 +172,8 @@ export default function Lista() {
               viewport={{ once: true }}
             >
               <small>{ESGOTADO ? 'Lista de espera' : 'Desconto'}</small>
-              <b>{ESGOTADO ? '30 vagas por semana' : '25% nos 2 primeiros meses'}</b>
-              <p>{ESGOTADO ? 'A partir de 1 de dezembro, pela ordem da lista. Avisamos-te por email quando chegar a tua vez.' : 'Para quem faz a pré-reserva antes de 1 de dezembro: 39 € em vez de 53 € nas 2 primeiras mensalidades do plano Clara.'}</p>
+              <b>{ESGOTADO ? '30 vagas por semana' : '50% no 1.º mês'}</b>
+              <p>{ESGOTADO ? 'A partir de 1 de dezembro, pela ordem da lista. Avisamos-te por email quando chegar a tua vez.' : 'Para quem faz a pré-reserva antes de 1 de dezembro: a 1.ª mensalidade do plano Clara fica a 26,50 € em vez de 53 €, e os 27 € da pré-reserva pagam-na.'}</p>
             </motion.div>
             <motion.div
               className="lista-oferta-cartao"
@@ -206,11 +206,11 @@ export default function Lista() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <p className="prevenda-reserva-titulo">Faz a pré-reserva de 27 € antes de 1 de dezembro, numa das 25 licenças reservadas, e tens <b>25% de desconto nas 2 primeiras mensalidades</b> do plano Clara. Os 27 € que pagas agora são descontados na 1.ª mensalidade, já com o desconto.</p>
+            <p className="prevenda-reserva-titulo">Faz a pré-reserva de 27 € antes de 1 de dezembro, numa das 25 licenças reservadas, e tens <b>50% de desconto na primeira mensalidade</b> do plano Clara. Os 27 € que pagas agora pagam o teu 1.º mês, e os 0,50 € que sobram saem do 2.º.</p>
             <ol className="prevenda-pagamentos" aria-label="Quanto pagas, mês a mês">
               <li><small>Agora</small><b>27 €</b><span>pré-reserva</span></li>
-              <li><small>1.º mês</small><b>12 €</b><span>39 € menos os 27 €</span></li>
-              <li><small>2.º mês</small><b>39 €</b><span>com 25% de desconto</span></li>
+              <li><small>1.º mês</small><b>0 €</b><span>26,50 €, já pagos com a pré-reserva</span></li>
+              <li><small>2.º mês</small><b>52,50 €</b><span>53 € menos os 0,50 € que sobram</span></li>
               <li><small>A partir do 3.º</small><b>53 €</b><span>valor do plano Clara</span></li>
             </ol>
             <div className="prevenda-reserva-linha">
@@ -224,7 +224,7 @@ export default function Lista() {
               <li>Copiloto para o CRM da tua marca incluído</li>
               <li>Sessão de configuração com a equipa da Nº5</li>
               <li>2 formações incluídas, para ti e para a tua equipa até 5 consultores</li>
-              <li>Os 27 € são descontados na 1.ª mensalidade, já com o desconto</li>
+              <li>Os 27 € pagam a 1.ª mensalidade, já com o desconto</li>
               <li>Sem fidelização: cancelas quando quiseres</li>
               <li>Reembolsável após o dia do lançamento</li>
             </ul>

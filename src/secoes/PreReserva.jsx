@@ -19,10 +19,10 @@ export default function PreReserva({ aoAcabar }) {
           <Mensalidade />
         </div>
         <ul>
-          <li>25% nas 2 primeiras mensalidades: 12 € no 1.º mês, 39 € no 2.º</li>
+          <li>50% na 1.ª mensalidade: os 27 € pagam o teu 1.º mês</li>
           <li>Uma das 25 licenças: entras no primeiro dia</li>
           <li>Copiloto do CRM, sessão de configuração e 2 formações incluídas</li>
-          <li>Os 27 € saem da 1.ª mensalidade, já com o desconto</li>
+          <li>Os 0,50 € que sobram saem do 2.º mês: 52,50 €</li>
           <li>Sem fidelização. Reembolsável após o dia do lançamento</li>
         </ul>
       </div>

@@ -17,7 +17,7 @@ export default function Mensalidade() {
           <b>{normal}/mês</b>
         )}
       </span>
-      {meses && <span className="mensalidade-nota">nas primeiras {meses} mensalidades</span>}
+      {meses && <span className="mensalidade-nota">{meses === 1 ? 'na primeira mensalidade' : `nas primeiras ${meses} mensalidades`}</span>}
     </div>
   )
 }

@@ -9,7 +9,7 @@ export const VALOR_PRE_RESERVA = '27 €'
 export const VALOR_EUROS = parseFloat(VALOR_PRE_RESERVA)
 
 /* mensalidade no lançamento, mostrada ao lado da pré-reserva */
-export const MENSALIDADE = { normal: '53 €', desconto: 25, comDesconto: '39 €', meses: 2, plano: 'Clara' }
+export const MENSALIDADE = { normal: '53 €', desconto: 50, comDesconto: '26,50 €', meses: 1, plano: 'Clara' }
 
 export const METODOS = ['MB WAY', 'Multibanco', 'Cartão', 'Apple Pay', 'Google Pay']
 

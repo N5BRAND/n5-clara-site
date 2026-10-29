@@ -28,8 +28,8 @@ import { linkValido, VALOR_PRE_RESERVA, MENSALIDADE, LINK_PRE_RESERVA } from '..
 describe('link da pré-reserva', () => {
   it('a pré-reserva da Clara é de 27 €', () => {
     expect(VALOR_PRE_RESERVA).toBe('27 €')
-    expect(MENSALIDADE).toEqual({ normal: '53 €', desconto: 25, comDesconto: '39 €', meses: 2, plano: 'Clara' })
-    expect(39).toBeLessThanOrEqual(53 * (1 - MENSALIDADE.desconto / 100))
+    expect(MENSALIDADE).toEqual({ normal: '53 €', desconto: 50, comDesconto: '26,50 €', meses: 1, plano: 'Clara' })
+    expect(53 * (1 - MENSALIDADE.desconto / 100)).toBe(26.5)
   })
   it('só aceita links de pagamento da Stripe', () => {
     expect(linkValido(LINK_PRE_RESERVA)).toBe(true)

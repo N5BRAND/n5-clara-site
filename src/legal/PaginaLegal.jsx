@@ -117,7 +117,7 @@ function Termos() {
       </Seccao>
 
       <Seccao id="pre-reserva" n="4" titulo="Pré-reserva e reembolso">
-        <p>A pré-reserva é um pagamento antecipado de {PRODUTO.reserva.valor} que te garante {PRODUTO.reserva.garante}. É feita no âmbito da tua atividade profissional, é paga na Stripe e é recebida pela 4IMPROVEMENTS, LDA. O valor é descontado na primeira mensalidade.</p>
+        <p>A pré-reserva é um pagamento antecipado de {PRODUTO.reserva.valor} que te garante {PRODUTO.reserva.garante}. É feita no âmbito da tua atividade profissional, é paga na Stripe e é recebida pela 4IMPROVEMENTS, LDA. O valor é descontado na primeira mensalidade e, se sobrar, na segunda.</p>
         <p>Só há reembolso num destes casos, e o pedido só pode ser feito a partir do dia previsto para o lançamento, 1 de dezembro de 2026:</p>
         <ul>
           <li>o lançamento não acontece ou é adiado mais de 90 dias em relação a essa data;</li>
