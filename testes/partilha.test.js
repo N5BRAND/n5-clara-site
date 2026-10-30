@@ -34,4 +34,9 @@ describe('partilha do site', () => {
       expect(t).not.toMatch(/@/)
     }
   })
+  it('com o código de quem partilha, as ligações levam ?ref= e o Instagram leva o código na legenda', () => {
+    expect(new URL(ligacao('linkedin', 'ABC234')).searchParams.get('ref')).toBe('ABC234')
+    expect(new URL(urlPartilha('facebook', TEXTOS.inscrito, 'ABC234')).searchParams.get('u')).toContain('ref=ABC234')
+    expect(post(TEXTOS.inscrito, 'instagram', 'ABC234')).toContain('Código de indicação: ABC234')
+  })
 })

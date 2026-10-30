@@ -20,16 +20,24 @@ export function telefone(t) {
 
 const sem = o => Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined && v !== ''))
 
+/* programa Passa a Clara: o código da pessoa e o de quem a indicou ficam na nota e nas etiquetas */
+const indicado = d => !!(d.indicado_por || d.indicado_codigo)
+const linhasIndicacao = d => [
+  ...(d.indicado_por ? [`Indicado por: ${d.indicado_por}`] : []),
+  ...(d.indicado_codigo ? [`Indicado pelo código: ${d.indicado_codigo}`] : []),
+  ...(d.codigo ? [`Código Passa a Clara: ${d.codigo}`] : []),
+]
+
 const FORMULARIOS = {
   'lista-clara': d => ({
     contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), companyName: d.agencia, source: `Site ${PRODUTO}` },
-    etiquetas: [ETIQUETA, 'lista-clara', `plano-${d.plano || 'nao-sei'}`, ...(d.indicado_por ? ['indicado'] : [])],
-    nota: [`Inscrição na lista da ${PRODUTO}.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...(d.indicado_por ? [`Indicado por: ${d.indicado_por}`] : [])].join('\n'),
+    etiquetas: [ETIQUETA, 'lista-clara', `plano-${d.plano || 'nao-sei'}`, ...(indicado(d) ? ['indicado'] : [])],
+    nota: [`Inscrição na lista da ${PRODUTO}.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...linhasIndicacao(d)].join('\n'),
   }),
   'lista-espera': d => ({
     contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), companyName: d.agencia, source: `Site ${PRODUTO}` },
-    etiquetas: [ETIQUETA, 'lista-espera', `plano-${d.plano || 'nao-sei'}`, ...(d.indicado_por ? ['indicado'] : [])],
-    nota: [`Lista de espera da ${PRODUTO} (as 25 pré-reservas esgotaram): entra pela ordem da lista, 30 vagas por semana a partir de 1 de dezembro.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...(d.indicado_por ? [`Indicado por: ${d.indicado_por}`] : [])].join('\n'),
+    etiquetas: [ETIQUETA, 'lista-espera', `plano-${d.plano || 'nao-sei'}`, ...(indicado(d) ? ['indicado'] : [])],
+    nota: [`Lista de espera da ${PRODUTO} (as 25 pré-reservas esgotaram): entra pela ordem da lista, 30 vagas por semana a partir de 1 de dezembro.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...linhasIndicacao(d)].join('\n'),
   }),
   prioridades: d => ({
     contacto: { email: d.email },

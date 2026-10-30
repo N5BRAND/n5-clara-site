@@ -378,3 +378,27 @@
 .partilha-redes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .partilha-rede { justify-content: center; padding: 13px 8px; font-size: 15px; }
 .partilha-aviso { margin: 0; min-height: 1.45em; font-size: 14px; color: var(--suave); }
+
+/* ===== inscrição passo a passo ===== */
+.passos-progresso { display: grid; gap: 8px; margin: 4px 0 18px; font-size: 13px; color: var(--suave); }
+.passos-barra { height: 4px; overflow: hidden; border-radius: 999px; background: var(--linha); }
+.passos-barra i { display: block; height: 100%; border-radius: inherit; background: var(--dourado); transition: width 0.3s ease; }
+.passo { display: grid; gap: 8px; align-content: start; min-height: 168px; }
+.passo-pergunta { display: block; margin: 0; padding: 0; font-family: var(--titulo); font-weight: 700; font-size: clamp(20px, 2.4vw, 24px); line-height: 1.2; letter-spacing: -0.02em; }
+.passo-ajuda { margin: 0; font-size: 14px; color: var(--suave); }
+.passo-campo { width: 100%; margin-top: 6px; padding: 14px 16px; border: 1.5px solid var(--linha-forte); border-radius: 12px; background: #fff; color: var(--tinta); font: inherit; font-size: 18px; }
+.passo-campo:focus { outline: none; border-color: var(--dourado); box-shadow: 0 0 0 4px var(--dourado-claro); }
+.passo-campo[aria-invalid="true"] { border-color: #A3520F; }
+.passo-planos { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.passo-planos [role="radiogroup"] { display: grid; gap: 8px; margin-top: 6px; }
+.passo-plano { all: unset; box-sizing: border-box; cursor: pointer; padding: 14px 16px; border: 1.5px solid var(--linha-forte); border-radius: 12px; background: #fff; color: var(--tinta); font-weight: 600; }
+.passo-plano:focus-visible { outline: 2px solid var(--dourado); outline-offset: 2px; }
+.passo-plano--escolhido { border-color: var(--dourado); background: var(--dourado-claro); }
+.passos-acoes { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+.passos-acoes .prevenda-botao { flex: 1; width: auto; }
+.passos-voltar { all: unset; cursor: pointer; padding: 10px 6px; color: var(--suave); font-weight: 600; }
+.passos-voltar:hover, .passos-voltar:focus-visible { color: var(--tinta); text-decoration: underline; }
+.lista-indicar .codigo { font-family: var(--mono); letter-spacing: 0.12em; }
+.lista-indicar-ligacao { margin: 0; padding: 8px 12px; border-radius: 8px; background: var(--dourado-claro); font-family: var(--mono); font-size: 13px; word-break: break-all; }
+.lista-indicar-mais { font-size: 14px; color: inherit; }
+.lista-oferta-botao { margin-top: 10px; padding: 12px 16px; justify-content: center; text-align: center; font-size: 14px; line-height: 1.3; }

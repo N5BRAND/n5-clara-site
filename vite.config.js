@@ -11,6 +11,7 @@ export default defineConfig({
         privacidade: resolve(__dirname, 'privacidade/index.html'),
         termos: resolve(__dirname, 'termos/index.html'),
         confirmada: resolve(__dirname, 'pre-reserva-confirmada/index.html'),
+        passa: resolve(__dirname, 'passa-a-clara/index.html'),
       },
     },
   },

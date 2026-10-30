@@ -1,25 +1,10 @@
 import { motion, AnimatePresence } from 'motion/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LANCAMENTO, tempoAte } from '../logica/contagem.js'
-import { validarInscricao, PLANOS } from '../logica/validar.js'
-import { codificar } from '../logica/netlify.js'
-import Prioridades from './Prioridades.jsx'
-import PreReserva from './PreReserva.jsx'
 import Mensalidade from './Mensalidade.jsx'
-import { evento } from '../legal/pixel.js'
-import { marcar } from '../legal/analitica.js'
-import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
+import Formulario from './FormularioPassos.jsx'
+import { PROGRAMA } from '../logica/indicacoes.js'
 import { ESGOTADO } from '../logica/pagamento.js'
-import Partilhar from '../partilha/Partilhar.jsx'
-import { TEXTOS } from '../logica/partilha.js'
-
-const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
-
-/* com as 25 pré-reservas esgotadas, quem se inscreve vai para a lista de espera (30 vagas por semana) */
-const FORMULARIO = ESGOTADO ? 'lista-espera' : 'lista-clara'
-
-/* mensagem para partilhar com colegas; leva só o endereço do site, sem dados de ninguém */
-const PARTILHA = 'Entrei na lista de espera da N5 Clara, a assistente comercial para consultores imobiliários. Inscreve-te também e põe o meu email em «Quem te indicou»: https://clara.numerocinco.pt/#lista'
 
 function Contagem() {
   const [t, setT] = useState(() => tempoAte(LANCAMENTO))
@@ -42,115 +27,6 @@ function Contagem() {
           <span className="contagem-rotulo">{r}</span>
         </div>
       ))}
-    </div>
-  )
-}
-
-function Campo({ nome, rotulo, erro, ...resto }) {
-  return (
-    <label className={`campo ${erro ? 'campo--erro' : ''}`}>
-      <span>{rotulo}</span>
-      <input name={nome} aria-invalid={!!erro} {...resto} />
-      <AnimatePresence>
-        {erro && <motion.small initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>{erro}</motion.small>}
-      </AnimatePresence>
-    </label>
-  )
-}
-
-function Formulario() {
-  const [d, setD] = useState(VAZIO)
-  const [erros, setErros] = useState({})
-  const [estado, setEstado] = useState('pronto') // pronto | a-enviar | prioridades | pre-reserva | enviado | falhou
-  const comecou = useRef(false)
-
-  /* os botões dos planos escolhem o plano aqui */
-  useEffect(() => {
-    const escolher = e => setD(x => ({ ...x, plano: e.detail }))
-    window.addEventListener('escolher-plano', escolher)
-    return () => window.removeEventListener('escolher-plano', escolher)
-  }, [])
-
-  const muda = e => {
-    const { name, value, type, checked } = e.target
-    setD(x => ({ ...x, [name]: type === 'checkbox' ? checked : value }))
-  }
-
-  const enviar = async e => {
-    e.preventDefault()
-    const v = validarInscricao(d)
-    setErros(v.erros)
-    if (!v.ok) {
-      marcar('inscricao_com_erros', { campos: Object.keys(v.erros) })
-      return
-    }
-    setEstado('a-enviar')
-    try {
-      const r = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': FORMULARIO, ...d, 'empresa-site': e.target.elements['empresa-site'].value }),
-      })
-      if (!r.ok) throw new Error(String(r.status))
-      evento('Lead')
-      marcar('inscricao_enviada', { plano: d.plano, indicado: !!d.indicado_por.trim() })
-      setEstado('prioridades')
-    } catch {
-      setEstado('falhou')
-    }
-  }
-
-  return (
-    <div className="cartao prevenda-form">
-      <AnimatePresence mode="wait">
-        {estado === 'enviado' ? (
-          <motion.div key="ok" className="prevenda-ok" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-            <ClaraAvatar tamanho={84} viva />
-            <h3>{ESGOTADO ? 'Estás na lista de espera.' : 'Estás na lista.'}</h3>
-            <p>{ESGOTADO ? 'A partir de 1 de dezembro abrimos 30 vagas por semana, pela ordem da lista. A Clara avisa-te por email quando chegar a tua vez. Dá cá cinco 🖐️' : 'A Clara avisa-te assim que abrirmos. Dá cá cinco 🖐️'}</p>
-            <div className="lista-indicar">
-              <p><b>Queres passar à frente na ordem de entrada?</b> Traz 3 colegas: pede-lhes que se inscrevam e ponham o teu email em «Quem te indicou».</p>
-              <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
-              <Partilhar texto={TEXTOS.inscrito} rotulo="Partilhar no LinkedIn, Facebook ou Instagram" />
-            </div>
-          </motion.div>
-        ) : estado === 'prioridades' ? (
-          <Prioridades key="prioridades" email={d.email.trim()} titulo="Em que é que a Clara te ajudava mais?" aoAcabar={() => setEstado(ESGOTADO ? 'enviado' : 'pre-reserva')} />
-        ) : estado === 'pre-reserva' ? (
-          <PreReserva key="pre-reserva" aoAcabar={() => setEstado('enviado')} />
-        ) : (
-          <motion.form key="form" name={FORMULARIO} onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}
-            onFocusCapture={() => { if (!comecou.current) { comecou.current = true; marcar('inscricao_iniciada') } }}>
-            <h3>{ESGOTADO ? 'Entra na lista de espera' : 'Inscreve-te na N5 Clara'}</h3>
-            <p className="prevenda-form-sub">{ESGOTADO ? 'As 25 licenças com pré-reserva esgotaram. Deixa os teus dados e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : 'A inscrição é uma pré-reserva de 27 €, que paga a tua primeira mensalidade. Primeiro os teus dados, depois o pagamento.'}</p>
-            <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>
-            <div className="prevenda-campos">
-              <Campo nome="nome" rotulo="Nome" value={d.nome} onChange={muda} erro={erros.nome} autoComplete="name" />
-              <Campo nome="email" rotulo="Email" type="email" value={d.email} onChange={muda} erro={erros.email} autoComplete="email" />
-              <Campo nome="telefone" rotulo="Telefone (opcional)" type="tel" value={d.telefone} onChange={muda} erro={erros.telefone} autoComplete="tel" />
-              <Campo nome="agencia" rotulo="Agência ou rede" value={d.agencia} onChange={muda} erro={erros.agencia} autoComplete="organization" />
-              <Campo nome="indicado_por" rotulo="Quem te indicou? (email, opcional)" type="email" value={d.indicado_por} onChange={muda} erro={erros.indicado_por} autoComplete="off" />
-              <label className={`campo campo--plano ${erros.plano ? 'campo--erro' : ''}`}>
-                <span>Plano que te interessa</span>
-                <select name="plano" value={d.plano} onChange={muda} aria-invalid={!!erros.plano}>
-                  <option value="" disabled>Escolhe um plano</option>
-                  {PLANOS.map(p => <option key={p.id} value={p.id}>{p.nome}</option>)}
-                </select>
-                {erros.plano && <small>{erros.plano}</small>}
-              </label>
-            </div>
-            <label className={`consentimento ${erros.consentimento ? 'campo--erro' : ''}`}>
-              <input type="checkbox" name="consentimento" checked={d.consentimento} onChange={muda} />
-              <span>Autorizo a Nº 5 a guardar estes dados e a contactar-me sobre o lançamento da N5 Clara, nos termos da <a href="/privacidade/" target="_blank" rel="noreferrer">política de privacidade</a>.</span>
-            </label>
-            {erros.consentimento && <small className="erro-solto">{erros.consentimento}</small>}
-            <button className="botao prevenda-botao" type="submit" disabled={estado === 'a-enviar'}>
-              {estado === 'a-enviar' ? 'A enviar…' : ESGOTADO ? 'Quero entrar na lista' : 'Quero a Clara'}
-            </button>
-            {estado === 'falhou' && <p className="erro-solto">Não conseguimos enviar. Tenta outra vez daqui a pouco.</p>}
-          </motion.form>
-        )}
-      </AnimatePresence>
     </div>
   )
 }
@@ -203,9 +79,10 @@ export default function Lista() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <small>Indicações</small>
-              <b>Traz 3 colegas</b>
-              <p>Passas à frente na ordem de entrada.</p>
+              <small>{PROGRAMA.nome}</small>
+              <b>3 meses grátis</b>
+              <p>Para os {PROGRAMA.vencedores} consultores que trouxerem mais colegas com pré-reserva paga até {PROGRAMA.fim}.</p>
+              <a className="botao botao--linha lista-oferta-botao" href={PROGRAMA.pagina}>Quero explorar as minhas oportunidades de ter 3 meses grátis</a>
             </motion.div>
           </div>
           <p className="prevenda-porque"><b>{ESGOTADO ? 'Porquê por vagas?' : 'Porquê só 25 licenças?'}</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para o fazermos bem, reservamos 25 licenças para o primeiro dia. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>

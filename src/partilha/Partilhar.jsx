@@ -5,7 +5,7 @@ import { marcar } from '../legal/analitica.js'
 import { IMAGEM_POST, REDES, TEXTOS, post, urlPartilha } from '../logica/partilha.js'
 
 /* copia sem esperar: tem de acontecer ainda dentro do clique, antes de se abrir a janela da rede */
-function copiar(texto) {
+export function copiar(texto) {
   try {
     const t = document.createElement('textarea')
     t.value = texto
@@ -30,7 +30,7 @@ const AVISOS = {
 
 /* botão «Partilhar»: mostra o post (imagem e texto) e abre-o na rede escolhida.
    A janela vai para o body, para ficar por cima de tudo mesmo quando o botão está no topo fixo. */
-export default function Partilhar({ texto = TEXTOS.geral, rotulo = 'Partilhar a N5 Clara', variante = 'linha' }) {
+export default function Partilhar({ texto = TEXTOS.geral, rotulo = 'Partilhar a N5 Clara', variante = 'linha', codigo = null }) {
   const [aberto, setAberto] = useState(false)
   const [aviso, setAviso] = useState('')
   const imagem = useRef(null)
@@ -55,11 +55,11 @@ export default function Partilhar({ texto = TEXTOS.geral, rotulo = 'Partilhar a 
   }
 
   function partilhar(rede) {
-    marcar('partilha', { rede })
-    const legenda = post(texto, rede)
+    marcar('partilha', { rede, indicacao: !!codigo })
+    const legenda = post(texto, rede, codigo)
     if (rede !== 'linkedin') copiar(legenda)
     if (rede !== 'instagram') {
-      window.open(urlPartilha(rede, texto), '_blank', 'noopener,noreferrer,width=640,height=720')
+      window.open(urlPartilha(rede, texto, codigo), '_blank', 'noopener,noreferrer,width=640,height=720')
       setAviso(AVISOS[rede])
       return
     }

@@ -20,10 +20,11 @@ export function validarInscricao(d) {
   }
   if (vazio(d.agencia)) erros.agencia = 'Em que agência ou rede trabalhas?'
   if (!PLANOS.some(p => p.id === d.plano)) erros.plano = 'Escolhe o plano que te interessa.'
-  // quem te indicou é opcional; se vier, tem de ser outro email válido
+  // quem te indicou é opcional: o nome, o email ou o código de 6 letras de quem indicou; nunca o próprio email
   const indicou = String(d.indicado_por ?? '').trim()
-  if (indicou && !EMAIL.test(indicou)) erros.indicado_por = 'Este email não parece válido.'
-  else if (indicou && indicou.toLowerCase() === String(d.email ?? '').trim().toLowerCase()) erros.indicado_por = 'Põe o email do colega que te indicou, não o teu.'
+  if (indicou.length > 120) erros.indicado_por = 'Escreve só o nome, o email ou o código de quem te indicou.'
+  else if (indicou.includes('@') && !EMAIL.test(indicou)) erros.indicado_por = 'Este email não parece válido.'
+  else if (indicou && indicou.toLowerCase() === String(d.email ?? '').trim().toLowerCase()) erros.indicado_por = 'Põe quem te indicou, não o teu email.'
   if (d.consentimento !== true) erros.consentimento = 'Precisamos da tua autorização para te contactar.'
   return { ok: Object.keys(erros).length === 0, erros }
 }

@@ -133,19 +133,33 @@ function Termos() {
         <p>Ao pagar a pré-reserva, aceitas estas condições. Nada nestes termos afasta direitos que a lei te reconheça e que não possam ser afastados por acordo.</p>
       </Seccao>
 
-      <Seccao id="propriedade" n="5" titulo="Propriedade intelectual">
+      <Seccao id="passa-a-clara" n="5" titulo="Programa de indicações Passa a Clara">
+        <p>O Passa a Clara é um programa de indicações da {PRODUTO.nome}, organizado pela {EMPRESA.nome}. Não é um sorteio: os prémios são atribuídos pelo número de indicações.</p>
+        <ul>
+          <li><b>Quem participa:</b> qualquer consultor inscrito na {PRODUTO.nome}. Ao inscrever-te recebes um código de 6 letras e uma ligação pessoal. A equipa da Nº5 não participa.</li>
+          <li><b>O que conta:</b> cada pré-reserva de 27 € paga por outra pessoa que se inscreva pela tua ligação ou que escreva o teu código ao inscrever-se, entre a publicação do programa e 30 de novembro de 2026, às 23h59 (hora de Lisboa).</li>
+          <li><b>O que não conta:</b> pré-reservas feitas por ti, pré-reservas reembolsadas, pagamentos feitos sem o teu código e inscrições sem pré-reserva paga.</li>
+          <li><b>Prémio:</b> os 10 participantes com mais pré-reservas contadas, com pelo menos uma, recebem 3 meses do plano Clara grátis. Para quem já fez a pré-reserva, não paga o 2.º, o 3.º e o 4.º mês; para os restantes, não paga os 3 primeiros meses. O prémio é pessoal e não pode ser trocado por dinheiro.</li>
+          <li><b>Desempate:</b> com o mesmo número de pré-reservas, fica à frente quem lá chegou primeiro.</li>
+          <li><b>Anúncio:</b> os vencedores são informados por email a 1 de dezembro de 2026. A contagem final é verificada por nós antes do anúncio.</li>
+          <li><b>Abusos:</b> podemos excluir indicações ou participantes quando houver sinais de fraude, como inscrições falsas ou pagamentos da mesma pessoa em nome de outras.</li>
+        </ul>
+        <p>Os dados usados no programa são os da inscrição e da pré-reserva, tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>
+      </Seccao>
+
+      <Seccao id="propriedade" n="6" titulo="Propriedade intelectual">
         <p>Os textos, as ilustrações, o símbolo Nº5 e o resto do conteúdo do site pertencem à {EMPRESA.nome} ou são usados com autorização. Não os podes copiar nem usar para fins comerciais sem autorização escrita.</p>
       </Seccao>
 
-      <Seccao id="responsabilidade" n="6" titulo="Responsabilidade">
+      <Seccao id="responsabilidade" n="7" titulo="Responsabilidade">
         <p>Fazemos o possível para manter o site disponível e correto, mas não garantimos que esteja sempre acessível nem sem erros. O site pode ter ligações para sites de terceiros, pelos quais não somos responsáveis.</p>
       </Seccao>
 
-      <Seccao id="lei" n="7" titulo="Lei aplicável">
+      <Seccao id="lei" n="8" titulo="Lei aplicável">
         <p>Estes termos regem-se pela lei portuguesa. Qualquer litígio é resolvido pelos tribunais portugueses competentes.</p>
       </Seccao>
 
-      <Seccao id="alteracoes" n="8" titulo="Alterações a estes termos">
+      <Seccao id="alteracoes" n="9" titulo="Alterações a estes termos">
         <p>Se estes termos mudarem, publicamos aqui a versão nova, com a data de atualização no topo.</p>
       </Seccao>
     </>
