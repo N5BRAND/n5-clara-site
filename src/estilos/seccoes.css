@@ -361,3 +361,20 @@
 .prevenda-pagamentos li:nth-child(2) { background: var(--dourado); }
 .prevenda-pagamentos li:nth-child(2) small, .prevenda-pagamentos li:nth-child(2) span { color: rgba(21, 24, 29, 0.75); }
 @media (max-width: 600px) { .prevenda-pagamentos { grid-template-columns: 1fr 1fr; } }
+
+/* ===== partilha (LinkedIn, Facebook, Instagram) ===== */
+.partilhar-nav { all: unset; cursor: pointer; opacity: 0.8; }
+.partilhar-nav:hover { opacity: 1; }
+.partilhar-nav:focus-visible { opacity: 1; outline: 2px solid var(--dourado); outline-offset: 4px; border-radius: 4px; }
+.partilha-fundo { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 16px; background: rgba(21, 24, 29, 0.55); backdrop-filter: blur(4px); }
+.partilha-caixa { width: min(420px, 100%); max-height: calc(100dvh - 32px); overflow: auto; display: grid; gap: 14px; padding: 20px; border-radius: var(--raio); background: var(--cartao); color: var(--tinta); box-shadow: var(--sombra); text-align: left; }
+.partilha-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.partilha-topo h3 { margin: 0; font-family: var(--titulo); font-size: 22px; letter-spacing: -0.02em; }
+.partilha-fechar { all: unset; cursor: pointer; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; font-size: 26px; line-height: 1; color: var(--suave); }
+.partilha-fechar:hover, .partilha-fechar:focus-visible { background: var(--linha); color: var(--tinta); }
+.partilha-previa { margin: 0; overflow: hidden; border: 1px solid var(--linha); border-radius: 14px; background: #fff; }
+.partilha-previa img { display: block; width: 100%; height: auto; }
+.partilha-previa figcaption { padding: 12px 14px; font-size: 14px; line-height: 1.45; }
+.partilha-redes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.partilha-rede { justify-content: center; padding: 13px 8px; font-size: 15px; }
+.partilha-aviso { margin: 0; min-height: 1.45em; font-size: 14px; color: var(--suave); }

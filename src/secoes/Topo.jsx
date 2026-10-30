@@ -1,6 +1,7 @@
 import { motion, useScroll, useMotionValueEvent } from 'motion/react'
 import { useState } from 'react'
 import Simbolo from '../marca/Simbolo.jsx'
+import Partilhar from '../partilha/Partilhar.jsx'
 
 export default function Topo() {
   const { scrollY } = useScroll()
@@ -23,6 +24,7 @@ export default function Topo() {
           <a href="#dia">Um dia com a Clara</a>
           <a href="#planos">Planos</a>
           <a href="#lista">Lista de espera</a>
+          <Partilhar variante="nav" rotulo="Partilhar" />
         </nav>
         <a href="#lista" className="botao topo-cta">Lista de espera</a>
       </div>

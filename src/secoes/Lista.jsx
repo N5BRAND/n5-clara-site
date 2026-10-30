@@ -10,6 +10,8 @@ import { evento } from '../legal/pixel.js'
 import { marcar } from '../legal/analitica.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 import { ESGOTADO } from '../logica/pagamento.js'
+import Partilhar from '../partilha/Partilhar.jsx'
+import { TEXTOS } from '../logica/partilha.js'
 
 const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
 
@@ -109,6 +111,7 @@ function Formulario() {
             <div className="lista-indicar">
               <p><b>Queres passar à frente na ordem de entrada?</b> Traz 3 colegas: pede-lhes que se inscrevam e ponham o teu email em «Quem te indicou».</p>
               <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
+              <Partilhar texto={TEXTOS.inscrito} rotulo="Partilhar no LinkedIn, Facebook ou Instagram" />
             </div>
           </motion.div>
         ) : estado === 'prioridades' ? (
