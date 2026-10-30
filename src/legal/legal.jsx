@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { iniciarPixel } from './pixel.js'
+import { iniciarAnalitica } from './analitica.js'
 import { MotionConfig } from 'motion/react'
 import PaginaLegal from './PaginaLegal.jsx'
 import '../estilos/fontes.js'
@@ -9,6 +10,7 @@ import '../estilos/seccoes.css'
 import '../estilos/legal.css'
 
 iniciarPixel()
+iniciarAnalitica()
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

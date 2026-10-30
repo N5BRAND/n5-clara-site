@@ -1,6 +1,7 @@
-/* escolha de cookies do visitante, guardada no próprio navegador */
+/* escolha de cookies do visitante, guardada no próprio navegador.
+   Versão 2 (30/10): junta a estatística (PostHog); quem escolheu na versão 1 volta a ver o aviso. */
 export const CHAVE = 'n5-consentimento'
-export const VERSAO = 1
+export const VERSAO = 2
 
 export function lerConsentimento(armazenamento) {
   try {
@@ -11,8 +12,8 @@ export function lerConsentimento(armazenamento) {
   }
 }
 
-export function novoConsentimento({ marketing = false }, agora = new Date()) {
-  return { versao: VERSAO, data: agora.toISOString(), necessarios: true, marketing: !!marketing }
+export function novoConsentimento({ marketing = false, estatistica = false }, agora = new Date()) {
+  return { versao: VERSAO, data: agora.toISOString(), necessarios: true, estatistica: !!estatistica, marketing: !!marketing }
 }
 
 export function guardarConsentimento(armazenamento, c) {

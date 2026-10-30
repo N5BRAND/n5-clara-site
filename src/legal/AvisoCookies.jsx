@@ -17,20 +17,22 @@ export default function AvisoCookies() {
   const [aberto, setAberto] = useState(false)
   const [detalhe, setDetalhe] = useState(false)
   const [marketing, setMarketing] = useState(false)
+  const [estatistica, setEstatistica] = useState(false)
 
   useEffect(() => {
     const atual = lerConsentimento(armazenamento())
     if (!atual) setAberto(true)
-    else setMarketing(atual.marketing)
+    else { setMarketing(atual.marketing); setEstatistica(atual.estatistica) }
     const abrir = () => { setAberto(true); setDetalhe(true) }
     window.addEventListener('abrir-cookies', abrir)
     return () => window.removeEventListener('abrir-cookies', abrir)
   }, [])
 
   const decidir = escolha => {
-    const c = novoConsentimento({ marketing: escolha })
+    const c = novoConsentimento(escolha)
     guardarConsentimento(armazenamento(), c)
     setMarketing(c.marketing)
+    setEstatistica(c.estatistica)
     setAberto(false)
     setDetalhe(false)
     window.dispatchEvent(new CustomEvent('consentimento-mudou', { detail: c }))
@@ -51,7 +53,7 @@ export default function AvisoCookies() {
         >
           <b className="cookies-titulo">Cookies</b>
           <p>
-            Usamos só o essencial para o site funcionar. Com a tua autorização, usamos também cookies de marketing da Meta para medir os nossos anúncios e mostrá-los a quem já visitou o site.{' '}
+            Usamos só o essencial para o site funcionar. Com a tua autorização, usamos também cookies de estatística (PostHog, na UE) para perceber como o site é usado e melhorá-lo, e cookies de marketing da Meta para medir os nossos anúncios e mostrá-los a quem já visitou o site.{' '}
             <a href="/privacidade/#cookies">Saber mais</a>
           </p>
           {detalhe && (
@@ -61,17 +63,21 @@ export default function AvisoCookies() {
                 <span><b>Essenciais</b> Guardam a tua escolha sobre cookies. Sempre ativos.</span>
               </label>
               <label className="cookies-opcao">
+                <input type="checkbox" checked={estatistica} onChange={e => setEstatistica(e.target.checked)} />
+                <span><b>Estatística</b> Como o site é usado (PostHog, na UE), com gravações das visitas em que tudo o que escreves fica escondido.</span>
+              </label>
+              <label className="cookies-opcao">
                 <input type="checkbox" checked={marketing} onChange={e => setMarketing(e.target.checked)} />
                 <span><b>Marketing</b> Medição e publicidade da Meta (Facebook e Instagram).</span>
               </label>
             </div>
           )}
           <div className="cookies-botoes">
-            <button type="button" className="botao cookies-decisao" onClick={() => decidir(false)}>Rejeitar</button>
+            <button type="button" className="botao cookies-decisao" onClick={() => decidir({})}>Rejeitar</button>
             {detalhe
-              ? <button type="button" className="botao botao--linha cookies-meio" onClick={() => decidir(marketing)}>Guardar escolha</button>
+              ? <button type="button" className="botao botao--linha cookies-meio" onClick={() => decidir({ marketing, estatistica })}>Guardar escolha</button>
               : <button type="button" className="botao botao--linha cookies-meio" onClick={() => setDetalhe(true)}>Personalizar</button>}
-            <button type="button" className="botao cookies-decisao" onClick={() => decidir(true)}>Aceitar</button>
+            <button type="button" className="botao cookies-decisao" onClick={() => decidir({ marketing: true, estatistica: true })}>Aceitar</button>
           </div>
         </motion.div>
       )}

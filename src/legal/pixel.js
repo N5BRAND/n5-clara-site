@@ -1,12 +1,24 @@
 import { lerConsentimento } from './consentimento.js'
 import { PRODUTO } from './produto.js'
+import { quandoVisivel, SEGUNDOS_VISUALIZACAO } from './tempoVisivel.js'
 
 /* Píxel da Meta: o conjunto de dados «Nº5», o mesmo de numerocinco.pt.
-   Só carrega depois de o visitante aceitar os cookies de marketing; sem isso, nada sai para a Meta. */
+   Só carrega depois de o visitante aceitar os cookies de marketing; sem isso, nada sai para a Meta.
+   O PageView só sai depois de 6 segundos com a página à vista (30/10, pedido do Pedro): quem clica e sai logo, e os
+   robôs, não contam como visualização da página de destino na Meta. */
 export const PIXEL_ID = '2268439390668297'
 
 let carregado = false
 let consentido = false
+let ficou = false
+let pageView = false
+
+function enviarPageView() {
+  if (consentido && carregado && ficou && !pageView) {
+    window.fbq('track', 'PageView')
+    pageView = true
+  }
+}
 
 /* código base da Meta, carregado só quando há consentimento */
 function carregar() {
@@ -28,10 +40,11 @@ function aplicar(c) {
   if (consentido && !carregado) {
     carregar()
     window.fbq('init', PIXEL_ID)
-    window.fbq('track', 'PageView')
     carregado = true
+    enviarPageView()
   } else if (carregado) {
     window.fbq('consent', consentido ? 'grant' : 'revoke')
+    enviarPageView()
   }
 }
 
@@ -41,6 +54,7 @@ export function iniciarPixel() {
   try { c = lerConsentimento(window.localStorage) } catch { /* sem armazenamento: fica desligado */ }
   aplicar(c)
   window.addEventListener('consentimento-mudou', e => aplicar(e.detail))
+  quandoVisivel(SEGUNDOS_VISUALIZACAO, () => { ficou = true; enviarPageView() })
 }
 
 /* eventos só seguem com consentimento */

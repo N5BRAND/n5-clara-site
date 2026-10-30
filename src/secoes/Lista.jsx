@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LANCAMENTO, tempoAte } from '../logica/contagem.js'
 import { validarInscricao, PLANOS } from '../logica/validar.js'
 import { codificar } from '../logica/netlify.js'
@@ -7,6 +7,7 @@ import Prioridades from './Prioridades.jsx'
 import PreReserva from './PreReserva.jsx'
 import Mensalidade from './Mensalidade.jsx'
 import { evento } from '../legal/pixel.js'
+import { marcar } from '../legal/analitica.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 import { ESGOTADO } from '../logica/pagamento.js'
 
@@ -59,6 +60,7 @@ function Formulario() {
   const [d, setD] = useState(VAZIO)
   const [erros, setErros] = useState({})
   const [estado, setEstado] = useState('pronto') // pronto | a-enviar | prioridades | pre-reserva | enviado | falhou
+  const comecou = useRef(false)
 
   /* os botões dos planos escolhem o plano aqui */
   useEffect(() => {
@@ -76,7 +78,10 @@ function Formulario() {
     e.preventDefault()
     const v = validarInscricao(d)
     setErros(v.erros)
-    if (!v.ok) return
+    if (!v.ok) {
+      marcar('inscricao_com_erros', { campos: Object.keys(v.erros) })
+      return
+    }
     setEstado('a-enviar')
     try {
       const r = await fetch('/', {
@@ -86,6 +91,7 @@ function Formulario() {
       })
       if (!r.ok) throw new Error(String(r.status))
       evento('Lead')
+      marcar('inscricao_enviada', { plano: d.plano, indicado: !!d.indicado_por.trim() })
       setEstado('prioridades')
     } catch {
       setEstado('falhou')
@@ -110,7 +116,8 @@ function Formulario() {
         ) : estado === 'pre-reserva' ? (
           <PreReserva key="pre-reserva" aoAcabar={() => setEstado('enviado')} />
         ) : (
-          <motion.form key="form" name={FORMULARIO} onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}>
+          <motion.form key="form" name={FORMULARIO} onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }}
+            onFocusCapture={() => { if (!comecou.current) { comecou.current = true; marcar('inscricao_iniciada') } }}>
             <h3>{ESGOTADO ? 'Entra na lista de espera' : 'Inscreve-te na N5 Clara'}</h3>
             <p className="prevenda-form-sub">{ESGOTADO ? 'As 25 licenças com pré-reserva esgotaram. Deixa os teus dados e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : 'A inscrição é uma pré-reserva de 27 €, que paga a tua primeira mensalidade. Primeiro os teus dados, depois o pagamento.'}</p>
             <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>

@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { useState } from 'react'
 import Mensalidade from './Mensalidade.jsx'
 import { evento } from '../legal/pixel.js'
+import { marcar } from '../legal/analitica.js'
 import { LINK_PRE_RESERVA, VALOR_PRE_RESERVA, VALOR_EUROS, METODOS, linkValido } from '../logica/pagamento.js'
 
 /* passo 3, depois das prioridades: pagar a pré-reserva na Stripe; não há opção de pagar depois */
@@ -35,7 +36,7 @@ export default function PreReserva({ aoAcabar }) {
             <input type="checkbox" checked={aceito} onChange={e => setAceito(e.target.checked)} />
             <span>Li e aceito as <a href="/termos/#pre-reserva" target="_blank" rel="noreferrer">condições da pré-reserva e do reembolso</a>.</span>
           </label>
-          {aceito ? <a className="botao prevenda-botao" href={LINK_PRE_RESERVA} onClick={() => evento('InitiateCheckout', { value: VALOR_EUROS, currency: 'EUR' })}>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</button>}
+          {aceito ? <a className="botao prevenda-botao" href={LINK_PRE_RESERVA} onClick={() => { evento('InitiateCheckout', { value: VALOR_EUROS, currency: 'EUR' }); marcar('pagamento_aberto') }}>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</button>}
           <p className="pre-reserva-nota">Pagamento seguro na Stripe. Voltas a este site no fim.</p>
         </>
       ) : (
