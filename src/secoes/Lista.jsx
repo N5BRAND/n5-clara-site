@@ -31,8 +31,9 @@ function Contagem() {
   )
 }
 
-/* extra: campos escondidos que algumas páginas juntam à inscrição (por exemplo, o diagnóstico) */
-export default function Lista({ extra } = {}) {
+/* extra: campos escondidos que algumas páginas juntam à inscrição (por exemplo, o diagnóstico)
+   aviso: nas landing pages, o que a página prometeu e quando chega, junto à oferta */
+export default function Lista({ extra, aviso } = {}) {
   return (
     <section id="lista" className="seccao escuro prevenda">
       <div className="contentor prevenda-grelha prevenda-grelha--coluna">
@@ -51,6 +52,7 @@ export default function Lista({ extra } = {}) {
             Há 25 licenças reservadas, com pré-reserva de 27 €: entras no primeiro dia e tens 50% de desconto na primeira mensalidade, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas. Sem fidelização.
           </p>
           )}
+          {aviso && <p className="lp-aviso"><b>{aviso.titulo}.</b> {aviso.texto}</p>}
           <div className="lista-oferta">
             <motion.div
               className="lista-oferta-cartao lista-oferta-cartao--destaque"

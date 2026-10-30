@@ -1,5 +1,9 @@
-import { motion, useScroll, useMotionValueEvent } from 'motion/react'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'motion/react'
 import { useEffect, useState } from 'react'
+import { Bolha } from '../secoes/Hero.jsx'
+import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
+import { ESGOTADO } from '../logica/pagamento.js'
+import Urgencia from './Urgencia.jsx'
 import Simbolo from '../marca/Simbolo.jsx'
 import Copiloto from '../secoes/Copiloto.jsx'
 import Lista from '../secoes/Lista.jsx'
@@ -35,20 +39,74 @@ export function TopoLanding({ como = { href: '#como', texto: 'Como funciona' } }
   )
 }
 
-export function HeroLanding({ p, segundo = { href: '#como', texto: 'Ver como funciona' } }) {
+export const CTA = ESGOTADO ? 'Entrar na lista de espera' : 'Garantir a minha licença'
+
+/* a conversa da primeira cena da página, a escrever-se sozinha no topo: quem chega do anúncio vê logo a funcionalidade */
+function ConversaHero({ cena }) {
+  const reduzir = useReducedMotion()
+  const total = cena.mensagens.length
+  const [n, setN] = useState(reduzir ? total : 0)
+  useEffect(() => {
+    if (reduzir) return
+    const t = setTimeout(() => setN(x => (x >= total + 2 ? 0 : x + 1)), n === 0 ? 900 : n >= total ? 2800 : 2000)
+    return () => clearTimeout(t)
+  }, [n, total, reduzir])
+  const vistas = cena.mensagens.slice(0, Math.min(n, total))
+  const aEscrever = !reduzir && n < total && cena.mensagens[n]?.de === 'clara' && n > 0
+  const comClara = cena.canal.nome === 'Clara'
+
+  return (
+    <div className="telefone telefone--hero lp-telefone" aria-hidden="true">
+      <div className="telefone-ecra">
+        <div className="chat-topo">
+          {comClara ? <ClaraAvatar tamanho={36} viva={aEscrever} /> : <span className="avatar">{cena.canal.nome.split(' ').map(x => x[0]).join('').slice(0, 2)}</span>}
+          <div><b>{cena.canal.nome}</b><span className="suave">{comClara && aEscrever ? 'a escrever…' : cena.canal.sub}</span></div>
+          {!comClara && <span className="chat-clara-responde"><ClaraAvatar tamanho={22} /> Clara a responder</span>}
+        </div>
+        <div className="chat-corpo">
+          <AnimatePresence initial={false} mode="popLayout">
+            {vistas.slice(-3).map(m => (
+              <motion.div key={m.texto} layout initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -16 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 24 }} className={`chat-linha chat-linha--${m.de}`}>
+                <Bolha m={m} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+          {aEscrever && (
+            <motion.div className="chat-linha chat-linha--clara" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <span className="chat-bolha chat-bolha--clara a-escrever-clara"><i /><i /><i /></span>
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function HeroLanding({ p, cena, segundo = { href: '#como', texto: 'Ver como funciona' } }) {
   return (
     <section id="inicio" className="hero escuro lp-hero">
       <div className="hero-simbolo" aria-hidden="true">
         <Simbolo fundo="escuro" largura={760} desenhar atraso={0.4} />
       </div>
-      <div className="contentor lp-hero-texto">
-        <motion.p className="eyebrow" {...subir(0.1)}>{p.eyebrow} · Lançamento a 1 de dezembro</motion.p>
-        <motion.h1 {...subir(0.2)}>{p.h1}</motion.h1>
-        <motion.p className="hero-lead" {...subir(0.35)}>{p.lead}</motion.p>
-        <motion.div className="hero-botoes" {...subir(0.5)}>
-          <a href="#lista" className="botao">Quero a Clara</a>
-          <a href={segundo.href} className="botao botao--linha">{segundo.texto}</a>
-        </motion.div>
+      <div className={`contentor lp-hero-grelha ${cena ? '' : 'lp-hero-grelha--so-texto'}`}>
+        <div className="lp-hero-cabeca">
+          <motion.p className="eyebrow" {...subir(0.1)}>{p.eyebrow}</motion.p>
+          <motion.h1 {...subir(0.2)}>{p.h1}</motion.h1>
+        </div>
+        {cena && (
+          <motion.div className="lp-hero-telefone" {...subir(0.45)}>
+            <ConversaHero cena={cena} />
+          </motion.div>
+        )}
+        <div className="lp-hero-corpo">
+          <motion.p className="hero-lead" {...subir(0.35)}>{p.lead}</motion.p>
+          <motion.div className="hero-botoes" {...subir(0.5)}>
+            <a href="#lista" className="botao">{CTA}</a>
+            <a href={segundo.href} className="botao botao--linha">{segundo.texto}</a>
+          </motion.div>
+          <motion.div className="lp-hero-urgencia" {...subir(0.6)}><Urgencia /></motion.div>
+        </div>
       </div>
     </section>
   )
@@ -96,20 +154,6 @@ function Passos({ passos }) {
   )
 }
 
-function Nota({ nota }) {
-  return (
-    <section data-seccao="nota" className="lp-nota-seccao">
-      <div className="contentor">
-        <div className="cartao lp-nota">
-          <p className="eyebrow">{nota.titulo}</p>
-          <p className="lp-nota-texto">{nota.texto}</p>
-          {nota.link && <a className="lp-nota-link" href={nota.link.href}>{nota.link.texto} →</a>}
-        </div>
-      </div>
-    </section>
-  )
-}
-
 /* uma landing page: promessa do anúncio, a Clara a fazê-lo, três passos, o aviso honesto e a inscrição */
 export default function Landing({ p }) {
   /* o plano da página fica escolhido no formulário */
@@ -123,7 +167,7 @@ export default function Landing({ p }) {
     <>
       <TopoLanding />
       <main>
-        <HeroLanding p={p} />
+        <HeroLanding p={p} cena={p.cenas[0]} />
         {/* na página do CRM, o copiloto a preencher o CRM vem primeiro: é a promessa do anúncio */}
         {p.copiloto && <div id="como"><Copiloto /></div>}
         <section id={p.copiloto ? undefined : 'como'} className="seccao lp-cenas">
@@ -132,8 +176,7 @@ export default function Landing({ p }) {
           </div>
         </section>
         <Passos passos={p.passos} />
-        {p.nota && <Nota nota={p.nota} />}
-        <Lista />
+        <Lista aviso={p.nota} />
         <section data-seccao="mais" className="lp-mais">
           <div className="contentor">
             <a href="/">Ver tudo o que a Clara faz →</a>

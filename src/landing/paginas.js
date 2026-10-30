@@ -136,7 +136,7 @@ export const PAGINAS = {
       { titulo: 'A lista chega à segunda', texto: 'O mesmo imóvel em vários portais conta uma vez. Cada anúncio tem uma pontuação de 0 a 100: tempo à venda, descidas de preço, preço face à freguesia, qualidade do anúncio e compradores teus que encaixam.' },
       { titulo: 'Ligas a saber o que dizer', texto: 'Argumento com os números do anúncio, respostas às objeções mais comuns e o objetivo da chamada. Quem aceita conversar entra no teu pipeline de proprietários.' },
     ],
-    nota: { titulo: 'Quando chega', texto: 'A procura semanal de proprietários está em preparação e chega à Clara depois do lançamento de 1 de dezembro. Inscreve-te e és dos primeiros a usá-la. Desde o primeiro dia, a Clara já qualifica as leads das tuas campanhas de proprietários e pede-lhes os documentos.', link: { href: '/proprietarios/', texto: 'Ver as leads de proprietários' } },
+    nota: { titulo: 'Primeiros a receber', texto: 'Os 25 consultores que entram a 1 de dezembro são os primeiros a receber a procura semanal de proprietários, assim que abrir. Desde o primeiro dia, a Clara já qualifica as leads das tuas campanhas de proprietários e pede-lhes os documentos.' },
     plano: '',
   },
   proprietarios: {
@@ -180,7 +180,7 @@ export const PAGINAS = {
       { titulo: 'O copiloto preenche', texto: 'Abres o CRM da tua marca e o copiloto escreve nos campos o que a Clara captou, e anexa os documentos do imóvel.' },
       { titulo: 'Confirmas e gravas', texto: 'Fica registado na Clara o que já passou para o CRM da marca e o que falta, e isso entra no teu plano do dia.' },
     ],
-    nota: { titulo: 'Incluído na pré-reserva', texto: 'O copiloto para o CRM da tua marca vem incluído na pré-reserva de 27 €, para os 25 consultores que entram a 1 de dezembro. Na sessão de configuração confirmamos contigo o que o teu CRM deixa preencher.' },
+    nota: { titulo: 'Só para os 25 primeiros', texto: 'O copiloto para o CRM da tua marca vem incluído na pré-reserva de 27 €, para os 25 consultores que entram a 1 de dezembro. Na sessão de configuração confirmamos contigo o que o teu CRM deixa preencher.' },
     plano: '',
   },
   reativar: {
@@ -195,7 +195,7 @@ export const PAGINAS = {
       { titulo: 'Uma mensagem por grupo', texto: 'Com o contexto da última conversa. Vês o custo estimado dos envios na Meta antes de os fazer, e os envios saem escalonados.' },
       { titulo: 'Quem responde volta ao pipeline', texto: 'E entra outra vez na qualificação. Entre campanhas, a Clara lembra-te dos contactos parados há demasiado tempo.' },
     ],
-    nota: { titulo: 'Em que plano', texto: 'A reativação faz parte da Clara Pro. Os envios de templates são cobrados pela Meta no teu cartão, e a Clara mostra-te a estimativa antes de cada envio.' },
+    nota: { titulo: 'Clara Pro', texto: 'A reativação faz parte da Clara Pro, com o preço anunciado no lançamento. Os envios são pagos à Meta, com a estimativa à vista antes de cada um. A pré-reserva garante-te já a entrada no primeiro dia.' },
     plano: 'pro',
   },
   chamadas: {
@@ -210,7 +210,7 @@ export const PAGINAS = {
       { titulo: 'Cada chamada analisada', texto: 'Abertura, descoberta, objeções e próximo passo. A transcrição e o resumo ficam na ficha do cliente.' },
       { titulo: 'Coaching todas as manhãs', texto: 'O que correu bem, o que melhorar, a fila de hoje e a tua tendência ao longo da semana e do mês.' },
     ],
-    nota: { titulo: 'Em que plano', texto: 'As chamadas e o coaching fazem parte da Clara Elite, com 500 minutos de chamadas incluídos.' },
+    nota: { titulo: 'Clara Elite', texto: 'As chamadas e o coaching fazem parte da Clara Elite, com 500 minutos de chamadas incluídos e o preço anunciado no lançamento. A pré-reserva garante-te já a entrada no primeiro dia.' },
     plano: 'elite',
   },
 }

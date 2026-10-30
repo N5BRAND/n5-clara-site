@@ -1,7 +1,27 @@
 /* ===== landing pages dos anúncios (leads/, angariacao/, ...) ===== */
 .lp-hero { min-height: auto; padding: clamp(128px, 16vw, 168px) 0 clamp(72px, 9vw, 112px); align-content: start; }
-.lp-hero-texto { position: relative; display: grid; gap: 24px; max-width: 920px; }
-.lp-hero h1 { font-size: clamp(40px, 6.4vw, 84px); }
+.lp-hero h1 { font-size: clamp(38px, 5.6vw, 76px); }
+/* computador: texto à esquerda, a conversa à direita; telemóvel: título, conversa e só depois o resto */
+.lp-hero-grelha {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas: "cabeca telefone" "corpo telefone"; column-gap: clamp(32px, 5vw, 64px); row-gap: 24px;
+}
+.lp-hero-grelha--so-texto { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cabeca" "corpo"; max-width: 920px; margin-inline: auto; }
+.lp-hero-cabeca { grid-area: cabeca; display: grid; gap: 20px; align-self: end; }
+.lp-hero-corpo { grid-area: corpo; display: grid; gap: 24px; align-self: start; }
+.lp-hero-telefone { grid-area: telefone; align-self: center; justify-self: center; width: min(100%, 360px); }
+.lp-telefone .telefone-ecra { min-height: 400px; }
+
+/* faixa de urgência: data, licenças e desconto */
+.lp-urgencia { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.lp-urgencia li { display: grid; gap: 2px; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(245, 244, 240, 0.16); background: rgba(245, 244, 240, 0.05); }
+.lp-urgencia li:first-child { border-color: var(--dourado); }
+.lp-urgencia b { font-family: var(--titulo); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: var(--dourado); line-height: 1.1; }
+.lp-urgencia span { font-size: 13px; color: rgba(245, 244, 240, 0.72); line-height: 1.35; }
+
+/* o que a página prometeu e quando chega, junto à oferta */
+.lp-aviso { padding: 16px 18px; border-radius: 16px; border: 1px solid rgba(232, 161, 60, 0.5); background: rgba(232, 161, 60, 0.08); color: rgba(245, 244, 240, 0.86); font-size: 16px; }
+.lp-aviso b { color: var(--dourado); }
 
 .lp-cenas-lista { display: grid; gap: clamp(72px, 10vw, 128px); }
 .lp-cena { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr); gap: clamp(28px, 4vw, 56px); align-items: center; }
@@ -24,17 +44,22 @@
 .lp-passo-n { font-family: var(--titulo); font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: var(--dourado); }
 .lp-passo p { color: rgba(245, 244, 240, 0.74); }
 
-.lp-nota-seccao { padding-block: clamp(56px, 8vw, 96px); }
-.lp-nota { display: grid; gap: 12px; max-width: 860px; padding: clamp(24px, 3vw, 36px); border-color: rgba(232, 161, 60, 0.55); }
-.lp-nota-texto { font-size: clamp(17px, 1.6vw, 20px); }
-.lp-nota-link { justify-self: start; font-weight: 700; color: var(--dourado-escuro); text-decoration: none; padding-block: 6px; }
-.lp-nota-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 .lp-mais { background: var(--tinta); padding: 0 0 56px; text-align: center; }
 .lp-mais a { color: rgba(245, 244, 240, 0.78); font-weight: 600; text-decoration: none; padding: 10px; }
 .lp-mais a:hover { color: var(--creme); text-decoration: underline; text-underline-offset: 4px; }
 
 @media (max-width: 900px) {
+  .lp-hero { padding-top: 96px; }
+  .lp-hero-grelha { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cabeca" "telefone" "corpo"; row-gap: 20px; }
+  .lp-hero-telefone { width: min(100%, 340px); }
+  .lp-telefone .telefone-ecra { min-height: 250px; }
+  /* no telemóvel, logo a seguir à conversa: o botão e a urgência; a explicação vem depois */
+  .lp-hero-corpo .hero-botoes { order: 1; }
+  .lp-hero-urgencia { order: 2; }
+  .lp-hero-corpo .hero-lead { order: 3; }
+  .lp-urgencia { grid-template-columns: 1fr 1fr; }
+  .lp-urgencia li:first-child { grid-column: 1 / -1; }
   .lp-cena { grid-template-columns: 1fr; }
   .lp-cena--inverso .lp-cena-texto { order: 0; }
   .lp-cena-palco { justify-items: center; }
