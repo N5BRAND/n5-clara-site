@@ -25,13 +25,19 @@
       <input name="nome" /><input name="email" /><input name="telefone" />
       <input name="agencia" /><input name="plano" /><input name="indicado_por" /><input name="consentimento" />
       <input name="codigo" /><input name="indicado_codigo" />
+      <input name="origem" /><input name="diagnostico" />
       <input name="empresa-site" />
     </form>
     <form name="lista-espera" data-netlify="true" netlify-honeypot="empresa-site" hidden>
       <input name="nome" /><input name="email" /><input name="telefone" />
       <input name="agencia" /><input name="plano" /><input name="indicado_por" /><input name="consentimento" />
       <input name="codigo" /><input name="indicado_codigo" />
+      <input name="origem" /><input name="diagnostico" />
       <input name="empresa-site" />
+    </form>
+    <!-- respostas do diagnóstico sem nome nem contacto, para sabermos como trabalham os consultores -->
+    <form name="diagnostico" data-netlify="true" netlify-honeypot="empresa-site" hidden>
+      <input name="respostas" /><input name="origem" /><input name="empresa-site" />
     </form>
     <form name="prioridades" data-netlify="true" netlify-honeypot="empresa-site" hidden>
       <input name="email" /><input name="prioridades" /><input name="empresa-site" />

@@ -9,6 +9,7 @@ import { evento } from '../legal/pixel.js'
 import { marcar } from '../legal/analitica.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 import { ESGOTADO } from '../logica/pagamento.js'
+import { origemDe } from '../logica/origem.js'
 import Partilhar from '../partilha/Partilhar.jsx'
 import { TEXTOS } from '../logica/partilha.js'
 import { PROGRAMA, codigoValido, normalizarCodigo, lerRef, guardarRef, meuCodigo, guardarMeuCodigo, novoCodigo, ligacaoPessoal } from '../logica/indicacoes.js'
@@ -37,7 +38,7 @@ function textoDoPasso(id, d, porLigacao) {
 }
 
 /* inscrição passo a passo: uma pergunta de cada vez; depois as prioridades e a pré-reserva */
-export default function Formulario() {
+export default function Formulario({ extra } = {}) {
   const [d, setD] = useState(() => {
     const ref = lerRef(armazenamento(), Date.now())
     return ref ? { ...VAZIO, indicado_por: ref } : VAZIO
@@ -128,11 +129,11 @@ export default function Formulario() {
       const r = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', 'empresa-site': armadilha }),
+        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), 'empresa-site': armadilha }),
       })
       if (!r.ok) throw new Error(String(r.status))
       evento('Lead')
-      marcar('inscricao_enviada', { plano: d.plano, indicado: !!(escrito || ref), por_codigo: !!ref })
+      marcar('inscricao_enviada', { plano: d.plano, indicado: !!(escrito || ref), por_codigo: !!ref, diagnostico: !!extra?.diagnostico })
       setCodigo(meu)
       setIndicacao(ref)
       setEstado('prioridades')

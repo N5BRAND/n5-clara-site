@@ -1,0 +1,31 @@
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { MotionConfig } from 'motion/react'
+import { iniciarPixel } from '../legal/pixel.js'
+import { iniciarAnalitica } from '../legal/analitica.js'
+import { iniciarBrilho } from '../logica/brilho.js'
+import { PAGINAS, DIAGNOSTICO } from './paginas.js'
+import Landing from './Landing.jsx'
+import DiagnosticoPagina from './Diagnostico.jsx'
+import '../estilos/fontes.js'
+import '../estilos/base.css'
+import '../estilos/seccoes.css'
+import '../estilos/demo.css'
+import '../estilos/clara.css'
+import '../estilos/legal.css'
+import '../estilos/landing.css'
+
+/* cada pasta (leads/, angariacao/, ...) tem o seu index.html com data-landing no body; o conteúdo vem de paginas.js */
+const id = document.body.dataset.landing
+
+iniciarPixel()
+iniciarAnalitica()
+iniciarBrilho()
+
+createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <MotionConfig reducedMotion="user">
+      {id === 'diagnostico' ? <DiagnosticoPagina p={DIAGNOSTICO} /> : <Landing p={PAGINAS[id]} />}
+    </MotionConfig>
+  </React.StrictMode>,
+)

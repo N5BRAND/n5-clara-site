@@ -1,4 +1,6 @@
 /* cada formulário do site vira um contacto no GHL: dados, etiquetas para os workflows e uma nota com o resto */
+import { etiquetaPagina } from '../src/logica/origem.js'
+
 export const PRODUTO = 'N5 Clara'
 export const ETIQUETA = 'n5-clara'
 export const API = 'https://services.leadconnectorhq.com'
@@ -27,17 +29,20 @@ const linhasIndicacao = d => [
   ...(d.indicado_codigo ? [`Indicado pelo código: ${d.indicado_codigo}`] : []),
   ...(d.codigo ? [`Código Passa a Clara: ${d.codigo}`] : []),
 ]
+/* a página e o anúncio de onde veio, e o diagnóstico quando o fez: uma etiqueta e linhas na nota */
+const daOrigem = d => (d.origem ? [etiquetaPagina(d.origem)].filter(Boolean) : [])
+const linhasExtra = d => [...(d.origem ? [`Página: ${d.origem}`] : []), ...(d.diagnostico ? [`Diagnóstico: ${d.diagnostico}`] : [])]
 
 const FORMULARIOS = {
   'lista-clara': d => ({
     contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), companyName: d.agencia, source: `Site ${PRODUTO}` },
-    etiquetas: [ETIQUETA, 'lista-clara', `plano-${d.plano || 'nao-sei'}`, ...(indicado(d) ? ['indicado'] : [])],
-    nota: [`Inscrição na lista da ${PRODUTO}.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...linhasIndicacao(d)].join('\n'),
+    etiquetas: [ETIQUETA, 'lista-clara', `plano-${d.plano || 'nao-sei'}`, ...(indicado(d) ? ['indicado'] : []), ...daOrigem(d)],
+    nota: [`Inscrição na lista da ${PRODUTO}.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...linhasIndicacao(d), ...linhasExtra(d)].join('\n'),
   }),
   'lista-espera': d => ({
     contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), companyName: d.agencia, source: `Site ${PRODUTO}` },
-    etiquetas: [ETIQUETA, 'lista-espera', `plano-${d.plano || 'nao-sei'}`, ...(indicado(d) ? ['indicado'] : [])],
-    nota: [`Lista de espera da ${PRODUTO} (as 25 pré-reservas esgotaram): entra pela ordem da lista, 30 vagas por semana a partir de 1 de dezembro.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...linhasIndicacao(d)].join('\n'),
+    etiquetas: [ETIQUETA, 'lista-espera', `plano-${d.plano || 'nao-sei'}`, ...(indicado(d) ? ['indicado'] : []), ...daOrigem(d)],
+    nota: [`Lista de espera da ${PRODUTO} (as 25 pré-reservas esgotaram): entra pela ordem da lista, 30 vagas por semana a partir de 1 de dezembro.`, `Plano que interessa: ${d.plano || 'não indicado'}`, ...linhasIndicacao(d), ...linhasExtra(d)].join('\n'),
   }),
   prioridades: d => ({
     contacto: { email: d.email },

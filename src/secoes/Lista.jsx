@@ -31,7 +31,8 @@ function Contagem() {
   )
 }
 
-export default function Lista() {
+/* extra: campos escondidos que algumas páginas juntam à inscrição (por exemplo, o diagnóstico) */
+export default function Lista({ extra } = {}) {
   return (
     <section id="lista" className="seccao escuro prevenda">
       <div className="contentor prevenda-grelha prevenda-grelha--coluna">
@@ -117,7 +118,7 @@ export default function Lista() {
             </ul>
             </div>
           </motion.div>}
-          <Formulario />
+          <Formulario extra={extra} />
         </div>
       </div>
     </section>

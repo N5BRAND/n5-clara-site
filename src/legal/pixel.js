@@ -8,6 +8,9 @@ import { quandoVisivel, SEGUNDOS_VISUALIZACAO } from './tempoVisivel.js'
    robôs, não contam como visualização da página de destino na Meta. */
 export const PIXEL_ID = '2268439390668297'
 
+/* só no domínio real, como o PostHog: pré-visualizações e endereços da Netlify não contam na Meta */
+const DOMINIOS = ['clara.numerocinco.pt']
+
 let carregado = false
 let consentido = false
 let ficou = false
@@ -50,6 +53,7 @@ function aplicar(c) {
 
 /* uma vez por página: aplica a escolha guardada e acompanha as mudanças no aviso de cookies */
 export function iniciarPixel() {
+  if (!DOMINIOS.includes(window.location.hostname)) return
   let c = null
   try { c = lerConsentimento(window.localStorage) } catch { /* sem armazenamento: fica desligado */ }
   aplicar(c)

@@ -1,0 +1,84 @@
+/* ===== landing pages dos anúncios (leads/, angariacao/, ...) ===== */
+.lp-hero { min-height: auto; padding: clamp(128px, 16vw, 168px) 0 clamp(72px, 9vw, 112px); align-content: start; }
+.lp-hero-texto { position: relative; display: grid; gap: 24px; max-width: 920px; }
+.lp-hero h1 { font-size: clamp(40px, 6.4vw, 84px); }
+
+.lp-cenas-lista { display: grid; gap: clamp(72px, 10vw, 128px); }
+.lp-cena { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr); gap: clamp(28px, 4vw, 56px); align-items: center; }
+.lp-cena--inverso { grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr); }
+.lp-cena--inverso .lp-cena-texto { order: 2; }
+.lp-cena-texto { display: grid; gap: 16px; }
+.lp-cena-texto h2 { font-size: clamp(28px, 3.4vw, 44px); }
+.lp-cena-texto p:not(.eyebrow) { color: var(--suave); font-size: clamp(17px, 1.5vw, 19px); }
+.lp-cena-palco { display: grid; gap: 12px; justify-items: start; min-width: 0; }
+.lp-cena-palco .dia-cena { width: 100%; }
+.lp-cena-repetir {
+  background: none; border: 0; padding: 10px 0; cursor: pointer;
+  font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--dourado-escuro);
+}
+.lp-cena-repetir:hover { color: var(--tinta); }
+
+.lp-passos-grelha { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.lp-passo { display: grid; gap: 12px; align-content: start; padding: 26px 26px 30px; border-radius: var(--raio); border: 1px solid rgba(245, 244, 240, 0.14); }
+.lp-passo-n { font-family: var(--titulo); font-weight: 800; font-size: 40px; line-height: 1; letter-spacing: -0.03em; color: var(--dourado); }
+.lp-passo p { color: rgba(245, 244, 240, 0.74); }
+
+.lp-nota-seccao { padding-block: clamp(56px, 8vw, 96px); }
+.lp-nota { display: grid; gap: 12px; max-width: 860px; padding: clamp(24px, 3vw, 36px); border-color: rgba(232, 161, 60, 0.55); }
+.lp-nota-texto { font-size: clamp(17px, 1.6vw, 20px); }
+.lp-nota-link { justify-self: start; font-weight: 700; color: var(--dourado-escuro); text-decoration: none; padding-block: 6px; }
+.lp-nota-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.lp-mais { background: var(--tinta); padding: 0 0 56px; text-align: center; }
+.lp-mais a { color: rgba(245, 244, 240, 0.78); font-weight: 600; text-decoration: none; padding: 10px; }
+.lp-mais a:hover { color: var(--creme); text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 900px) {
+  .lp-cena { grid-template-columns: 1fr; }
+  .lp-cena--inverso .lp-cena-texto { order: 0; }
+  .lp-cena-palco { justify-items: center; }
+  .lp-cena-palco .telefone--dia .telefone-ecra { min-height: 300px; }
+  .lp-passos-grelha { grid-template-columns: 1fr; }
+}
+
+/* ===== diagnóstico ===== */
+.diag { padding-top: clamp(56px, 8vw, 96px); }
+.diag-contentor { max-width: 760px; }
+.diag-cartao { position: relative; display: grid; gap: 18px; padding: clamp(22px, 3vw, 36px); }
+.diag-progresso { height: 6px; border-radius: 999px; background: var(--linha); overflow: hidden; }
+.diag-progresso span { display: block; height: 100%; background: var(--dourado); transition: width 0.3s ease; }
+.diag-cabeca { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.diag-pergunta { margin-bottom: 18px; font-size: clamp(22px, 2.6vw, 30px); }
+.diag-opcoes { display: grid; gap: 10px; }
+.diag-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 6px; }
+.diag-acoes .botao:disabled { opacity: 0.5; cursor: not-allowed; }
+.diag-voltar, .diag-nao-sei {
+  background: none; border: 0; padding: 10px 4px; cursor: pointer;
+  color: var(--suave); font: inherit; font-size: 15px; font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.diag-opcoes > .diag-nao-sei { justify-self: start; }
+.diag-numero { display: grid; gap: 14px; }
+.diag-numero-linha { display: flex; align-items: center; gap: 12px; }
+.diag-numero-linha input { flex: 1; min-width: 0; font-size: 20px; }
+.diag-unidade { color: var(--suave); font-weight: 600; white-space: nowrap; }
+
+.diag-resultado { display: grid; gap: 24px; }
+.diag-resultado-topo { display: flex; align-items: center; gap: 16px; }
+.diag-resultado-topo h3 { margin-top: 4px; }
+.diag-blocos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.diag-bloco { display: grid; gap: 6px; align-content: start; padding: 22px; }
+.diag-bloco-num { font-size: clamp(40px, 5vw, 56px); line-height: 1; }
+.diag-bloco-rotulo { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); }
+.diag-bloco p { color: var(--suave); font-size: 15px; margin-top: 6px; }
+.diag-vazio { color: var(--suave); }
+.diag-focos ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.diag-focos li { display: grid; gap: 4px; padding: 16px 18px; border-radius: 14px; background: var(--dourado-claro); }
+.diag-focos li span { color: var(--suave); }
+.diag-plano { display: grid; gap: 10px; padding: clamp(22px, 3vw, 32px); }
+.diag-plano b { font-family: var(--titulo); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
+.diag-plano p:not(.eyebrow) { color: var(--suave); }
+
+/* o topo fixo não tapa o início das secções quando se salta para elas */
+#como, #lista, #diagnostico { scroll-margin-top: 68px; }

@@ -12,6 +12,9 @@ export default defineConfig({
         termos: resolve(__dirname, 'termos/index.html'),
         confirmada: resolve(__dirname, 'pre-reserva-confirmada/index.html'),
         passa: resolve(__dirname, 'passa-a-clara/index.html'),
+        // landing pages dos anúncios: uma pasta por ângulo, todas com src/landing/montar.jsx
+        ...Object.fromEntries(['leads', 'angariacao', 'proprietarios', 'dia', 'crm', 'reativar', 'chamadas', 'diagnostico']
+          .map(id => [id, resolve(__dirname, `${id}/index.html`)])),
       },
     },
   },
