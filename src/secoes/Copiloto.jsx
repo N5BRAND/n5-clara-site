@@ -37,7 +37,7 @@ export default function Copiloto() {
   const gravado = campo >= CAMPOS.length
 
   return (
-    <section ref={ref} className="seccao copiloto">
+    <section data-seccao="copiloto" ref={ref} className="seccao copiloto">
       <div className="contentor copiloto-grelha">
         <div className="seccao-cabeca">
           <p className="eyebrow">Ao lado do CRM da tua marca</p>

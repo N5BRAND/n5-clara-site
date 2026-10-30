@@ -33,7 +33,7 @@ export default function Agentes() {
   }, [visivel])
 
   return (
-    <section ref={ref} className="seccao escuro agentes">
+    <section data-seccao="agentes" ref={ref} className="seccao escuro agentes">
       <div className="contentor agentes-grelha">
         <div className="seccao-cabeca agentes-cabeca">
           <p className="eyebrow">Uma assistente, nove agentes</p>

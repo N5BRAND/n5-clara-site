@@ -19,7 +19,7 @@ const MARCOS = [
 
 export default function Saber() {
   return (
-    <section className="seccao saber">
+    <section data-seccao="saber" className="seccao saber">
       <div className="contentor">
         <div className="seccao-cabeca">
           <p className="eyebrow">O que passas a saber</p>

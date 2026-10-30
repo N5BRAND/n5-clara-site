@@ -18,7 +18,7 @@ export default function Promessas() {
   useMotionValueEvent(scrollYProgress, 'change', v => setAtivo(cenaDe(v, PROMESSAS.length).indice))
 
   return (
-    <section ref={ref} className="eixos escuro" style={{ height: reduzir ? 'auto' : '340vh' }}>
+    <section data-seccao="promessas" ref={ref} className="eixos escuro" style={{ height: reduzir ? 'auto' : '340vh' }}>
       <div className={reduzir ? 'eixos-palco eixos-palco--estatico' : 'eixos-palco'}>
         <div className="contentor">
           <p className="eyebrow">O que a Clara faz por ti</p>

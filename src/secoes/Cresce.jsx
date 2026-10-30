@@ -4,7 +4,7 @@ const PACOTES = ['Contactos', 'Imóveis', 'Pipelines', 'Conversas', 'Histórico'
 
 export default function Cresce() {
   return (
-    <section className="seccao escuro cresce">
+    <section data-seccao="cresce" className="seccao escuro cresce">
       <div className="contentor">
         <div className="seccao-cabeca">
           <p className="eyebrow">Cresce contigo</p>

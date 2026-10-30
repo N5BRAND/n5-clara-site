@@ -37,13 +37,14 @@ function observarSeccoes() {
   const vistas = new Set()
   const obs = new IntersectionObserver(entradas => {
     for (const e of entradas) {
-      if (e.isIntersecting && !vistas.has(e.target.id)) {
-        vistas.add(e.target.id)
-        marcar('seccao_vista', { seccao: e.target.id, ordem: vistas.size })
+      const seccao = e.target.dataset.seccao || e.target.id
+      if (e.isIntersecting && !vistas.has(seccao)) {
+        vistas.add(seccao)
+        marcar('seccao_vista', { seccao, ordem: vistas.size })
       }
     }
   }, { rootMargin: '-45% 0px -45% 0px' })
-  const ligar = () => document.querySelectorAll('section[id]').forEach(s => obs.observe(s))
+  const ligar = () => document.querySelectorAll('section[id], section[data-seccao]').forEach(s => obs.observe(s))
   if (document.readyState === 'complete') setTimeout(ligar, 500)
   else window.addEventListener('load', () => setTimeout(ligar, 500), { once: true })
 }
