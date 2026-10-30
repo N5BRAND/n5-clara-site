@@ -1,5 +1,6 @@
 import { lerConsentimento } from './consentimento.js'
 import { quandoVisivel, SEGUNDOS_VISUALIZACAO } from './tempoVisivel.js'
+import { criarCronometro } from './cronometro.js'
 
 /* PostHog (nuvem da UE): como as pessoas usam a página da Clara, para afinar a mensagem.
    - Com a estatística aceite: cliques, scroll, secções vistas, passos do formulário, mapas de calor e gravações das
@@ -21,23 +22,25 @@ function aplicar() {
   if (!ph || !escolha) return
   if (escolha.estatistica) ph.opt_in_capturing()
   else ph.opt_out_capturing()
-  for (const [nome, propriedades] of fila.splice(0)) ph.capture(nome, propriedades)
+  for (const [nome, propriedades, opcoes] of fila.splice(0)) ph.capture(nome, propriedades, opcoes)
 }
 
 /* evento próprio; fora do domínio real não sai nada */
-export function marcar(nome, propriedades = {}) {
+export function marcar(nome, propriedades = {}, opcoes) {
   if (!ligado) return
-  if (ph && escolha) ph.capture(nome, propriedades)
-  else fila.push([nome, propriedades])
+  if (ph && escolha) ph.capture(nome, propriedades, opcoes)
+  else fila.push([nome, propriedades, opcoes])
 }
 
-/* cada secção conta uma vez, quando atravessa o meio do ecrã */
-function observarSeccoes() {
+/* cada secção conta uma vez, quando atravessa o meio do ecrã; o cronómetro soma o tempo em cada uma */
+function observarSeccoes(cronometro) {
   if (!('IntersectionObserver' in window)) return
   const vistas = new Set()
   const obs = new IntersectionObserver(entradas => {
     for (const e of entradas) {
       const seccao = e.target.dataset.seccao || e.target.id
+      if (e.isIntersecting) cronometro?.entrou(seccao, Date.now())
+      else cronometro?.saiu(seccao, Date.now())
       if (e.isIntersecting && !vistas.has(seccao)) {
         vistas.add(seccao)
         marcar('seccao_vista', { seccao, ordem: vistas.size })
@@ -47,6 +50,23 @@ function observarSeccoes() {
   const ligar = () => document.querySelectorAll('section[id], section[data-seccao]').forEach(s => obs.observe(s))
   if (document.readyState === 'complete') setTimeout(ligar, 500)
   else window.addEventListener('load', () => setTimeout(ligar, 500), { once: true })
+}
+
+/* na página principal: quanto tempo a visita fica à vista, em cada secção, e onde estava quando saiu.
+   Sai um resumo cada vez que o separador fica escondido ou a página fecha; conta o último de cada visita. */
+function cronometrarVisita() {
+  if (window.location.pathname !== '/') return null
+  const cronometro = criarCronometro(Date.now(), document.visibilityState === 'visible')
+  const vista = window.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)
+  let envio = 0
+  const enviar = () => marcar('tempo_pagina', { vista, envio: ++envio, ...cronometro.resumo(Date.now()) }, { transport: 'sendBeacon' })
+  document.addEventListener('visibilitychange', () => {
+    const visivel = document.visibilityState === 'visible'
+    cronometro.visibilidade(visivel, Date.now())
+    if (!visivel) enviar()
+  })
+  window.addEventListener('pagehide', enviar)
+  return cronometro
 }
 
 function carregar() {
@@ -73,7 +93,7 @@ export function iniciarAnalitica() {
   window.addEventListener('consentimento-mudou', e => { escolha = e.detail; aplicar() })
   marcar('pagina_aberta')
   quandoVisivel(SEGUNDOS_VISUALIZACAO, segundos => marcar('visualizacao_qualificada', { segundos }))
-  observarSeccoes()
+  observarSeccoes(cronometrarVisita())
   if (document.readyState === 'complete') carregar()
   else window.addEventListener('load', carregar, { once: true })
 }
