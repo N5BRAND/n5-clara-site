@@ -2,7 +2,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMoti
 import { useEffect, useState } from 'react'
 import { Bolha } from '../secoes/Hero.jsx'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
-import { ESGOTADO } from '../logica/pagamento.js'
+import { ESGOTADO, CTA } from '../logica/pagamento.js'
 import Urgencia from './Urgencia.jsx'
 import Simbolo from '../marca/Simbolo.jsx'
 import Copiloto from '../secoes/Copiloto.jsx'
@@ -31,15 +31,15 @@ export function TopoLanding({ como = { href: '#como', texto: 'Como funciona' } }
         </a>
         <nav className="topo-nav" aria-label="Secções">
           <a href={como.href}>{como.texto}</a>
-          <a href="#lista">Inscrição</a>
+          <a href="#lista">Reserva</a>
         </nav>
-        <a href="#lista" className="botao topo-cta">Quero a Clara</a>
+        <a href="#lista" className="botao topo-cta">{ESGOTADO ? 'Lista de espera' : 'Reservar'}</a>
       </div>
     </motion.header>
   )
 }
 
-export const CTA = ESGOTADO ? 'Entrar na lista de espera' : 'Garantir a minha licença'
+export { CTA }
 
 /* a conversa da primeira cena da página, a escrever-se sozinha no topo: quem chega do anúncio vê logo a funcionalidade */
 function ConversaHero({ cena }) {
@@ -83,7 +83,7 @@ function ConversaHero({ cena }) {
   )
 }
 
-export function HeroLanding({ p, cena, primeiro = { href: '#lista', texto: CTA }, segundo = { href: '#como', texto: 'Ver como funciona' } }) {
+export function HeroLanding({ p, cena, primeiro = { href: '#lista', texto: CTA }, segundo = { href: '#como', texto: 'Ver como funciona' }, urgencia = true }) {
   return (
     <section id="inicio" className="hero escuro lp-hero">
       <div className="hero-simbolo" aria-hidden="true">
@@ -103,9 +103,9 @@ export function HeroLanding({ p, cena, primeiro = { href: '#lista', texto: CTA }
           <motion.p className="hero-lead" {...subir(0.35)}>{p.lead}</motion.p>
           <motion.div className="hero-botoes" {...subir(0.5)}>
             <a href={primeiro.href} className="botao">{primeiro.texto}</a>
-            <a href={segundo.href} className="botao botao--linha">{segundo.texto}</a>
+            {segundo && <a href={segundo.href} className="botao botao--linha">{segundo.texto}</a>}
           </motion.div>
-          <motion.div className="lp-hero-urgencia" {...subir(0.6)}><Urgencia /></motion.div>
+          {urgencia && <motion.div className="lp-hero-urgencia" {...subir(0.6)}><Urgencia /></motion.div>}
         </div>
       </div>
     </section>
@@ -119,6 +119,7 @@ function Cena({ cena, i }) {
         <p className="eyebrow">{cena.eyebrow}</p>
         <h2>{cena.titulo}</h2>
         <p>{cena.texto}</p>
+        {cena.exemplo && <p className="lp-exemplo">{cena.exemplo}</p>}
       </div>
       <CenaAuto cena={cena} />
     </div>
@@ -169,14 +170,14 @@ export default function Landing({ p }) {
       <main>
         <HeroLanding p={p} cena={p.cenas[0]} />
         {/* na página do CRM, o copiloto a preencher o CRM vem primeiro: é a promessa do anúncio */}
-        {p.copiloto && <div id="como"><Copiloto /></div>}
+        {p.copiloto && <div id="como"><Copiloto {...p.copiloto} /></div>}
         <section id={p.copiloto ? undefined : 'como'} className="seccao lp-cenas">
           <div className="contentor lp-cenas-lista">
             {p.cenas.map((c, i) => <Cena key={c.id} cena={c} i={i} />)}
           </div>
         </section>
         <Passos passos={p.passos} />
-        <Lista aviso={p.nota} />
+        <Lista aviso={p.nota} reserva={p.reserva} plano={p.plano} />
         <section data-seccao="mais" className="lp-mais">
           <div className="contentor">
             <a href="/">Ver tudo o que a Clara faz →</a>

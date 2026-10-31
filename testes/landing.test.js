@@ -1,11 +1,36 @@
 import { describe, it, expect } from 'vitest'
 import { PAGINAS, CENAS_LANDING, DIAGNOSTICO } from '../src/landing/paginas.js'
 import { PERGUNTAS, lerNumero, calcularDiagnostico, resumoDiagnostico } from '../src/logica/diagnostico.js'
-import { origemDe, etiquetaPagina } from '../src/logica/origem.js'
+import { origemDe, etiquetaPagina, guardarAnuncio, anuncioGuardado } from '../src/logica/origem.js'
 import { paraGhl } from '../netlify/ghl.js'
 import { PLANOS } from '../src/logica/validar.js'
 
 describe('landing pages', () => {
+  it('cada página tem a sua reserva e as demonstrações dizem que são exemplos', () => {
+    for (const [id, p] of Object.entries(PAGINAS)) {
+      expect(p.reserva?.titulo, id).toBeTruthy()
+      for (const c of p.cenas) expect(c.exemplo, `${id}/${c.id}`).toMatch(/^(Exemplo|Simulação)/)
+    }
+    expect(DIAGNOSTICO.reserva.titulo).toBeTruthy()
+  })
+
+  it('pontuação é prioridade, não probabilidade, e não há exclusividade prometida', () => {
+    const texto = JSON.stringify({ PAGINAS, CENAS_LANDING })
+    expect(texto).not.toMatch(/probabilidade|só é contactado uma vez/i)
+  })
+
+  it('as páginas da Pro e da Elite não acabam na oferta do plano base', () => {
+    expect(PAGINAS.chamadas.plano).toBe('elite')
+    expect(PAGINAS.chamadas.nota.texto).toContain('Elite')
+    expect(PAGINAS.reativar.plano).toBe('pro')
+    for (const p of [PAGINAS.chamadas, PAGINAS.reativar]) expect(p.nota.texto).not.toMatch(/plano Clara/)
+  })
+
+  it('a pré-reserva da Clara aparece com IVA à parte', () => {
+    expect(PAGINAS.crm.nota.texto).toContain('27 € + IVA')
+    expect(JSON.stringify(PAGINAS)).not.toMatch(/27 €(?! \+ IVA)/)
+  })
+
   it('há uma página por ângulo dos anúncios, cada uma com cenas e três passos', () => {
     expect(Object.keys(PAGINAS)).toEqual(['leads', 'angariacao', 'proprietarios', 'dia', 'crm', 'reativar', 'chamadas'])
     for (const p of Object.values(PAGINAS)) {
@@ -75,6 +100,18 @@ describe('origem da inscrição', () => {
     expect(origemDe('/leads/', '?utm_source=meta&utm_content=c01_leads&email=x@y.pt')).toBe('/leads/ · c01_leads')
     expect(origemDe('/', '')).toBe('/')
     expect(origemDe('/crm/', '?utm_content=<script>')).toBe('/crm/ · script')
+  })
+
+  it('guarda o anúncio da chegada durante a visita, para a inscrição noutra página contar para ele', () => {
+    const mem = new Map()
+    const arm = { getItem: k => mem.get(k) ?? null, setItem: (k, v) => mem.set(k, String(v)) }
+    expect(guardarAnuncio('?utm_source=meta&utm_content=cla_n2_leads', arm)).toBe('cla_n2_leads')
+    expect(anuncioGuardado(arm)).toBe('cla_n2_leads')
+    expect(origemDe('/', '', arm)).toBe('/ · cla_n2_leads')
+    // o anúncio do endereço manda sobre o guardado
+    expect(origemDe('/dia/', '?utm_content=cla_n3_dia', arm)).toBe('/dia/ · cla_n3_dia')
+    expect(guardarAnuncio('?utm_source=meta', arm)).toBeNull()
+    expect(anuncioGuardado(null)).toBeNull()
   })
 
   it('dá uma etiqueta por página ao GHL', () => {

@@ -1,11 +1,16 @@
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion, useSpring, useTransform } from 'motion/react'
 import { useRef, useState } from 'react'
-import { CENAS } from './dados.js'
+import { CENAS as TODAS } from './dados.js'
 import { cenaDe, passoDe } from '../logica/linha-tempo.js'
 import { horaDe } from '../logica/hora.js'
 import CenaDia from './CenaDia.jsx'
 import Ceu from './Ceu.jsx'
 import Ajusta from '../marca/Ajusta.jsx'
+
+/* na página principal, três momentos do dia (pedido do Pedro, 31/10): organizar o dia, responder às leads e registar
+   por voz. As outras cenas continuam em dados.js para as landing pages */
+const MOMENTOS = ['plano', 'lead', 'voz']
+const CENAS = TODAS.filter(c => MOMENTOS.includes(c.id))
 
 const VH_POR_CENA = 140
 const HORAS = CENAS.map(c => c.hora)

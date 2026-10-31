@@ -1,8 +1,9 @@
-/* teste de arquétipos da landing page /arquetipo/: 8 perguntas sobre o que o consultor fez ontem, não sobre o que acha.
+/* teste de arquétipos da landing page /arquetipo/: 8 perguntas sobre como o consultor trabalha no dia a dia (cada uma no
+   período que faz sentido: ontem, esta manhã, a última semana), não sobre o que acha.
    As perguntas 1 a 6 dão pontos aos 4 arquétipos (máximo de 10 para cada um, para nenhum partir em vantagem);
    a 7 e a 8 só escolhem o plano. «Não sei» é sempre aceite, fica como null e não dá pontos.
    Especificação: docs/specs/2026-10-31-landing-arquetipo.md */
-import { ESGOTADO, MENSALIDADE, VALOR_PRE_RESERVA } from './pagamento.js'
+import { ESGOTADO, PRE_RESERVA, OFERTA } from './pagamento.js'
 
 export const NAO_SEI = null
 
@@ -19,7 +20,7 @@ export const ARQUETIPOS = {
     perdes: 'Na angariação: o próximo imóvel demora a aparecer.',
     clara: 'Qualifica as tuas leads de proprietários (motivação, prazo, preço e documentos).',
     ver: [{ href: '/angariacao/', texto: 'Ver como a Clara faz isto' }],
-    aviso: { titulo: 'Angariação', texto: 'No primeiro dia, a Clara qualifica as tuas leads de proprietários. A lista semanal de proprietários a vender sozinhos na tua zona chega depois do lançamento, primeiro para quem entra a 1 de dezembro.' },
+    aviso: { titulo: 'Angariação', texto: 'No primeiro dia, a Clara qualifica as tuas leads de proprietários. A lista semanal de particulares a vender sem agência na tua zona chega depois do lançamento, primeiro para quem entra com as 25 vagas de lançamento.' },
   },
   bombeiro: {
     id: 'bombeiro', nome: 'Bombeiro', feminino: 'Bombeira', dor: 'Organização do dia',
@@ -47,7 +48,7 @@ export const ARQUETIPOS = {
     perdes: 'No ritmo: só dás por isso no fim do mês.',
     clara: 'Monta a tua semana em blocos de prospeção, posicionamento e reuniões, e ajusta-a todas as semanas com coaching.',
     ver: [{ href: '/chamadas/', texto: 'Ver o coaching das chamadas, na Elite' }],
-    aviso: { titulo: 'Clara Pro e Elite', texto: 'O calendário de performance nasce na sessão de configuração: a Clara divide a tua semana em blocos de prospeção, posicionamento e reuniões, conforme a faturação e os objetivos que definires, e ajusta-o todas as semanas com coaching e dicas de prospeção e de chamadas. Faz parte da Clara Pro e da Clara Elite, com o preço anunciado no lançamento. A pré-reserva garante-te já a entrada no primeiro dia.' },
+    aviso: { titulo: 'Clara Pro e Elite', texto: 'O calendário de performance nasce na sessão de configuração: a Clara divide a tua semana em blocos de prospeção, posicionamento e reuniões, conforme a faturação e os objetivos que definires, e ajusta-o todas as semanas com coaching e dicas de prospeção e de chamadas. Faz parte da Clara Pro e da Clara Elite. ' + OFERTA.planoSuperior('Pro ou na Elite') },
   },
 }
 
@@ -159,12 +160,11 @@ function primeiro(candidatos, pontos, p1) {
   return empatados.includes(p1) ? p1 : empatados[0]
 }
 
-/* { arquetipo, segundo, pontos }; com zero pontos em todos vale a dor do anúncio, e sem ela não há resultado (null) */
-export function escolher(respostas = {}, dor = null) {
+/* { arquetipo, segundo, pontos }; com zero pontos em todos não há perfil (null). O «?dor=» do anúncio muda só o título:
+   não substitui as respostas (decisão do Pedro, 31/10) */
+export function escolher(respostas = {}) {
   const pontos = pontuar(respostas)
-  if (ORDEM.every(a => pontos[a] === 0)) {
-    return { arquetipo: (dor && DOR_PARA_ARQUETIPO[dor]) || null, segundo: null, pontos }
-  }
+  if (ORDEM.every(a => pontos[a] === 0)) return { arquetipo: null, segundo: null, pontos }
   const p1 = daP1(respostas)
   const arquetipo = primeiro(ORDEM, pontos, p1)
   const outro = primeiro(ORDEM.filter(a => a !== arquetipo), pontos, p1)
@@ -246,21 +246,19 @@ export const REACOES = {
 
 export const reacaoDe = (id, valor) => REACOES[id]?.[valor ?? 'nao-sei'] || null
 
-/* a mensagem pessoal do resultado, com o plano e a oferta do lançamento. Os 53 € são a mensalidade do plano Clara:
-   a Pro e a Elite ainda não têm preço publicado, por isso só se fala da pré-reserva e do desconto */
+/* a mensagem pessoal do resultado, com o plano e a oferta do lançamento. A pré-reserva aparece separada da mensalidade:
+   a Pro e a Elite ainda não têm preço publicado. A oferta sai de OFERTA (src/logica/pagamento.js) */
 export function mensagemFinal(arquetipo, plano, esgotado = ESGOTADO) {
   const abertura = `Olha, deu ${ARQUETIPOS[arquetipo]?.nome}.`
   const artigo = plano === 'clara' ? 'o plano' : 'a'
   const nome = NOMES_PLANO[plano]
   const porque = porqueDoPlano(plano, arquetipo)
   const oferta = esgotado
-    ? 'As 25 licenças com pré-reserva já esgotaram, mas entras na lista de espera e a partir de 1 de dezembro abrimos 30 vagas por semana.'
+    ? 'As 25 vagas com pré-reserva já esgotaram, mas entras na lista de espera e a partir de 1 de dezembro abrimos 30 vagas por semana.'
     : plano === 'clara'
-      ? `Como lançamos a 1 de dezembro, o teu primeiro mês fica a ${VALOR_PRE_RESERVA} em vez de ${MENSALIDADE.normal}.`
-      : `Como lançamos a 1 de dezembro, entras com a pré-reserva de ${VALOR_PRE_RESERVA} e tens ${MENSALIDADE.desconto}% de desconto na primeira mensalidade.`
-  const preco = esgotado ? null
-    : plano === 'clara' ? { rotulo: '1.º mês', antes: MENSALIDADE.normal, agora: VALOR_PRE_RESERVA }
-    : { rotulo: 'Pré-reserva', agora: VALOR_PRE_RESERVA, nota: `−${MENSALIDADE.desconto}% na 1.ª mensalidade` }
+      ? `Como lançamos a 1 de dezembro, a pré-reserva de ${PRE_RESERVA} ${OFERTA.resumo}.`
+      : OFERTA.planoSuperior(nome.replace('Clara ', ''))
+  const preco = esgotado ? null : { rotulo: 'Pré-reserva', agora: PRE_RESERVA, nota: 'Sem fidelização' }
   return { abertura, artigo, nome, porque, oferta, preco, texto: [abertura, `Para ti, o plano certo é ${artigo} ${nome}.`, porque, oferta].join(' ') }
 }
 

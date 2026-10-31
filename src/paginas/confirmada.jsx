@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { MotionConfig, motion } from 'motion/react'
 import Simbolo from '../marca/Simbolo.jsx'
 import Partilhar from '../partilha/Partilhar.jsx'
+import OQuePagas from '../secoes/OQuePagas.jsx'
 import { TEXTOS } from '../logica/partilha.js'
 import { iniciarPixel, evento, idDaCompra } from '../legal/pixel.js'
 import { iniciarAnalitica, marcar } from '../legal/analitica.js'
-import { VALOR_EUROS } from '../logica/pagamento.js'
+import { OFERTA, VALOR_EUROS } from '../logica/pagamento.js'
 import { PROGRAMA, meuCodigo, ligacaoPessoal, iniciarIndicacoes } from '../logica/indicacoes.js'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
@@ -25,8 +26,9 @@ function Confirmada() {
         <Simbolo fundo="escuro" largura={96} desenhar />
         <motion.div className="confirmada-texto" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
           <p className="eyebrow">Inscrição confirmada</p>
-          <h1>A tua licença está garantida.</h1>
-          <p>És um dos 25 consultores que entram no primeiro dia: a 1 de dezembro a Clara começa a trabalhar contigo. Tens 50% de desconto na 1.ª mensalidade do plano Clara e os 27 € já a pagam: pagas 0 € no 1.º mês, 52,50 € no 2.º e 53 € a partir do 3.º. Tens também o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas, para ti e para a tua equipa.</p>
+          <h1>A tua vaga está garantida.</h1>
+          <p>Tens uma das 25 vagas com as condições de lançamento: a 1 de dezembro a Clara começa a trabalhar contigo. A pré-reserva {OFERTA.resumo}. Tens também o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas, para ti e para a tua equipa. Sem fidelização.</p>
+          <OQuePagas compacto />
           <p>Se escolheste Multibanco, a inscrição fica feita assim que pagares a referência.</p>
           <p><b>{PROGRAMA.nome}.</b> Os {PROGRAMA.vencedores} consultores que trouxerem mais colegas com pré-reserva paga até {PROGRAMA.fim} ganham {PROGRAMA.premio}.{codigo ? <> O teu código é <b>{codigo}</b>.</> : null}</p>
           <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
