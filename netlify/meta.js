@@ -13,6 +13,7 @@ export function paginaDaInscricao(origem) {
 /* o pedido para o N5 Controlo, ou null quando não há nada a enviar */
 export function paraConversoes(formulario, d) {
   if (!INSCRICOES.has(formulario) || !d) return null
+  if (d.teste === '1') return null // inscrição de teste (src/legal/teste.js): nunca chega à Meta
   if (d.meta_consentimento !== '1' || !d.meta_evento || !d.email) return null
   const corpo = {
     event: 'Lead',
