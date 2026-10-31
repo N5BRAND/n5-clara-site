@@ -17,8 +17,8 @@ export const TOTAL_PRE_RESERVA = `${(VALOR_EUROS * (1 + IVA)).toFixed(2).replace
 
 /* oferta da pré-reserva: a frase curta e o que se paga mês a mês. Tudo o que o site diz da oferta sai daqui.
    Pedro, 31/10: «a pré-reserva é 27 € e paga o teu primeiro mês; sem fidelização»; o 1.º mês é a Clara Elite completa
-   e quem continua na Pro ou na Elite tem 50% na primeira mensalidade desse plano. O plano Clara fica a 53 €/mês.
-   (À espera de confirmação: o texto colado a 31/10 diz 50% só no plano Clara.) */
+   e quem continua na Pro ou na Elite tem 50% na primeira mensalidade desse plano (confirmado pelo Pedro a 31/10).
+   O plano Clara fica a 53 €/mês. */
 export const OFERTA = {
   resumo: 'paga o teu primeiro mês, com a Clara Elite completa',
   meses: [
