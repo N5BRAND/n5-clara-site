@@ -61,7 +61,19 @@ export function iniciarPixel() {
   quandoVisivel(SEGUNDOS_VISUALIZACAO, () => { ficou = true; enviarPageView() })
 }
 
-/* eventos só seguem com consentimento */
-export function evento(nome, dados = {}) {
-  if (consentido && window.fbq) window.fbq('track', nome, { content_name: PRODUTO.nome, ...dados })
+/* eventos só seguem com consentimento; com id, a Meta junta este evento ao que o servidor envia (API de Conversões) */
+export function evento(nome, dados = {}, id) {
+  if (consentido && window.fbq) window.fbq('track', nome, { content_name: PRODUTO.nome, ...dados }, ...(id ? [{ eventID: id }] : []))
 }
+
+/* se o visitante aceitou os cookies de marketing (é a condição para o servidor também enviar à Meta) */
+export const marketingAceite = () => consentido
+
+/* identificadores do anúncio que o píxel guarda em cookies (_fbp e _fbc); vazios sem consentimento */
+export function idsDoAnuncio(cookies = typeof document === 'undefined' ? '' : document.cookie) {
+  const ler = nome => (String(cookies).match(new RegExp(`(?:^|;\\s*)${nome}=([^;]+)`)) || [])[1] || ''
+  return { fbp: ler('_fbp'), fbc: ler('_fbc') }
+}
+
+/* id único de cada evento, partilhado entre o píxel e o servidor */
+export const novoIdEvento = () => window.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`

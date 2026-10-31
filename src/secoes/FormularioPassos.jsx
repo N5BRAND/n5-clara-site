@@ -5,7 +5,7 @@ import { PASSOS, erroDoPasso, primeiroPassoComErro, primeiroNome } from '../logi
 import { codificar } from '../logica/netlify.js'
 import Prioridades from './Prioridades.jsx'
 import PreReserva from './PreReserva.jsx'
-import { evento } from '../legal/pixel.js'
+import { evento, marketingAceite, idsDoAnuncio, novoIdEvento } from '../legal/pixel.js'
 import { marcar } from '../legal/analitica.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 import { ESGOTADO } from '../logica/pagamento.js'
@@ -125,14 +125,18 @@ export default function Formulario({ extra } = {}) {
     if (ref === meu) ref = null
     if (ref) guardarRef(arm, ref, Date.now())
     setEstado('a-enviar')
+    /* API de Conversões: o servidor só envia à Meta se o marketing estiver aceite, com o mesmo id do píxel */
+    const idLead = novoIdEvento()
+    const aceite = marketingAceite()
+    const { fbp, fbc } = aceite ? idsDoAnuncio() : { fbp: '', fbc: '' }
     try {
       const r = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), 'empresa-site': armadilha }),
+        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), meta_evento: idLead, meta_consentimento: aceite ? '1' : '', meta_fbp: fbp, meta_fbc: fbc, 'empresa-site': armadilha }),
       })
       if (!r.ok) throw new Error(String(r.status))
-      evento('Lead')
+      evento('Lead', {}, idLead)
       marcar('inscricao_enviada', { plano: d.plano, indicado: !!(escrito || ref), por_codigo: !!ref, diagnostico: !!extra?.diagnostico })
       setCodigo(meu)
       setIndicacao(ref)

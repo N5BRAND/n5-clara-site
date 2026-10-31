@@ -39,13 +39,16 @@ function Confirmada() {
   )
 }
 
-/* Purchase uma vez por sessão, mesmo que a página seja recarregada */
+/* Purchase uma vez por sessão, mesmo que a página seja recarregada.
+   Com VITE_COMPRA_PELO_SERVIDOR=1 (API de Conversões ligada no N5 Controlo), a compra vai pelo servidor quando a Stripe
+   confirma o pagamento, também no Multibanco, e o navegador deixa de a enviar para não contar duas vezes. */
+const COMPRA_PELO_SERVIDOR = import.meta.env.VITE_COMPRA_PELO_SERVIDOR === '1'
 iniciarPixel()
 iniciarAnalitica()
 iniciarIndicacoes(marcar)
 try {
   if (!sessionStorage.getItem('n5-compra-registada')) {
-    evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' })
+    if (!COMPRA_PELO_SERVIDOR) evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' })
     marcar('pre_reserva_paga')
     sessionStorage.setItem('n5-compra-registada', '1')
   }

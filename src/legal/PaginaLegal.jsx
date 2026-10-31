@@ -53,7 +53,7 @@ function Privacidade() {
           <li><strong>Stripe Payments Europe</strong>, na Irlanda: pagamento da pré-reserva. Os dados do cartão, do MB WAY ou do Multibanco ficam só na Stripe.</li>
           <li><strong>Google</strong> (Gmail): caixa de correio onde recebemos os teus pedidos e de onde te podemos escrever.</li>
           <li><strong>PostHog</strong>, na nuvem da União Europeia (Frankfurt): estatística de utilização do site. Com a tua autorização, inclui gravações das visitas em que tudo o que escreves fica escondido; sem ela, só uma contagem anónima, sem cookies (ver <a href="#cookies">ponto 8</a>).</li>
-          <li><strong>Meta Platforms Ireland</strong>: só se aceitares os cookies de marketing (ver <a href="#cookies">ponto 8</a>).</li>
+          <li><strong>Meta Platforms Ireland</strong>: só se aceitares os cookies de marketing (ver <a href="#cookies">ponto 8</a>). Nesse caso, o nosso servidor também lhe comunica a inscrição e o pagamento da pré-reserva, com o email, o telemóvel e o nome cifrados, para medir os anúncios.</li>
         </ul>
         <p>Alguns destes fornecedores estão fora da União Europeia. Nesses casos, a transferência faz-se com as garantias previstas no RGPD, como as cláusulas contratuais-tipo aprovadas pela Comissão Europeia.</p>
       </Seccao>
@@ -64,6 +64,7 @@ function Privacidade() {
           <li>Registos técnicos do alojamento: até 30 dias.</li>
           <li>Gravações das visitas (só com a estatística aceite): 30 dias.</li>
           <li>Eventos de estatística (páginas vistas, cliques, passos do formulário): até 12 meses.</li>
+          <li>Dados para medir os anúncios da Meta (email cifrado, identificadores do anúncio, endereço IP e navegador), só com os cookies de marketing aceites: 90 dias.</li>
           <li>A tua escolha sobre cookies: fica no teu navegador até a mudares ou apagares.</li>
         </ul>
       </Seccao>
@@ -84,7 +85,7 @@ function Privacidade() {
 
       <Seccao id="cookies" n="8" titulo="Cookies">
         <p>O site guarda no teu navegador a tua escolha sobre cookies. É essencial e não precisa de autorização. As letras e as imagens do site são servidas pelo próprio site, sem pedidos a terceiros.</p>
-        <p>Com a tua autorização, usamos também cookies de marketing da Meta (Facebook e Instagram): servem para medir os nossos anúncios e para os mostrar a quem já visitou o site. Sem a tua autorização, não são carregados.</p>
+        <p>Com a tua autorização, usamos também cookies de marketing da Meta (Facebook e Instagram): servem para medir os nossos anúncios e para os mostrar a quem já visitou o site. Com a mesma autorização, quando te inscreves ou pagas a pré-reserva, o nosso servidor envia esse evento à Meta (API de Conversões), com o email, o telemóvel e o nome cifrados, para não depender do navegador. Sem a tua autorização, nada disto acontece.</p>
         <p>Com a tua autorização, usamos também cookies de estatística do PostHog, na União Europeia: dizem-nos que partes do site são vistas, onde se clica e em que passo do formulário as pessoas param, para melhorarmos a página. As gravações das visitas escondem tudo o que escreves. Se rejeitares, o PostHog só conta a visita de forma anónima, sem cookies nem nada guardado no teu navegador.</p>
         <p>Podes mudar a tua escolha quando quiseres em <a href="#cookies" onClick={abrirCookies}>Definições de cookies</a>, também disponível no rodapé de cada página.</p>
       </Seccao>
