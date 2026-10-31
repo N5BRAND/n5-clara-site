@@ -1,6 +1,7 @@
 import { lerConsentimento } from './consentimento.js'
 import { quandoVisivel, SEGUNDOS_VISUALIZACAO } from './tempoVisivel.js'
 import { criarCronometro } from './cronometro.js'
+import { emTeste } from './teste.js'
 
 /* PostHog (nuvem da UE): como as pessoas usam a página da Clara, para afinar a mensagem.
    - Com a estatística aceite: cliques, scroll, secções vistas, passos do formulário, mapas de calor e gravações das
@@ -87,7 +88,8 @@ function carregar() {
 }
 
 export function iniciarAnalitica() {
-  if (ligado || !TOKEN || !HOST || !DOMINIOS.includes(window.location.hostname)) return
+  /* em modo de teste não entra nos números (ver teste.js) */
+  if (ligado || !TOKEN || !HOST || !DOMINIOS.includes(window.location.hostname) || emTeste()) return
   ligado = true
   try { escolha = lerConsentimento(window.localStorage) } catch { /* sem armazenamento: fica sem escolha */ }
   window.addEventListener('consentimento-mudou', e => { escolha = e.detail; aplicar() })

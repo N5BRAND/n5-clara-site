@@ -1,6 +1,7 @@
 import { lerConsentimento } from './consentimento.js'
 import { PRODUTO } from './produto.js'
 import { quandoVisivel, SEGUNDOS_VISUALIZACAO } from './tempoVisivel.js'
+import { emTeste } from './teste.js'
 
 /* Píxel da Meta: o conjunto de dados «Nº5», o mesmo de numerocinco.pt.
    Só carrega depois de o visitante aceitar os cookies de marketing; sem isso, nada sai para a Meta.
@@ -55,7 +56,8 @@ function aplicar(c) {
 
 /* uma vez por página: aplica a escolha guardada e acompanha as mudanças no aviso de cookies */
 export function iniciarPixel() {
-  if (!DOMINIOS.includes(window.location.hostname)) return
+  /* em modo de teste nada sai para a Meta (ver teste.js) */
+  if (!DOMINIOS.includes(window.location.hostname) || emTeste()) return
   let c = null
   try { c = lerConsentimento(window.localStorage) } catch { /* sem armazenamento: fica desligado */ }
   aplicar(c)

@@ -6,6 +6,7 @@ import { codificar } from '../logica/netlify.js'
 import Prioridades from './Prioridades.jsx'
 import PreReserva from './PreReserva.jsx'
 import { evento, marketingAceite, idsDoAnuncio, novoIdEvento } from '../legal/pixel.js'
+import { emTeste } from '../legal/teste.js'
 import { marcar } from '../legal/analitica.js'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 import { ESGOTADO } from '../logica/pagamento.js'
@@ -133,7 +134,7 @@ export default function Formulario({ extra } = {}) {
       const r = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), meta_evento: idLead, meta_consentimento: aceite ? '1' : '', meta_fbp: fbp, meta_fbc: fbc, 'empresa-site': armadilha }),
+        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), meta_evento: idLead, meta_consentimento: aceite ? '1' : '', meta_fbp: fbp, meta_fbc: fbc, teste: emTeste() ? '1' : '', 'empresa-site': armadilha }),
       })
       if (!r.ok) throw new Error(String(r.status))
       evento('Lead', {}, idLead)

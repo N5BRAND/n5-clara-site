@@ -55,6 +55,8 @@ export function paraGhl(formulario, dados) {
   const f = FORMULARIOS[formulario]
   if (!f || !dados?.email) return null
   const r = f(dados)
+  /* inscrição de teste (src/legal/teste.js): só a etiqueta «teste», fora das listas e dos workflows */
+  if (dados.teste === '1') return { ...r, contacto: sem(r.contacto), etiquetas: [ETIQUETA, 'teste'], nota: `Inscrição de teste.\n${r.nota}` }
   return { ...r, contacto: sem(r.contacto) }
 }
 

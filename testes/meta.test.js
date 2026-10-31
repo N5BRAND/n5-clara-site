@@ -21,6 +21,11 @@ describe('API de Conversões da Meta', () => {
     expect(paraConversoes('lista-clara', { ...inscricao, meta_evento: '' })).toBeNull()
   })
 
+  it('uma inscrição de teste nunca chega à Meta, mesmo com os cookies aceites', () => {
+    expect(paraConversoes('lista-clara', { ...inscricao, teste: '1' })).toBeNull()
+    expect(paraConversoes('lista-clara', { ...inscricao, teste: '' })).not.toBeNull()
+  })
+
   it('só as inscrições contam como Lead', () => {
     expect(paraConversoes('lista-espera', inscricao)).not.toBeNull()
     expect(paraConversoes('diagnostico', inscricao)).toBeNull()

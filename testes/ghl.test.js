@@ -9,6 +9,12 @@ describe('GHL', () => {
     expect(r.nota).toContain('Indicado por: ana@rede.pt')
   })
 
+  it('uma inscrição de teste fica só com a etiqueta «teste», fora da lista e dos workflows', () => {
+    const r = paraGhl('lista-clara', { nome: 'Teste', email: 'teste@exemplo.pt', plano: 'pro', teste: '1' })
+    expect(r.etiquetas).toEqual(['n5-clara', 'teste'])
+    expect(r.nota.startsWith('Inscrição de teste.')).toBe(true)
+  })
+
   it('põe na lista de espera quem chega depois de esgotarem as 25', () => {
     const r = paraGhl('lista-espera', { nome: 'Rui', email: 'rui@rede.pt', telefone: '', agencia: 'Rede', plano: 'elite', indicado_por: '' })
     expect(r.etiquetas).toEqual(['n5-clara', 'lista-espera', 'plano-elite'])
