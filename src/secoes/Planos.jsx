@@ -95,7 +95,9 @@ function Plano({ p, i }) {
       <span className="plano-rasto" aria-hidden="true"><span /></span>
       {p.destaque && <span className="etiqueta plano-etiqueta">Com chamadas</span>}
       <h3>{p.nome}</h3>
-      <p className="plano-preco"><b>{PRECOS[p.id].mensal}</b><span>/mês</span></p>
+      {PRECOS[p.id].mensal
+        ? <p className="plano-preco"><b>{PRECOS[p.id].mensal}</b><span>/mês</span></p>
+        : <p className="plano-preco plano-preco--por-anunciar"><span>Preço ainda por anunciar</span></p>}
       <p className="plano-para">{p.para}</p>
       {p.antes && <span className="plano-antes">{p.antes}</span>}
       <ul>

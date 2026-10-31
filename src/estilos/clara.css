@@ -318,3 +318,5 @@
 .plano-preco { display: flex; align-items: baseline; gap: 4px; margin: 2px 0 0; }
 .plano-preco b { font-family: var(--titulo); font-weight: 800; font-size: clamp(30px, 3vw, 40px); letter-spacing: -0.03em; }
 .plano-preco span { font-size: 15px; color: var(--suave); }
+.plano-preco--por-anunciar { min-height: clamp(36px, 3.4vw, 46px); align-items: center; }
+.plano-preco--por-anunciar span { font-weight: 600; color: inherit; opacity: 0.75; }

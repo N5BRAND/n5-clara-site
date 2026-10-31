@@ -175,7 +175,7 @@ describe('teste de arquétipos: a Clara fala com o consultor', () => {
 
   it('a pré-reserva aparece separada da mensalidade, com o preço da Pro e da Elite no texto', () => {
     expect(mensagemFinal('malabarista', 'pro').texto).toContain('48,50 € em vez de 97 €')
-    expect(mensagemFinal('malabarista', 'elite').texto).toContain('73,50 € em vez de 147 €')
+    expect(mensagemFinal('malabarista', 'elite').texto).toContain('se continuares na Elite, a primeira mensalidade tem 50% de desconto.')
     for (const p of ['clara', 'pro', 'elite']) {
       expect(mensagemFinal('malabarista', p).texto).not.toContain('53 €')
       expect(mensagemFinal('malabarista', p).preco.rotulo).toBe('Pré-reserva')

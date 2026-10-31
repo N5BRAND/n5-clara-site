@@ -4,6 +4,7 @@ import { PERGUNTAS, lerNumero, calcularDiagnostico, resumoDiagnostico } from '..
 import { origemDe, etiquetaPagina, guardarAnuncio, anuncioGuardado } from '../src/logica/origem.js'
 import { paraGhl } from '../netlify/ghl.js'
 import { PLANOS } from '../src/logica/validar.js'
+import { PRODUTO } from '../src/legal/produto.js'
 
 describe('landing pages', () => {
   it('cada página tem a sua reserva e as demonstrações dizem que são exemplos', () => {
@@ -20,7 +21,9 @@ describe('landing pages', () => {
   })
 
   it('preços, copiloto e particulares como o Pedro decidiu a 31/10', () => {
-    expect(PAGINAS.chamadas.nota.texto).toContain('73,50 € em vez de 147 €')
+    // a Elite ainda não tem preço publicado (proposta interna à espera do custo dos 500 minutos)
+    expect(JSON.stringify({ PAGINAS, PRODUTO })).not.toMatch(/147 €|73,50 €/)
+    expect(PAGINAS.chamadas.nota.texto).toContain('se continuares na Elite, a primeira mensalidade tem 50% de desconto.')
     expect(PAGINAS.reativar.nota.texto).toContain('48,50 € em vez de 97 €')
     expect(PAGINAS.crm.nota.texto).toContain('3 meses desde a ativação')
     expect(PAGINAS.crm.nota.texto).toContain('sem cobrança nem mudança automática')
