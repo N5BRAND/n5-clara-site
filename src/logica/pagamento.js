@@ -16,17 +16,32 @@ export const PRE_RESERVA = VALOR_PRE_RESERVA
    Pedro, 31/10: «a pré-reserva é 27 € e paga o teu primeiro mês; sem fidelização»; o 1.º mês é a Clara Elite completa
    e quem continua na Pro ou na Elite tem 50% na primeira mensalidade desse plano (confirmado pelo Pedro a 31/10).
    O plano Clara fica a 53 €/mês. */
+
+/* mensalidades por consultor (Pedro, 31/10), sem IVA à vista; desconto: a 1.ª mensalidade com os 50% */
+export const PRECOS = {
+  clara: { nome: 'Clara', mensal: '53 €' },
+  pro: { nome: 'Clara Pro', mensal: '97 €', desconto: '48,50 €' },
+  elite: { nome: 'Clara Elite', mensal: '147 €', desconto: '73,50 €' },
+}
+
+const curto = id => PRECOS[id].nome.replace('Clara ', '')
+const superior = id => `${PRECOS[id].desconto} em vez de ${PRECOS[id].mensal} na ${curto(id)}`
+
 export const OFERTA = {
   resumo: 'paga o teu primeiro mês, com a Clara Elite completa',
   meses: [
     { quando: 'Agora', valor: PRE_RESERVA, texto: 'a pré-reserva' },
     { quando: '1.º mês', valor: 'Pago', texto: 'com a pré-reserva, com a Clara Elite completa', destaque: true },
-    { quando: '2.º mês', valor: '−50%', texto: 'na primeira mensalidade da Pro ou da Elite, se continuares' },
+    { quando: '2.º mês', valor: '−50%', texto: `na primeira mensalidade da Pro (${PRECOS.pro.desconto}) ou da Elite (${PRECOS.elite.desconto}), se continuares` },
     { quando: 'Sempre', valor: 'Sem fidelização', texto: 'cancelas quando quiseres' },
   ],
-  nota: 'Preferes o plano Clara? A partir do 2.º mês pagas 53 € por mês.',
-  /* para as páginas e resultados da Pro e da Elite */
-  planoSuperior: plano => `Com a pré-reserva, o teu 1.º mês é a Clara Elite completa; se continuares na ${plano}, tens 50% de desconto na primeira mensalidade.`,
+  nota: `Preferes o plano Clara? A partir do 2.º mês pagas ${PRECOS.clara.mensal} por mês.`,
+  /* para as páginas e resultados da Pro e da Elite: id 'pro', 'elite' ou 'pro-elite' */
+  planoSuperior: id => {
+    const planos = id === 'pro-elite' ? `${superior('pro')} e ${superior('elite')}` : `${PRECOS[id].desconto} em vez de ${PRECOS[id].mensal}`
+    const nome = id === 'pro-elite' ? 'na Pro ou na Elite' : `na ${curto(id)}`
+    return `Com a pré-reserva, o teu 1.º mês é a Clara Elite completa; se continuares ${nome}, a primeira mensalidade tem 50% de desconto: ${planos}.`
+  },
 }
 
 export const METODOS = ['MB WAY', 'Multibanco', 'Cartão', 'Apple Pay', 'Google Pay']

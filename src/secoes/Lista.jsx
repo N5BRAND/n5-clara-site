@@ -82,7 +82,7 @@ export default function Lista({ extra, aviso, reserva = RESERVA, plano = '' } = 
                 <OQuePagas />
                 <ul className="prevenda-reserva-condicoes">
                   <li>Uma das 25 vagas com as condições de lançamento: entras a 1 de dezembro</li>
-                  <li>Copiloto para o CRM da tua marca, sessão de configuração com a equipa da Nº5 e 2 formações, para ti e para a tua equipa até 5 consultores</li>
+                  <li>Copiloto para o CRM da tua marca durante 3 meses, sessão de configuração com a equipa da Nº5 e 2 formações, para ti e para a tua equipa até 5 consultores</li>
                   <li>Reembolsável após o dia do lançamento, nas <a href="/termos/#pre-reserva" target="_blank" rel="noreferrer">condições da pré-reserva</a></li>
                 </ul>
               </motion.div>

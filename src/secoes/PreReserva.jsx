@@ -34,7 +34,7 @@ export default function PreReserva({ aoAcabar, indicacao = null, plano = '' }) {
       <OQuePagas compacto />
       <ul className="pre-reserva-inclui">
         <li>Uma das 25 vagas com as condições de lançamento: entras a 1 de dezembro</li>
-        <li>Copiloto do CRM, sessão de configuração e 2 formações incluídas</li>
+        <li>Copiloto do CRM durante 3 meses, sessão de configuração e 2 formações incluídas</li>
         <li>Reembolsável após o dia do lançamento</li>
       </ul>
       <div className="pre-reserva-metodos" aria-label="Formas de pagamento">

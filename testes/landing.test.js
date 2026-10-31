@@ -19,6 +19,16 @@ describe('landing pages', () => {
     expect(texto).not.toMatch(/probabilidade|só é contactado uma vez/i)
   })
 
+  it('preços, copiloto e particulares como o Pedro decidiu a 31/10', () => {
+    expect(PAGINAS.chamadas.nota.texto).toContain('73,50 € em vez de 147 €')
+    expect(PAGINAS.reativar.nota.texto).toContain('48,50 € em vez de 97 €')
+    expect(PAGINAS.crm.nota.texto).toContain('3 meses desde a ativação')
+    expect(PAGINAS.crm.nota.texto).toContain('sem cobrança nem mudança automática')
+    expect(PAGINAS.angariacao.plano).toBe('pro')
+    expect(PAGINAS.angariacao.nota.texto).toContain('não é exclusiva')
+    expect(JSON.stringify(PAGINAS)).not.toMatch(/anunciado no lançamento/)
+  })
+
   it('as páginas da Pro e da Elite não acabam na oferta do plano base', () => {
     expect(PAGINAS.chamadas.plano).toBe('elite')
     expect(PAGINAS.chamadas.nota.texto).toContain('Elite')

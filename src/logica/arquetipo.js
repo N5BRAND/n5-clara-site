@@ -20,7 +20,7 @@ export const ARQUETIPOS = {
     perdes: 'Na angariação: o próximo imóvel demora a aparecer.',
     clara: 'Qualifica as tuas leads de proprietários (motivação, prazo, preço e documentos).',
     ver: [{ href: '/angariacao/', texto: 'Ver como a Clara faz isto' }],
-    aviso: { titulo: 'Angariação', texto: 'No primeiro dia, a Clara qualifica as tuas leads de proprietários. A lista semanal de particulares a vender sem agência na tua zona chega depois do lançamento, primeiro para quem entra com as 25 vagas de lançamento.' },
+    aviso: { titulo: 'Angariação', texto: 'No primeiro dia, a Clara qualifica as tuas leads de proprietários. A lista semanal de particulares a vender sem agência na tua zona, na Clara Pro e na Elite, chega depois do lançamento, primeiro para quem entra com as 25 vagas de lançamento.' },
   },
   bombeiro: {
     id: 'bombeiro', nome: 'Bombeiro', feminino: 'Bombeira', dor: 'Organização do dia',
@@ -48,7 +48,7 @@ export const ARQUETIPOS = {
     perdes: 'No ritmo: só dás por isso no fim do mês.',
     clara: 'Monta a tua semana em blocos de prospeção, posicionamento e reuniões, e ajusta-a todas as semanas com coaching.',
     ver: [{ href: '/chamadas/', texto: 'Ver o coaching das chamadas, na Elite' }],
-    aviso: { titulo: 'Clara Pro e Elite', texto: 'O calendário de performance nasce na sessão de configuração: a Clara divide a tua semana em blocos de prospeção, posicionamento e reuniões, conforme a faturação e os objetivos que definires, e ajusta-o todas as semanas com coaching e dicas de prospeção e de chamadas. Faz parte da Clara Pro e da Clara Elite. ' + OFERTA.planoSuperior('Pro ou na Elite') },
+    aviso: { titulo: 'Clara Pro e Elite', texto: 'O calendário de performance nasce na sessão de configuração: a Clara divide a tua semana em blocos de prospeção, posicionamento e reuniões, conforme a faturação e os objetivos que definires, e ajusta-o todas as semanas com coaching e dicas de prospeção e de chamadas. Faz parte da Clara Pro e da Clara Elite. ' + OFERTA.planoSuperior('pro-elite') },
   },
 }
 
@@ -247,7 +247,7 @@ export const REACOES = {
 export const reacaoDe = (id, valor) => REACOES[id]?.[valor ?? 'nao-sei'] || null
 
 /* a mensagem pessoal do resultado, com o plano e a oferta do lançamento. A pré-reserva aparece separada da mensalidade:
-   a Pro e a Elite ainda não têm preço publicado. A oferta sai de OFERTA (src/logica/pagamento.js) */
+   a oferta e os preços saem de OFERTA e PRECOS (src/logica/pagamento.js) */
 export function mensagemFinal(arquetipo, plano, esgotado = ESGOTADO) {
   const abertura = `Olha, deu ${ARQUETIPOS[arquetipo]?.nome}.`
   const artigo = plano === 'clara' ? 'o plano' : 'a'
@@ -257,7 +257,7 @@ export function mensagemFinal(arquetipo, plano, esgotado = ESGOTADO) {
     ? 'As 25 vagas com pré-reserva já esgotaram, mas entras na lista de espera e a partir de 1 de dezembro abrimos 30 vagas por semana.'
     : plano === 'clara'
       ? `Como lançamos a 1 de dezembro, a pré-reserva de ${PRE_RESERVA} ${OFERTA.resumo}.`
-      : OFERTA.planoSuperior(nome.replace('Clara ', ''))
+      : OFERTA.planoSuperior(plano)
   const preco = esgotado ? null : { rotulo: 'Pré-reserva', agora: PRE_RESERVA, nota: 'Sem fidelização' }
   return { abertura, artigo, nome, porque, oferta, preco, texto: [abertura, `Para ti, o plano certo é ${artigo} ${nome}.`, porque, oferta].join(' ') }
 }

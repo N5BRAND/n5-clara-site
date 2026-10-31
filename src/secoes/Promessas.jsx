@@ -5,7 +5,7 @@ import { CTA } from '../logica/pagamento.js'
 
 const PROMESSAS = [
   { n: '01', titulo: 'Nenhuma lead fica sem resposta', texto: 'A Clara responde e qualifica em minutos, avisa-te do que ficou por seguir e reativa compradores e proprietários parados.' },
-  { n: '02', titulo: 'Sabes o que fazer hoje', texto: 'O plano do dia chega por prioridade: visitas, angariações, documentos em falta e compradores que encaixam. Depois do lançamento, também os particulares que vendem sem agência na tua zona.' },
+  { n: '02', titulo: 'Sabes o que fazer hoje', texto: 'O plano do dia chega por prioridade: visitas, angariações, documentos em falta e compradores que encaixam. Na Pro e na Elite, depois do lançamento, também os particulares que vendem sem agência na tua zona.' },
   { n: '03', titulo: 'Tens uma previsão dos negócios que podes fechar', texto: 'A previsão parte do teu histórico e do teu ciclo de vendas, não de médias do mercado.' },
   { n: '04', titulo: 'Sabes onde perdes tempo', texto: 'A Clara mede cada etapa do teu processo, ouve as tuas chamadas e diz-te todos os dias o que melhorar.' },
 ]
