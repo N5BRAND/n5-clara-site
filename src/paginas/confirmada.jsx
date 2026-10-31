@@ -4,7 +4,7 @@ import { MotionConfig, motion } from 'motion/react'
 import Simbolo from '../marca/Simbolo.jsx'
 import Partilhar from '../partilha/Partilhar.jsx'
 import { TEXTOS } from '../logica/partilha.js'
-import { iniciarPixel, evento } from '../legal/pixel.js'
+import { iniciarPixel, evento, idDaCompra } from '../legal/pixel.js'
 import { iniciarAnalitica, marcar } from '../legal/analitica.js'
 import { VALOR_EUROS } from '../logica/pagamento.js'
 import { PROGRAMA, meuCodigo, ligacaoPessoal, iniciarIndicacoes } from '../logica/indicacoes.js'
@@ -40,15 +40,19 @@ function Confirmada() {
 }
 
 /* Purchase uma vez por sessão, mesmo que a página seja recarregada.
-   Com VITE_COMPRA_PELO_SERVIDOR=1 (API de Conversões ligada no N5 Controlo), a compra vai pelo servidor quando a Stripe
-   confirma o pagamento, também no Multibanco, e o navegador deixa de a enviar para não contar duas vezes. */
+   Só com o id da sessão da Stripe no endereço (o Payment Link volta com ?session_id={CHECKOUT_SESSION_ID}): quem abre a
+   página sem ter passado pela Stripe não conta como compra. O id é o event_id do Purchase que o N5 Controlo envia pelo
+   servidor, por isso a Meta conta uma compra só.
+   Com VITE_COMPRA_PELO_SERVIDOR=1 (API de Conversões ligada no N5 Controlo), a compra vai só pelo servidor quando a Stripe
+   confirma o pagamento, também no Multibanco: assim a referência por pagar não conta. */
 const COMPRA_PELO_SERVIDOR = import.meta.env.VITE_COMPRA_PELO_SERVIDOR === '1'
+const COMPRA = idDaCompra()
 iniciarPixel()
 iniciarAnalitica()
 iniciarIndicacoes(marcar)
 try {
   if (!sessionStorage.getItem('n5-compra-registada')) {
-    if (!COMPRA_PELO_SERVIDOR) evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' })
+    if (COMPRA && !COMPRA_PELO_SERVIDOR) evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' }, COMPRA)
     marcar('pre_reserva_paga')
     sessionStorage.setItem('n5-compra-registada', '1')
   }
