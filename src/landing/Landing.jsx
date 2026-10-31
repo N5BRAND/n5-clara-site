@@ -171,7 +171,8 @@ export default function Landing({ p }) {
         <HeroLanding p={p} cena={p.cenas[0]} />
         {/* na página do CRM, o copiloto a preencher o CRM vem primeiro: é a promessa do anúncio */}
         {p.copiloto && <div id="como"><Copiloto {...p.copiloto} /></div>}
-        <section id={p.copiloto ? undefined : 'como'} className="seccao lp-cenas">
+        {/* na página do CRM o «como» é o copiloto; os exemplos contam como «cenas» na dashboard */}
+        <section id={p.copiloto ? undefined : 'como'} data-seccao={p.copiloto ? 'cenas' : undefined} className="seccao lp-cenas">
           <div className="contentor lp-cenas-lista">
             {p.cenas.map((c, i) => <Cena key={c.id} cena={c} i={i} />)}
           </div>

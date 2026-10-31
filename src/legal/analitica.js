@@ -53,10 +53,10 @@ function observarSeccoes(cronometro) {
   else window.addEventListener('load', () => setTimeout(ligar, 500), { once: true })
 }
 
-/* na página principal: quanto tempo a visita fica à vista, em cada secção, e onde estava quando saiu.
-   Sai um resumo cada vez que o separador fica escondido ou a página fecha; conta o último de cada visita. */
+/* em todas as páginas (a principal e as landing pages): quanto tempo a visita fica à vista, em cada secção, e onde
+   estava quando saiu. Sai um resumo cada vez que o separador fica escondido ou a página fecha; conta o último de cada
+   visita. O N5 Controlo mostra-o por página. */
 function cronometrarVisita() {
-  if (window.location.pathname !== '/') return null
   const cronometro = criarCronometro(Date.now(), document.visibilityState === 'visible')
   const vista = window.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)
   let envio = 0
