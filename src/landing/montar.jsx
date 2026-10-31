@@ -2,7 +2,8 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'motion/react'
 import { iniciarPixel } from '../legal/pixel.js'
-import { iniciarAnalitica } from '../legal/analitica.js'
+import { iniciarAnalitica, marcar } from '../legal/analitica.js'
+import { iniciarIndicacoes } from '../logica/indicacoes.js'
 import { iniciarBrilho } from '../logica/brilho.js'
 import { PAGINAS, DIAGNOSTICO } from './paginas.js'
 import Landing from './Landing.jsx'
@@ -20,6 +21,7 @@ const id = document.body.dataset.landing
 
 iniciarPixel()
 iniciarAnalitica()
+iniciarIndicacoes(marcar)
 iniciarBrilho()
 
 createRoot(document.getElementById('root')).render(
