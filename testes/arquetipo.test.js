@@ -128,9 +128,10 @@ describe('teste de arquétipos: o topo e os textos', () => {
       expect(x.ver.length).toBeGreaterThan(0)
     }
     expect(Object.keys(ARQUETIPOS).filter(a => ARQUETIPOS[a].aviso)).toEqual(['cacador', 'maratonista'])
-    // a lista de proprietários a vender sozinhos não é prometida para o primeiro dia
+    // a procura de particulares é da Pro e da Elite e começa a 1 de dezembro (Pedro, 31/10)
     expect(ARQUETIPOS.cacador.clara).not.toMatch(/sozinh/)
-    expect(ARQUETIPOS.cacador.aviso.texto).toContain('depois do lançamento')
+    expect(ARQUETIPOS.cacador.aviso.texto).toContain('na Clara Pro e na Elite')
+    expect(ARQUETIPOS.cacador.aviso.texto).toContain('1 de dezembro')
   })
 
   it('o texto segue as regras do site: sem aprovação, ilustrativo, aviso de gravação nem travessões', () => {
@@ -175,7 +176,7 @@ describe('teste de arquétipos: a Clara fala com o consultor', () => {
 
   it('a pré-reserva aparece separada da mensalidade, com o preço da Pro e da Elite no texto', () => {
     expect(mensagemFinal('malabarista', 'pro').texto).toContain('48,50 € em vez de 97 €')
-    expect(mensagemFinal('malabarista', 'elite').texto).toContain('se continuares na Elite, a primeira mensalidade tem 50% de desconto.')
+    expect(mensagemFinal('malabarista', 'elite').texto).toContain('73,50 € em vez de 147 €')
     for (const p of ['clara', 'pro', 'elite']) {
       expect(mensagemFinal('malabarista', p).texto).not.toContain('53 €')
       expect(mensagemFinal('malabarista', p).preco.rotulo).toBe('Pré-reserva')

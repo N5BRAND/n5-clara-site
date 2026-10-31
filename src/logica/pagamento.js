@@ -18,11 +18,11 @@ export const PRE_RESERVA = VALOR_PRE_RESERVA
    O plano Clara fica a 53 €/mês. */
 
 /* mensalidades por consultor (Pedro, 31/10), sem IVA à vista; desconto: a 1.ª mensalidade com os 50%.
-   A Elite ainda não tem preço publicado: o valor proposto está à espera de validar o custo dos 500 minutos */
+   Se um plano ainda não tiver preço publicado, mensal fica a null e o site diz «Preço ainda por anunciar» */
 export const PRECOS = {
   clara: { nome: 'Clara', mensal: '53 €' },
   pro: { nome: 'Clara Pro', mensal: '97 €', desconto: '48,50 €' },
-  elite: { nome: 'Clara Elite', mensal: null, desconto: null },
+  elite: { nome: 'Clara Elite', mensal: '147 €', desconto: '73,50 €' },
 }
 
 const curto = id => PRECOS[id].nome.replace('Clara ', '')
@@ -34,7 +34,7 @@ export const OFERTA = {
   meses: [
     { quando: 'Agora', valor: PRE_RESERVA, texto: 'a pré-reserva' },
     { quando: '1.º mês', valor: 'Pago', texto: 'com a pré-reserva, com a Clara Elite completa', destaque: true },
-    { quando: '2.º mês', valor: '−50%', texto: `na primeira mensalidade da Pro (${PRECOS.pro.desconto}) ou da Elite, se continuares` },
+    { quando: '2.º mês', valor: '−50%', texto: `na primeira mensalidade da Pro (${PRECOS.pro.desconto}) ou da Elite (${PRECOS.elite.desconto}), se continuares` },
     { quando: 'Sempre', valor: 'Sem fidelização', texto: 'cancelas quando quiseres' },
   ],
   nota: `Preferes o plano Clara? A partir do 2.º mês pagas ${PRECOS.clara.mensal} por mês.`,

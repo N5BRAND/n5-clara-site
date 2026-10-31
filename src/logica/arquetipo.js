@@ -20,7 +20,7 @@ export const ARQUETIPOS = {
     perdes: 'Na angariação: o próximo imóvel demora a aparecer.',
     clara: 'Qualifica as tuas leads de proprietários (motivação, prazo, preço e documentos).',
     ver: [{ href: '/angariacao/', texto: 'Ver como a Clara faz isto' }],
-    aviso: { titulo: 'Angariação', texto: 'No primeiro dia, a Clara qualifica as tuas leads de proprietários. A lista semanal de particulares a vender sem agência na tua zona, na Clara Pro e na Elite, chega depois do lançamento, primeiro para quem entra com as 25 vagas de lançamento.' },
+    aviso: { titulo: 'Angariação', texto: 'Desde o primeiro dia, a 1 de dezembro, a Clara qualifica as tuas leads de proprietários e, na Clara Pro e na Elite, junta todas as semanas os particulares a vender sem agência na tua zona.' },
   },
   bombeiro: {
     id: 'bombeiro', nome: 'Bombeiro', feminino: 'Bombeira', dor: 'Organização do dia',

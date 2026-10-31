@@ -33,6 +33,21 @@ describe('GHL', () => {
     expect(paraGhl('prioridades', { email: '' })).toBeNull()
   })
 
+  it('recuperar a ligação do Passa a Clara: só o email, com a etiqueta que dispara o workflow', () => {
+    const r = paraGhl('recuperar-ligacao', { email: 'ana@exemplo.pt' })
+    expect(r.contacto).toEqual({ email: 'ana@exemplo.pt' })
+    expect(r.etiquetas).toEqual(['n5-clara', 'recuperar-ligacao'])
+    expect(paraGhl('recuperar-ligacao', { email: 'ana@exemplo.pt', teste: '1' }).etiquetas).toEqual(['n5-clara', 'teste'])
+  })
+
+  it('o código vai para o campo personalizado só quando o campo está configurado', () => {
+    const d = { nome: 'Ana Silva', email: 'ana@exemplo.pt', agencia: 'X', plano: 'clara', codigo: 'ABC234' }
+    expect(paraGhl('lista-clara', d).contacto.customFields).toBeUndefined()
+    expect(paraGhl('lista-clara', d, { campoCodigo: 'campo123' }).contacto.customFields).toEqual([{ id: 'campo123', field_value: 'ABC234' }])
+    expect(paraGhl('lista-clara', { ...d, codigo: 'xx' }, { campoCodigo: 'campo123' }).contacto.customFields).toBeUndefined()
+    expect(paraGhl('prioridades', { email: 'ana@exemplo.pt', codigo: 'ABC234' }, { campoCodigo: 'campo123' }).contacto.customFields).toBeUndefined()
+  })
+
   it('normaliza telefones portugueses', () => {
     expect(telefone('912 345 678')).toBe('+351912345678')
     expect(telefone('+351 912 345 678')).toBe('+351912345678')

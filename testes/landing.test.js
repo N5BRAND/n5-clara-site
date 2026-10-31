@@ -21,9 +21,8 @@ describe('landing pages', () => {
   })
 
   it('preços, copiloto e particulares como o Pedro decidiu a 31/10', () => {
-    // a Elite ainda não tem preço publicado (proposta interna à espera do custo dos 500 minutos)
-    expect(JSON.stringify({ PAGINAS, PRODUTO })).not.toMatch(/147 €|73,50 €/)
-    expect(PAGINAS.chamadas.nota.texto).toContain('se continuares na Elite, a primeira mensalidade tem 50% de desconto.')
+    expect(PAGINAS.chamadas.nota.texto).toContain('73,50 € em vez de 147 €')
+    expect(PRODUTO.oferta).toContain('73,50 € na Clara Elite (147 € por mês)')
     expect(PAGINAS.reativar.nota.texto).toContain('48,50 € em vez de 97 €')
     expect(PAGINAS.crm.nota.texto).toContain('3 meses desde a ativação')
     expect(PAGINAS.crm.nota.texto).toContain('sem cobrança nem mudança automática')

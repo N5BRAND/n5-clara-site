@@ -14,7 +14,7 @@ const PLANOS = [
   {
     id: 'pro', nome: 'Clara Pro', para: 'Para quem investe em anúncios e quer tirar mais da base.',
     antes: 'Tudo da Clara, mais:',
-    inclui: [MCP, 'Reativação de contactos parados', 'Reativação trimestral de toda a tua base', 'Procura de particulares a vender sem agência nas tuas freguesias, depois do lançamento', 'Marketing com IA: a Clara ajuda-te a criar as campanhas e lanças tudo pela própria plataforma'],
+    inclui: [MCP, 'Reativação de contactos parados', 'Reativação trimestral de toda a tua base', 'Procura de particulares a vender sem agência nas tuas freguesias', 'Marketing com IA: a Clara ajuda-te a criar as campanhas e lanças tudo pela própria plataforma'],
     capacidade: 5,
   },
   {

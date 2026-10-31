@@ -145,7 +145,7 @@ export const PAGINAS = {
       { titulo: 'Recebes a lista por prioridade', texto: 'O mesmo imóvel em vários portais aparece uma vez na tua lista. Cada anúncio tem uma pontuação de prioridade de 0 a 100: tempo à venda, descidas de preço, preço face à freguesia, qualidade do anúncio e compradores teus que encaixam.' },
       { titulo: 'Ligas a saber o que dizer', texto: 'A Clara prepara o argumento com os números do anúncio, as respostas às objeções mais comuns e o objetivo da chamada. Tu fazes a chamada; quem aceita conversar entra no teu pipeline de proprietários.' },
     ],
-    nota: { titulo: 'Clara Pro e Elite', texto: `A procura de particulares faz parte da Clara Pro e da Clara Elite e chega depois do lançamento, primeiro para quem entra com as 25 vagas de lançamento. A lista não é exclusiva: o mesmo anúncio pode aparecer a outros consultores. Desde o primeiro dia, a Clara já qualifica as leads das tuas campanhas de proprietários. ${OFERTA.planoSuperior('pro-elite')}` },
+    nota: { titulo: 'Clara Pro e Elite', texto: `A procura de particulares faz parte da Clara Pro e da Clara Elite e começa com o lançamento, a 1 de dezembro. A lista não é exclusiva: o mesmo anúncio pode aparecer a outros consultores. Desde o primeiro dia, a Clara já qualifica as leads das tuas campanhas de proprietários. ${OFERTA.planoSuperior('pro-elite')}` },
     reserva: { titulo: 'Reserva a Clara para começares a trabalhar novas oportunidades de angariação.', texto: 'A procura de particulares está na Clara Pro e na Clara Elite.' },
     plano: 'pro',
   },
