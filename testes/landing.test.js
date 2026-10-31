@@ -26,9 +26,9 @@ describe('landing pages', () => {
     for (const p of [PAGINAS.chamadas, PAGINAS.reativar]) expect(p.nota.texto).not.toMatch(/plano Clara/)
   })
 
-  it('a pré-reserva da Clara aparece com IVA à parte', () => {
-    expect(PAGINAS.crm.nota.texto).toContain('27 € + IVA')
-    expect(JSON.stringify(PAGINAS)).not.toMatch(/27 €(?! \+ IVA)/)
+  it('nenhuma página fala em IVA', () => {
+    expect(PAGINAS.crm.nota.texto).toContain('27 €')
+    expect(JSON.stringify({ PAGINAS, CENAS_LANDING, DIAGNOSTICO })).not.toMatch(/\bIVA\b/)
   })
 
   it('há uma página por ângulo dos anúncios, cada uma com cenas e três passos', () => {

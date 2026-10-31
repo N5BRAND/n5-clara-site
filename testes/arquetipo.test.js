@@ -162,8 +162,8 @@ describe('teste de arquétipos: a Clara fala com o consultor', () => {
     const m = mensagemFinal('bombeiro', 'clara')
     expect(m.abertura).toBe('Olha, deu Bombeiro.')
     expect(m.texto).toContain('o plano certo é o plano Clara')
-    expect(m.texto).toContain('a pré-reserva de 27 € + IVA paga o teu primeiro mês')
-    expect(m.preco).toEqual({ rotulo: 'Pré-reserva', agora: '27 € + IVA', nota: 'Sem fidelização' })
+    expect(m.texto).toContain('a pré-reserva de 27 € paga o teu primeiro mês')
+    expect(m.preco).toEqual({ rotulo: 'Pré-reserva', agora: '27 €', nota: 'Sem fidelização' })
 
     const pro = mensagemFinal('maratonista', 'pro')
     expect(pro.texto).toContain('Olha, deu Maratonista.')

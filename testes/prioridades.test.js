@@ -23,14 +23,14 @@ describe('prioridades', () => {
   })
 })
 
-import { linkValido, VALOR_PRE_RESERVA, VALOR_EUROS, PRE_RESERVA, TOTAL_PRE_RESERVA, OFERTA, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
+import { linkValido, VALOR_PRE_RESERVA, VALOR_EUROS, PRE_RESERVA, OFERTA, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
 
 describe('link da pré-reserva', () => {
-  it('a pré-reserva da Clara é de 27 € + IVA, com o total à vista antes de pagar', () => {
+  it('a pré-reserva da Clara é de 27 €, sem falar em IVA', () => {
     expect(VALOR_PRE_RESERVA).toBe('27 €')
     expect(VALOR_EUROS).toBe(27)
-    expect(PRE_RESERVA).toBe('27 € + IVA')
-    expect(TOTAL_PRE_RESERVA).toBe('33,21 €')
+    expect(PRE_RESERVA).toBe('27 €')
+    expect(JSON.stringify(OFERTA.meses)).not.toMatch(/IVA/)
     expect(OFERTA.resumo).toContain('paga o teu primeiro mês')
     expect(OFERTA.meses.at(-1).valor).toBe('Sem fidelização')
   })

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import OQuePagas from './OQuePagas.jsx'
 import { evento, novoIdEvento, cliqueSimples, ESPERA_ANTES_DE_SAIR } from '../legal/pixel.js'
 import { marcar } from '../legal/analitica.js'
-import { LINK_PRE_RESERVA, PRE_RESERVA, TOTAL_PRE_RESERVA, VALOR_EUROS, METODOS, linkValido } from '../logica/pagamento.js'
+import { LINK_PRE_RESERVA, PRE_RESERVA, VALOR_EUROS, METODOS, linkValido } from '../logica/pagamento.js'
 import { linkPagamento } from '../logica/indicacoes.js'
 
 /* passo 3, depois das prioridades: pagar a pré-reserva na Stripe; não há opção de pagar depois.
@@ -29,8 +29,7 @@ export default function PreReserva({ aoAcabar, indicacao = null, plano = '' }) {
       <h3>Último passo: a pré-reserva</h3>
       <dl className="pre-reserva-resumo">
         {plano && <div><dt>Plano escolhido</dt><dd>{plano}</dd></div>}
-        <div><dt>Pré-reserva</dt><dd>{PRE_RESERVA}</dd></div>
-        <div className="pre-reserva-total"><dt>Total a pagar agora</dt><dd>{TOTAL_PRE_RESERVA}</dd></div>
+        <div className="pre-reserva-total"><dt>Pré-reserva: total a pagar agora</dt><dd>{PRE_RESERVA}</dd></div>
       </dl>
       <OQuePagas compacto />
       <ul className="pre-reserva-inclui">

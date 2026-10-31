@@ -8,12 +8,9 @@ export const VALOR_PRE_RESERVA = '27 €'
 /* valor em número, para os eventos do píxel */
 export const VALOR_EUROS = parseFloat(VALOR_PRE_RESERVA)
 
-/* a pré-reserva tem IVA à parte (Pedro, 31/10); o valor do píxel continua a ser o da pré-reserva sem IVA */
-export const PRE_RESERVA = `${VALOR_PRE_RESERVA} + IVA`
-
-/* o total cobrado, com IVA à taxa normal (23%): mostra-se antes de pagar. O Payment Link da Stripe tem de cobrar isto */
-export const IVA = 0.23
-export const TOTAL_PRE_RESERVA = `${(VALOR_EUROS * (1 + IVA)).toFixed(2).replace('.', ',')} €`
+/* a pré-reserva como aparece nas páginas: nenhuma página fala em IVA (Pedro, 31/10). O valor mostrado antes de pagar
+   tem de ser o que o Payment Link cobra */
+export const PRE_RESERVA = VALOR_PRE_RESERVA
 
 /* oferta da pré-reserva: a frase curta e o que se paga mês a mês. Tudo o que o site diz da oferta sai daqui.
    Pedro, 31/10: «a pré-reserva é 27 € e paga o teu primeiro mês; sem fidelização»; o 1.º mês é a Clara Elite completa
