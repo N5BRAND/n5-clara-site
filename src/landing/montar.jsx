@@ -5,9 +5,10 @@ import { iniciarPixel } from '../legal/pixel.js'
 import { iniciarAnalitica, marcar } from '../legal/analitica.js'
 import { iniciarIndicacoes } from '../logica/indicacoes.js'
 import { iniciarBrilho } from '../logica/brilho.js'
-import { PAGINAS, DIAGNOSTICO } from './paginas.js'
+import { PAGINAS, DIAGNOSTICO, ARQUETIPO } from './paginas.js'
 import Landing from './Landing.jsx'
 import DiagnosticoPagina from './Diagnostico.jsx'
+import ArquetipoPagina from './Arquetipo.jsx'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
@@ -27,7 +28,9 @@ iniciarBrilho()
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <MotionConfig reducedMotion="user">
-      {id === 'diagnostico' ? <DiagnosticoPagina p={DIAGNOSTICO} /> : <Landing p={PAGINAS[id]} />}
+      {id === 'diagnostico' ? <DiagnosticoPagina p={DIAGNOSTICO} />
+        : id === 'arquetipo' ? <ArquetipoPagina p={ARQUETIPO} />
+        : <Landing p={PAGINAS[id]} />}
     </MotionConfig>
   </React.StrictMode>,
 )

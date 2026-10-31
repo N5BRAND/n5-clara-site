@@ -83,7 +83,7 @@ function ConversaHero({ cena }) {
   )
 }
 
-export function HeroLanding({ p, cena, segundo = { href: '#como', texto: 'Ver como funciona' } }) {
+export function HeroLanding({ p, cena, primeiro = { href: '#lista', texto: CTA }, segundo = { href: '#como', texto: 'Ver como funciona' } }) {
   return (
     <section id="inicio" className="hero escuro lp-hero">
       <div className="hero-simbolo" aria-hidden="true">
@@ -102,7 +102,7 @@ export function HeroLanding({ p, cena, segundo = { href: '#como', texto: 'Ver co
         <div className="lp-hero-corpo">
           <motion.p className="hero-lead" {...subir(0.35)}>{p.lead}</motion.p>
           <motion.div className="hero-botoes" {...subir(0.5)}>
-            <a href="#lista" className="botao">{CTA}</a>
+            <a href={primeiro.href} className="botao">{primeiro.texto}</a>
             <a href={segundo.href} className="botao botao--linha">{segundo.texto}</a>
           </motion.div>
           <motion.div className="lp-hero-urgencia" {...subir(0.6)}><Urgencia /></motion.div>

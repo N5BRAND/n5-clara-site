@@ -222,3 +222,12 @@ export const DIAGNOSTICO = {
   h1: '2 minutos para saber onde perdes tempo e negócios.',
   lead: 'Dez perguntas sobre como trabalhas hoje. No fim vês, com os teus números, quantos negócios te faltam para o teu objetivo e onde a Clara te ajuda primeiro. «Não sei» também conta.',
 }
+
+/* teste de arquétipos (/arquetipo/): fica fora de PAGINAS, como o diagnóstico; o h1 muda com o «?dor=» do anúncio
+   (TITULOS em src/logica/arquetipo.js) */
+export const ARQUETIPO = {
+  titulo: 'Que tipo de consultor és? · N5 Clara',
+  descricao: '8 perguntas sobre o que fizeste ontem. Descobre que tipo de consultor és e onde estás a perder negócios.',
+  eyebrow: 'N5 Clara · Teste para consultores',
+  lead: '8 perguntas sobre o que fizeste ontem, não sobre o que achas. No fim, sabes que tipo de consultor és, onde estás a perder negócios e o plano da Clara que te serve.',
+}
