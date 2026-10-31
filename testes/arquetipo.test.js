@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
-  ARQUETIPOS, PERGUNTAS, DOR_PARA_ARQUETIPO, TITULOS, ORDEM,
-  pontuar, escolher, planoDe, porqueDoPlano, resumo, lerDor, tituloDe,
+  ARQUETIPOS, PERGUNTAS, DOR_PARA_ARQUETIPO, TITULOS, ORDEM, REACOES,
+  pontuar, escolher, planoDe, porqueDoPlano, resumo, lerDor, tituloDe, reacaoDe, mensagemFinal,
 } from '../src/logica/arquetipo.js'
 import { ARQUETIPO } from '../src/landing/paginas.js'
 import { PLANOS } from '../src/logica/validar.js'
@@ -134,8 +134,56 @@ describe('teste de arquétipos: o topo e os textos', () => {
   })
 
   it('o texto segue as regras do site: sem aprovação, ilustrativo, aviso de gravação nem travessões', () => {
-    const texto = JSON.stringify({ ARQUETIPOS, PERGUNTAS, TITULOS, ARQUETIPO })
+    const finais = ORDEM.flatMap(a => ['clara', 'pro', 'elite'].flatMap(p => [mensagemFinal(a, p), mensagemFinal(a, p, true)]))
+    const texto = JSON.stringify({ ARQUETIPOS, PERGUNTAS, TITULOS, ARQUETIPO, REACOES, finais })
     expect(texto).not.toMatch(/aprovação|aprovar|ilustrativ|consentimento|aviso de grava|—|–/i)
     expect(ARQUETIPO.titulo && ARQUETIPO.descricao && ARQUETIPO.eyebrow && ARQUETIPO.lead).toBeTruthy()
+  })
+})
+
+describe('teste de arquétipos: a Clara fala com o consultor', () => {
+  it('cada resposta de cada pergunta tem uma frase da Clara, e o «Não sei» também', () => {
+    for (const p of PERGUNTAS) {
+      for (const [v] of p.opcoes) expect(reacaoDe(p.id, v)).toMatch(/^\S.*[.!?]$/)
+      expect(reacaoDe(p.id, null)).toBeTruthy()
+    }
+  })
+
+  it('cada frase é uma frase só, curta', () => {
+    for (const frases of Object.values(REACOES)) {
+      for (const f of Object.values(frases)) {
+        expect(f.length).toBeLessThanOrEqual(110)
+        expect(f.slice(0, -1)).not.toMatch(/[.!?]\s/)
+      }
+    }
+  })
+
+  it('a mensagem final diz o arquétipo, o plano e a oferta do lançamento', () => {
+    const m = mensagemFinal('bombeiro', 'clara')
+    expect(m.abertura).toBe('Olha, deu Bombeiro.')
+    expect(m.texto).toContain('o plano certo é o plano Clara')
+    expect(m.texto).toContain('o teu primeiro mês fica a 27 € em vez de 53 €')
+    expect(m.preco).toEqual({ rotulo: '1.º mês', antes: '53 €', agora: '27 €' })
+
+    const pro = mensagemFinal('maratonista', 'pro')
+    expect(pro.texto).toContain('Olha, deu Maratonista.')
+    expect(pro.texto).toContain('a Clara Pro')
+    expect(pro.texto).toContain('O calendário de performance faz parte da Pro.')
+    expect(pro.texto).toContain('pré-reserva de 27 €')
+    expect(pro.texto).toContain('50% de desconto na primeira mensalidade')
+  })
+
+  it('os 53 € só aparecem no plano Clara: a Pro e a Elite ainda não têm preço publicado', () => {
+    for (const p of ['pro', 'elite']) {
+      expect(mensagemFinal('malabarista', p).texto).not.toContain('53 €')
+      expect(mensagemFinal('malabarista', p).preco.antes).toBeUndefined()
+    }
+  })
+
+  it('com as pré-reservas esgotadas, fala da lista de espera e não de preços', () => {
+    const m = mensagemFinal('cacador', 'clara', true)
+    expect(m.texto).toContain('lista de espera')
+    expect(m.texto).not.toMatch(/27 €|53 €/)
+    expect(m.preco).toBeNull()
   })
 })

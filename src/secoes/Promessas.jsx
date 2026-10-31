@@ -47,6 +47,7 @@ export default function Promessas() {
               {PROMESSAS.map((e, i) => <span key={e.n} className={i <= ativo ? 'cheio' : ''} />)}
             </div>
           )}
+          <a href="#lista" className="botao promessas-cta">Quero explorar as minhas opções com a Clara</a>
         </div>
       </div>
     </section>

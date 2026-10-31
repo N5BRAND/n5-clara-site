@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react'
 import { useRef, useState } from 'react'
-import { PERGUNTAS, ARQUETIPOS, NAO_SEI, NOMES_PLANO, escolher, planoDe, porqueDoPlano, resumo, lerDor, tituloDe } from '../logica/arquetipo.js'
+import { PERGUNTAS, ARQUETIPOS, NAO_SEI, NOMES_PLANO, escolher, planoDe, resumo, lerDor, tituloDe, reacaoDe, mensagemFinal } from '../logica/arquetipo.js'
 import { PERGUNTAS as PERGUNTAS_DIAGNOSTICO, lerNumero, calcularDiagnostico } from '../logica/diagnostico.js'
 import { codificar } from '../logica/netlify.js'
 import { origemDe } from '../logica/origem.js'
@@ -9,15 +9,18 @@ import { evento } from '../legal/pixel.js'
 import Lista from '../secoes/Lista.jsx'
 import Rodape from '../secoes/Rodape.jsx'
 import AvisoCookies from '../legal/AvisoCookies.jsx'
+import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
 import { TopoLanding, HeroLanding } from './Landing.jsx'
 
 /* as contas usam as perguntas e os limites do diagnóstico */
 const CONTAS = ['faturacao', 'negocios', 'objetivo'].map(id => PERGUNTAS_DIAGNOSTICO.find(q => q.id === id))
 
-/* uma pergunta por ecrã, com «Voltar»; «Não sei» passa à seguinte sem dar pontos */
+/* uma pergunta por ecrã, com «Voltar»; «Não sei» passa à seguinte sem dar pontos.
+   A Clara responde a cada resposta com uma frase, no topo da pergunta seguinte */
 function Questionario({ dor, aoAcabar }) {
   const [i, setI] = useState(0)
   const [r, setR] = useState({})
+  const [reacao, setReacao] = useState(null)
   const iniciado = useRef(false)
   const q = PERGUNTAS[i]
   const responder = v => {
@@ -28,18 +31,29 @@ function Questionario({ dor, aoAcabar }) {
       marcar('arquetipo_iniciado', { dor })
     }
     marcar('arquetipo_pergunta', { n: i + 1, id: q.id, nao_sei: v === NAO_SEI })
+    setReacao(reacaoDe(q.id, v))
     if (i + 1 < PERGUNTAS.length) setI(i + 1)
     else aoAcabar(novo)
+  }
+  const voltar = () => {
+    setReacao(null)
+    setI(i - 1)
   }
   return (
     <div className="cartao diag-cartao">
       <div className="diag-progresso" aria-hidden="true"><span style={{ width: `${(i / PERGUNTAS.length) * 100}%` }} /></div>
       <div className="diag-cabeca">
         <span className="eyebrow">Pergunta {i + 1} de {PERGUNTAS.length}</span>
-        {i > 0 && <button type="button" className="diag-voltar" onClick={() => setI(i - 1)}>← Voltar</button>}
+        {i > 0 && <button type="button" className="diag-voltar" onClick={voltar}>← Voltar</button>}
       </div>
       <AnimatePresence mode="wait">
         <motion.div key={q.id} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.22 }}>
+          {reacao && (
+            <div className="arq-reacao" aria-live="polite">
+              <ClaraAvatar tamanho={32} />
+              <p>{reacao}</p>
+            </div>
+          )}
           <h3 className="diag-pergunta">{q.texto}</h3>
           <div className="diag-opcoes" role="group" aria-label={q.texto}>
             {q.opcoes.map(([v, texto]) => (
@@ -127,6 +141,7 @@ function Resultado({ res, plano, aoRefazer, aoContas }) {
     )
   }
   const segundo = ARQUETIPOS[res.segundo]
+  const m = mensagemFinal(a.id, plano)
   return (
     <motion.div className="diag-resultado" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <div className="cartao arq-cartao">
@@ -147,14 +162,26 @@ function Resultado({ res, plano, aoRefazer, aoContas }) {
         <div className="arq-ver">
           {a.ver.map(v => <a key={v.href} href={v.href} target="_blank" rel="noopener">{v.texto} →</a>)}
         </div>
-      </div>
-      <div className="cartao diag-plano">
-        <p className="eyebrow">O plano que te serve melhor</p>
-        <b>{NOMES_PLANO[plano]}</b>
-        <p>{porqueDoPlano(plano, a.id)} Já o deixámos escolhido no formulário.</p>
-        <div className="diag-acoes">
-          <a href="#lista" className="botao">Quero a Clara</a>
-          <button type="button" className="diag-nao-sei" onClick={aoRefazer}>Refazer o teste</button>
+        {/* o plano no mesmo cartão, dito pela Clara: separado ficava longe e pouca gente lá chegava */}
+        <div className="arq-oferta">
+          <div className="arq-oferta-clara">
+            <ClaraAvatar tamanho={44} viva />
+            <p>
+              {m.abertura} Para ti, o plano certo é {m.artigo} <b>{m.nome}</b>. {m.porque} {m.oferta}
+            </p>
+          </div>
+          {m.preco && (
+            <div className="arq-oferta-preco">
+              <small>{m.preco.rotulo}</small>
+              {m.preco.antes && <s aria-label={`antes ${m.preco.antes}`}>{m.preco.antes}</s>}
+              <b>{m.preco.agora}</b>
+              {m.preco.nota && <span>{m.preco.nota}</span>}
+            </div>
+          )}
+          <div className="diag-acoes">
+            <a href="#lista" className="botao">Quero a {NOMES_PLANO[plano]}</a>
+            <button type="button" className="diag-nao-sei" onClick={aoRefazer}>Refazer o teste</button>
+          </div>
         </div>
       </div>
       <Contas maratonista={a.id === 'maratonista'} aoFazer={aoContas} />

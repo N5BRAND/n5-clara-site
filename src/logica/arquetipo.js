@@ -2,6 +2,7 @@
    As perguntas 1 a 6 dão pontos aos 4 arquétipos (máximo de 10 para cada um, para nenhum partir em vantagem);
    a 7 e a 8 só escolhem o plano. «Não sei» é sempre aceite, fica como null e não dá pontos.
    Especificação: docs/specs/2026-10-31-landing-arquetipo.md */
+import { ESGOTADO, MENSALIDADE, VALOR_PRE_RESERVA } from './pagamento.js'
 
 export const NAO_SEI = null
 
@@ -184,6 +185,83 @@ export function porqueDoPlano(plano, arquetipo) {
   if (plano === 'elite') return 'Passas mais de 3 horas por dia ao telefone.'
   if (plano === 'pro') return arquetipo === 'maratonista' ? 'O calendário de performance faz parte da Pro.' : 'Pagas para ter contactos.'
   return 'Tudo o que precisas está no plano base.'
+}
+
+/* a Clara responde a cada resposta com uma frase só, mostrada no topo da pergunta seguinte */
+export const REACOES = {
+  ontem: {
+    papeis: 'Papéis e mensagens comem o dia a muita gente, e é aí que eu entro.',
+    imoveis: 'Sem imóveis para mostrar não há negócio, faz sentido que isso te ocupe.',
+    contactos: 'Responder depressa conta muito, mas não tem de ser sempre por ti.',
+    planeado: 'Um dia com plano já vai a meio caminho.',
+    'nao-sei': 'Há dias assim, seguimos para a próxima.',
+  },
+  angariacoes: {
+    nenhuma: 'Um mês sem angariações acontece, vamos perceber onde é que isso começa.',
+    '1-2': 'Uma ou duas por mês já dá ritmo, mas ainda há margem.',
+    '3-5': 'Três a cinco por mês é um bom ritmo de angariação.',
+    'mais-5': 'Mais de cinco por mês, estás a angariar a sério.',
+    'nao-sei': 'Não faz mal, contar isso passa a ser trabalho meu.',
+  },
+  ligar: {
+    whatsapp: 'Quem escreve por último passa à frente, mesmo quando não devia.',
+    lista: 'Uma lista feita na véspera poupa-te a manhã inteira.',
+    papeis: 'Quando os papéis passam à frente das chamadas, o negócio fica à espera.',
+    proprietarios: 'Ligar primeiro a proprietários é pensar já na próxima angariação.',
+    'nao-sei': 'Tudo bem, a ordem das chamadas é das primeiras coisas que eu organizo.',
+  },
+  registo: {
+    crm: 'Registo no próprio dia, assim nada se perde pelo caminho.',
+    caderno: 'No caderno fica guardado, mas não te lembra de nada.',
+    'por-registar': 'Uma visita por registar é um seguimento que pode escapar.',
+    'sem-visitas': 'Uma semana sem visitas pede primeiro mais imóveis e mais compradores.',
+    'nao-sei': 'Se não sabes onde ficou, é porque ainda não tem um lugar certo.',
+  },
+  resposta: {
+    minutos: 'Menos de 15 minutos é rápido, e quem pergunta nota a diferença.',
+    hora: 'Até uma hora ainda é bom, o difícil é manter isso à noite e ao fim de semana.',
+    horas: 'Em algumas horas, a lead tem tempo de falar com outro consultor.',
+    dia: 'No dia seguinte, muitas leads já falaram com outro consultor.',
+    'nao-sei': 'Não faz mal, o tempo de resposta passa a ser medido por mim.',
+  },
+  mes: {
+    sei: 'Saber o mês ao certo é raro, tens as contas em dia.',
+    objetivo: 'Ter o objetivo já é meio caminho, falta saber se o ritmo chega.',
+    'sem-objetivo': 'Sem objetivo é difícil saber se o mês está a correr bem.',
+    'nao-sei': 'Não faz mal, saber isto é das primeiras coisas que te mostro.',
+  },
+  telefone: {
+    'menos-1': 'Pouco telefone, o teu dia vai para outras tarefas.',
+    '1-3': 'Entre uma e três horas, cada chamada tem de contar.',
+    '3-mais': 'Com tantas horas ao telefone, cada chamada merece ser bem aproveitada.',
+    'nao-sei': 'Ninguém conta as horas ao telefone, não faz mal.',
+  },
+  anuncios: {
+    sim: 'Se pagas por contactos, nenhum pode ficar sem resposta.',
+    'as-vezes': 'Quando pagas por contactos, cada um tem de ser bem aproveitado.',
+    nao: 'Sem anúncios, os contactos que já tens valem ainda mais.',
+    'nao-sei': 'Fica para a sessão de configuração, vemos isso juntos.',
+  },
+}
+
+export const reacaoDe = (id, valor) => REACOES[id]?.[valor ?? 'nao-sei'] || null
+
+/* a mensagem pessoal do resultado, com o plano e a oferta do lançamento. Os 53 € são a mensalidade do plano Clara:
+   a Pro e a Elite ainda não têm preço publicado, por isso só se fala da pré-reserva e do desconto */
+export function mensagemFinal(arquetipo, plano, esgotado = ESGOTADO) {
+  const abertura = `Olha, deu ${ARQUETIPOS[arquetipo]?.nome}.`
+  const artigo = plano === 'clara' ? 'o plano' : 'a'
+  const nome = NOMES_PLANO[plano]
+  const porque = porqueDoPlano(plano, arquetipo)
+  const oferta = esgotado
+    ? 'As 25 licenças com pré-reserva já esgotaram, mas entras na lista de espera e a partir de 1 de dezembro abrimos 30 vagas por semana.'
+    : plano === 'clara'
+      ? `Como lançamos a 1 de dezembro, o teu primeiro mês fica a ${VALOR_PRE_RESERVA} em vez de ${MENSALIDADE.normal}.`
+      : `Como lançamos a 1 de dezembro, entras com a pré-reserva de ${VALOR_PRE_RESERVA} e tens ${MENSALIDADE.desconto}% de desconto na primeira mensalidade.`
+  const preco = esgotado ? null
+    : plano === 'clara' ? { rotulo: '1.º mês', antes: MENSALIDADE.normal, agora: VALOR_PRE_RESERVA }
+    : { rotulo: 'Pré-reserva', agora: VALOR_PRE_RESERVA, nota: `−${MENSALIDADE.desconto}% na 1.ª mensalidade` }
+  return { abertura, artigo, nome, porque, oferta, preco, texto: [abertura, `Para ti, o plano certo é ${artigo} ${nome}.`, porque, oferta].join(' ') }
 }
 
 const milhares = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.')

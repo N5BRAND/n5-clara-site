@@ -48,6 +48,15 @@
 .promessas-grelha .eixo h3 { font-size: clamp(22px, 2.1vw, 30px); }
 @media (max-width: 1100px) { .promessas-grelha { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 900px) { .promessas-grelha { grid-template-columns: 1fr; } }
+/* leva à inscrição, logo a seguir às promessas */
+.promessas-cta { justify-self: start; }
+/* no telemóvel a secção fica presa ao ecrã: menos espaço entre as peças, para o botão caber por baixo do topo fixo */
+@media (max-width: 900px) {
+  .eixos-palco { padding-top: 68px; }
+  .eixos-palco .contentor { gap: 14px; }
+  .eixo { padding: 14px 20px; }
+  .promessas-cta { padding: 12px 20px; font-size: 15px; }
+}
 
 /* ===== um dia com a Clara ===== */
 .dia-relogio { display: grid; gap: 2px; }
