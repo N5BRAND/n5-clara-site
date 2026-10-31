@@ -12,13 +12,15 @@ describe('API de Conversões da Meta', () => {
   it('passa a inscrição ao N5 Controlo com o id do píxel e a página', () => {
     expect(paraConversoes('lista-clara', inscricao)).toEqual({
       event: 'Lead', event_id: 'b1f0c2d4-1111-2222-3333-444455556666', email: 'rui@rede.pt', phone: '912345678', name: 'Rui Costa',
-      fbp: 'fb.1.1700000000000.123', client_ip: '1.2.3.4', user_agent: 'Mozilla/5.0', source_url: 'https://clara.numerocinco.pt/leads/', consent: true,
+      fbp: 'fb.1.1700000000000.123', client_ip: '1.2.3.4', user_agent: 'Mozilla/5.0', source_url: 'https://clara.numerocinco.pt/leads/', ad: 'cla_n2_leads', consent: true,
     })
   })
 
-  it('não envia nada sem os cookies de marketing aceites', () => {
-    expect(paraConversoes('lista-clara', { ...inscricao, meta_consentimento: '' })).toBeNull()
-    expect(paraConversoes('lista-clara', { ...inscricao, meta_evento: '' })).toBeNull()
+  it('sem os cookies de marketing aceites, só segue a página e o anúncio', () => {
+    expect(paraConversoes('lista-clara', { ...inscricao, meta_consentimento: '' })).toEqual({
+      event: 'Lead', event_id: 'b1f0c2d4-1111-2222-3333-444455556666', email: 'rui@rede.pt', source_url: 'https://clara.numerocinco.pt/leads/', ad: 'cla_n2_leads', consent: false,
+    })
+    expect(paraConversoes('lista-clara', { ...inscricao, email: '' })).toBeNull()
   })
 
   it('só as inscrições contam como Lead', () => {
