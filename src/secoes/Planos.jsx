@@ -20,7 +20,7 @@ const PLANOS = [
   {
     id: 'elite', nome: 'Clara Elite', para: 'Para quem vive ao telefone.', destaque: true,
     antes: 'Tudo do Pro, mais:',
-    inclui: [MCP, 'Chamadas pela aplicação da Clara, com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas incluídos'],
+    inclui: [MCP, 'Chamadas pela aplicação da Clara, com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas por mês incluídos'],
     capacidade: 15,
   },
 ]

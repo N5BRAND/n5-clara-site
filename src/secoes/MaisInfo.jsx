@@ -8,7 +8,7 @@ const AGENTES = [
   { nome: 'Documentos', faz: 'Pede e acompanha os documentos de cada imóvel.' },
   { nome: 'Previsão', faz: 'Prevê os negócios que podes fechar e mede os tempos do teu processo.' },
   { nome: 'Memória', faz: 'Transcreve as tuas notas de voz e regista tudo na ficha certa.' },
-  { nome: 'Copiloto', faz: 'Preenche o CRM da tua marca; tu confirmas e gravas.' },
+  { nome: 'Copiloto', faz: 'Preenche e grava o CRM da tua marca por ti.' },
   { nome: 'Chamadas', faz: 'Analisa as chamadas que fazes pela aplicação e faz o coaching.' },
 ]
 

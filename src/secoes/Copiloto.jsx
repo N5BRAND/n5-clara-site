@@ -26,7 +26,7 @@ function Escrita({ texto, ativo }) {
 const TEXTOS = {
   eyebrow: 'Ao lado do CRM da tua marca',
   titulo: 'Tens um CRM obrigatório? A Clara preenche-o por ti.',
-  texto: 'O copiloto trabalha no browser, na sessão que já tens aberta. Contactos, visitas, feedback e documentos que a Clara captou passam para o CRM da tua marca sem escreveres nada. Revês e confirmas antes de gravar. Nunca te pede palavras-passe.',
+  texto: 'O copiloto trabalha no browser, na sessão que já tens aberta. Contactos, visitas, feedback e documentos que a Clara captou passam para o CRM da tua marca sem escreveres nada. Nunca te pede palavras-passe.',
 }
 
 export default function Copiloto(props) {
@@ -37,14 +37,12 @@ export default function Copiloto(props) {
 
   useEffect(() => {
     if (!visivel) { setCampo(-1); return }
-    if (campo > CAMPOS.length) return
-    /* com os campos preenchidos, espera pela confirmação do consultor antes de gravar */
-    const t = setTimeout(() => setCampo(c => c + 1), campo < 0 ? 600 : campo === CAMPOS.length ? 1800 : 900)
+    if (campo >= CAMPOS.length) return
+    const t = setTimeout(() => setCampo(c => c + 1), campo < 0 ? 600 : 900)
     return () => clearTimeout(t)
   }, [visivel, campo])
 
-  const aConfirmar = campo === CAMPOS.length
-  const gravado = campo > CAMPOS.length
+  const gravado = campo >= CAMPOS.length
 
   return (
     <section data-seccao="copiloto" ref={ref} className="seccao copiloto">
@@ -70,13 +68,13 @@ export default function Copiloto(props) {
                   <div className="crm-valor"><Escrita texto={c.valor} ativo={campo >= i} /></div>
                 </div>
               ))}
-              <motion.div className={`crm-gravar ${gravado ? 'crm-gravar--feito' : aConfirmar ? 'crm-gravar--confirmar' : ''}`} animate={gravado || aConfirmar ? { scale: [1, 1.06, 1] } : { scale: 1 }}>
-                {gravado ? '✓ Gravado no CRM' : 'Confirmar e gravar'}
+              <motion.div className={`crm-gravar ${gravado ? 'crm-gravar--feito' : ''}`} animate={gravado ? { scale: [1, 1.06, 1] } : { scale: 1 }}>
+                {gravado ? '✓ Gravado no CRM' : 'Gravar'}
               </motion.div>
             </div>
             <div className="crm-clara">
-              <div className="crm-clara-topo"><ClaraAvatar tamanho={30} viva={!gravado && !aConfirmar && campo >= 0} /><b>Clara</b></div>
-              <p>{gravado ? 'Gravado. Fica marcado na Clara o que já está no CRM da marca.' : aConfirmar ? 'Preenchido. Revê os campos e confirma para gravar.' : campo >= 0 ? 'A preencher com o que captei da tua nota de voz…' : 'Abriste um contacto novo.'}</p>
+              <div className="crm-clara-topo"><ClaraAvatar tamanho={30} viva={!gravado && campo >= 0} /><b>Clara</b></div>
+              <p>{gravado ? 'Gravado. Fica marcado na Clara o que já está no CRM da marca.' : campo >= 0 ? 'A preencher com o que captei da tua nota de voz…' : 'Abriste um contacto novo.'}</p>
               <span className="crm-clara-nota">Histórico, tarefas e próxima sugestão ao lado do teu CRM.</span>
             </div>
           </div>
