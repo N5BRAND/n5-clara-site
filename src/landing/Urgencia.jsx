@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { LANCAMENTO, tempoAte } from '../logica/contagem.js'
-import { ESGOTADO } from '../logica/pagamento.js'
+import { ESGOTADO, PRE_RESERVA } from '../logica/pagamento.js'
 
 /* faixa de urgência no topo das landing pages: só factos da oferta (data, licenças, desconto), sem números inventados */
 export default function Urgencia() {
@@ -16,7 +16,7 @@ export default function Urgencia() {
     ESGOTADO
       ? { forte: '30 vagas', texto: 'por semana, pela ordem da lista de espera' }
       : { forte: 'Só 25 licenças', texto: 'entram no primeiro dia' },
-    ...(ESGOTADO ? [] : [{ forte: '50% no 1.º mês', texto: 'só com pré-reserva antes de 1 de dezembro' }]),
+    ...(ESGOTADO ? [] : [{ forte: '1.º mês pago', texto: `com a pré-reserva de ${PRE_RESERVA}, antes de 1 de dezembro` }]),
   ]
 
   return (

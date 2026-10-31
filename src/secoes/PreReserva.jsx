@@ -1,14 +1,14 @@
 import { motion } from 'motion/react'
 import { useState } from 'react'
-import Mensalidade from './Mensalidade.jsx'
+import OQuePagas from './OQuePagas.jsx'
 import { evento, novoIdEvento, cliqueSimples, ESPERA_ANTES_DE_SAIR } from '../legal/pixel.js'
 import { marcar } from '../legal/analitica.js'
-import { LINK_PRE_RESERVA, VALOR_PRE_RESERVA, VALOR_EUROS, METODOS, linkValido } from '../logica/pagamento.js'
+import { LINK_PRE_RESERVA, PRE_RESERVA, VALOR_EUROS, METODOS, linkValido } from '../logica/pagamento.js'
 import { linkPagamento } from '../logica/indicacoes.js'
 
 /* passo 3, depois das prioridades: pagar a pré-reserva na Stripe; não há opção de pagar depois.
    Se a pessoa veio por indicação, o código de quem indicou segue para a Stripe (Passa a Clara). */
-export default function PreReserva({ aoAcabar, indicacao = null }) {
+export default function PreReserva({ aoAcabar, indicacao = null, plano = '' }) {
   const temLink = linkValido(LINK_PRE_RESERVA)
   const destino = linkPagamento(LINK_PRE_RESERVA, indicacao)
   const [aceito, setAceito] = useState(false)
@@ -25,21 +25,18 @@ export default function PreReserva({ aoAcabar, indicacao = null }) {
 
   return (
     <motion.div key="pre-reserva" className="pre-reserva" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-      <p className="prioridades-feito">✓ Estás na lista.</p>
-      <h3>Último passo: conclui a tua inscrição</h3>
-      <div className="pre-reserva-valor">
-        <div className="pre-reserva-preco">
-          <span>{VALOR_PRE_RESERVA}</span>
-          <Mensalidade />
-        </div>
-        <ul>
-          <li>50% na 1.ª mensalidade: os 27 € pagam o teu 1.º mês</li>
-          <li>Uma das 25 licenças: entras no primeiro dia</li>
-          <li>Copiloto do CRM, sessão de configuração e 2 formações incluídas</li>
-          <li>Os 0,50 € que sobram saem do 2.º mês: 52,50 €</li>
-          <li>Sem fidelização. Reembolsável após o dia do lançamento</li>
-        </ul>
-      </div>
+      <p className="prioridades-feito">✓ Dados guardados.</p>
+      <h3>Último passo: a pré-reserva</h3>
+      <dl className="pre-reserva-resumo">
+        {plano && <div><dt>Plano escolhido</dt><dd>{plano}</dd></div>}
+        <div className="pre-reserva-total"><dt>Pré-reserva: total a pagar agora</dt><dd>{PRE_RESERVA}</dd></div>
+      </dl>
+      <OQuePagas compacto />
+      <ul className="pre-reserva-inclui">
+        <li>Uma das 25 vagas com as condições de lançamento: entras a 1 de dezembro</li>
+        <li>Copiloto do CRM durante 3 meses, sessão de configuração e 2 formações incluídas</li>
+        <li>Reembolsável após o dia do lançamento</li>
+      </ul>
       <div className="pre-reserva-metodos" aria-label="Formas de pagamento">
         {METODOS.map(m => <span key={m}>{m}</span>)}
       </div>
@@ -49,7 +46,7 @@ export default function PreReserva({ aoAcabar, indicacao = null }) {
             <input type="checkbox" checked={aceito} onChange={e => setAceito(e.target.checked)} />
             <span>Li e aceito as <a href="/termos/#pre-reserva" target="_blank" rel="noreferrer">condições da pré-reserva e do reembolso</a>.</span>
           </label>
-          {aceito ? <a className="botao prevenda-botao" href={destino} onClick={pagar}>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {VALOR_PRE_RESERVA} e garantir a minha vaga</button>}
+          {aceito ? <a className="botao prevenda-botao" href={destino} onClick={pagar}>Pagar {PRE_RESERVA} e garantir a minha vaga</a> : <button type="button" className="botao prevenda-botao" disabled>Pagar {PRE_RESERVA} e garantir a minha vaga</button>}
           <p className="pre-reserva-nota">Pagamento seguro na Stripe. Voltas a este site no fim.</p>
         </>
       ) : (

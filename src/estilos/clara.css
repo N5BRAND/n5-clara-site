@@ -297,3 +297,25 @@
 .dia-etapa-chip { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; background: var(--tinta); color: var(--creme); font-weight: 700; font-size: 16px; }
 .dia-etapa-hora { font-family: var(--mono); font-size: 13px; color: var(--dourado); }
 .dia-etapa-conta { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--suave); }
+
+/* ===== mais informação (detalhes técnicos recolhidos) ===== */
+.mais-info { padding-block: clamp(40px, 6vw, 72px); }
+.mais-info-bloco { border-top: 1px solid var(--linha); padding: 16px 0; }
+.mais-info-bloco:last-child { border-bottom: 1px solid var(--linha); }
+.mais-info-bloco summary { cursor: pointer; font-family: var(--titulo); font-weight: 700; font-size: clamp(18px, 2vw, 22px); }
+.mais-info-bloco[open] summary { margin-bottom: 12px; }
+.mais-info-agentes { margin: 12px 0 0; padding-left: 18px; display: grid; gap: 6px; }
+.rodape-agencias { font-size: 13px; color: var(--suave); text-decoration: underline; text-underline-offset: 3px; }
+
+/* exemplo/simulação nas cenas das landing pages */
+.lp-exemplo { margin: 8px 0 0; font-size: 13px; font-style: italic; color: var(--suave); }
+
+/* o título da página principal diz o que a Clara faz e é mais comprido: letra mais pequena */
+.hero-texto h1 { font-size: clamp(34px, 4.4vw, 62px); line-height: 1.04; }
+
+/* preço de cada plano na comparação */
+.plano-preco { display: flex; align-items: baseline; gap: 4px; margin: 2px 0 0; }
+.plano-preco b { font-family: var(--titulo); font-weight: 800; font-size: clamp(30px, 3vw, 40px); letter-spacing: -0.03em; }
+.plano-preco span { font-size: 15px; color: var(--suave); }
+.plano-preco--por-anunciar { min-height: clamp(36px, 3.4vw, 46px); align-items: center; }
+.plano-preco--por-anunciar span { font-weight: 600; color: inherit; opacity: 0.75; }

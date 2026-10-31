@@ -74,6 +74,8 @@ function Pergunta({ q, valor, aoResponder }) {
 }
 
 function Resultado({ res, aoRefazer }) {
+  /* sem números nem dificuldades escolhidas, o plano é só um ponto de partida */
+  const semRespostas = !res.blocos.length && !res.focos.length
   return (
     <motion.div className="diag-resultado" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
       <div className="diag-resultado-topo">
@@ -83,6 +85,7 @@ function Resultado({ res, aoRefazer }) {
           <h3>Feito com os teus números, sem médias de ninguém.</h3>
         </div>
       </div>
+      <p className="eyebrow diag-parte">Contas com os teus números</p>
       {res.blocos.length > 0 ? (
         <div className="diag-blocos">
           {res.blocos.map(b => (
@@ -94,11 +97,12 @@ function Resultado({ res, aoRefazer }) {
           ))}
         </div>
       ) : (
-        <p className="diag-vazio">Sem números não há contas, mas há caminho: a Clara mede tudo isto por ti a partir do primeiro dia.</p>
+        <p className="diag-vazio">Ainda não há números para fazer contas. A Clara mede isto por ti a partir do primeiro dia.</p>
       )}
+      <p className="eyebrow diag-parte">Recomendações</p>
       {res.focos.length > 0 && (
         <div className="diag-focos">
-          <p className="eyebrow">Onde a Clara te ajuda primeiro</p>
+          <p className="diag-focos-titulo">Onde a Clara te ajuda primeiro</p>
           <ul>
             {res.focos.map(f => (
               <li key={f.id}>
@@ -110,11 +114,13 @@ function Resultado({ res, aoRefazer }) {
         </div>
       )}
       <div className="cartao diag-plano">
-        <p className="eyebrow">O plano que te serve melhor</p>
+        <p className="eyebrow">{semRespostas ? 'Um ponto de partida' : 'O plano que te serve melhor'}</p>
         <b>{NOMES_PLANO[res.plano]}</b>
-        <p>Já o deixámos escolhido no formulário. Se te inscreveres, guardamos estas respostas para a tua sessão de configuração.</p>
+        <p>{semRespostas
+          ? 'Com «Não sei» nas respostas, não é uma recomendação feita à tua medida: é o plano base, por onde se começa. Na sessão de configuração vemos contigo o que faz sentido.'
+          : 'Já o deixámos escolhido no formulário. Se fizeres a reserva, guardamos estas respostas para a tua sessão de configuração.'}</p>
         <div className="diag-acoes">
-          <a href="#lista" className="botao">Quero a Clara</a>
+          <a href="#lista" className="botao">Reservar a {NOMES_PLANO[res.plano]}</a>
           <button type="button" className="diag-nao-sei" onClick={aoRefazer}>Refazer o diagnóstico</button>
         </div>
       </div>
@@ -178,13 +184,13 @@ export default function DiagnosticoPagina({ p }) {
     <>
       <TopoLanding como={{ href: '#diagnostico', texto: 'Diagnóstico' }} />
       <main>
-        <HeroLanding p={p} segundo={{ href: '#diagnostico', texto: 'Começar o diagnóstico' }} />
+        <HeroLanding p={p} primeiro={{ href: '#diagnostico', texto: 'Começar o diagnóstico' }} segundo={null} urgencia={false} />
         <section id="diagnostico" ref={caixa} className="seccao diag">
           <div className="contentor diag-contentor">
             {res ? <Resultado res={res} aoRefazer={() => setRes(null)} /> : <Questionario aoAcabar={acabar} />}
           </div>
         </section>
-        <Lista extra={res ? { diagnostico: res.resumo } : undefined} />
+        <Lista extra={res ? { diagnostico: res.resumo } : undefined} reserva={p.reserva} plano={res?.plano || ''} />
       </main>
       <Rodape />
       <AvisoCookies />

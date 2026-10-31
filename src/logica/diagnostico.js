@@ -39,7 +39,7 @@ export const FOCOS = {
   tempo: { titulo: 'Menos horas em tarefas', texto: 'Respostas às leads, plano do dia e notas de voz que se registam sozinhas.', onde: '/dia/' },
   documentos: { titulo: 'Documentos sem andar atrás', texto: 'Checklist por imóvel, pedidos ao proprietário pelo WhatsApp e lembretes quando tarda.', onde: '/proprietarios/' },
   credito: { titulo: 'O crédito a tempo', texto: 'A Clara mede quanto demoras a passar o comprador ao intermediário de crédito e avisa-te quando está a demorar.', onde: '/' },
-  angariacao: { titulo: 'Mais angariações', texto: 'Leads de proprietários qualificadas e, depois do lançamento, os proprietários a vender sozinhos na tua zona, todas as segundas.', onde: '/angariacao/' },
+  angariacao: { titulo: 'Mais angariações', texto: 'Leads de proprietários qualificadas e, na Clara Pro e na Elite, os particulares a vender sem agência na tua zona, todas as segundas.', onde: '/angariacao/' },
   resposta: { titulo: 'Responder em minutos', texto: 'A Clara responde às leads a qualquer hora, com o teu guião, e entrega-te as qualificadas no plano do dia.', onde: '/leads/' },
 }
 

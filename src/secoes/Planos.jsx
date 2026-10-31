@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef } from 'react'
 import { LogoChatGPT, LogoClaude } from '../ilustracoes/LogosIA.jsx'
+import { PRECOS } from '../logica/pagamento.js'
 
 const MCP = { mcp: true, texto: 'MCP com o ChatGPT e o Claude' }
 
@@ -13,13 +14,13 @@ const PLANOS = [
   {
     id: 'pro', nome: 'Clara Pro', para: 'Para quem investe em anúncios e quer tirar mais da base.',
     antes: 'Tudo da Clara, mais:',
-    inclui: [MCP, 'Reativação de contactos parados', 'Reativação trimestral de toda a tua base', 'Marketing com IA: a Clara ajuda-te a criar as campanhas e lanças tudo pela própria plataforma'],
+    inclui: [MCP, 'Reativação de contactos parados', 'Reativação trimestral de toda a tua base', 'Procura de particulares a vender sem agência nas tuas freguesias', 'Marketing com IA: a Clara ajuda-te a criar as campanhas e lanças tudo pela própria plataforma'],
     capacidade: 5,
   },
   {
     id: 'elite', nome: 'Clara Elite', para: 'Para quem vive ao telefone.', destaque: true,
     antes: 'Tudo do Pro, mais:',
-    inclui: [MCP, 'Chamadas pela Clara com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas incluídos'],
+    inclui: [MCP, 'Chamadas pela aplicação da Clara, com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas por mês incluídos'],
     capacidade: 15,
   },
 ]
@@ -94,6 +95,9 @@ function Plano({ p, i }) {
       <span className="plano-rasto" aria-hidden="true"><span /></span>
       {p.destaque && <span className="etiqueta plano-etiqueta">Com chamadas</span>}
       <h3>{p.nome}</h3>
+      {PRECOS[p.id].mensal
+        ? <p className="plano-preco"><b>{PRECOS[p.id].mensal}</b><span>/mês</span></p>
+        : <p className="plano-preco plano-preco--por-anunciar"><span>Preço ainda por anunciar</span></p>}
       <p className="plano-para">{p.para}</p>
       {p.antes && <span className="plano-antes">{p.antes}</span>}
       <ul>
@@ -106,7 +110,7 @@ function Plano({ p, i }) {
       </ul>
       <Capacidade vezes={p.capacidade} />
       <button type="button" className={`botao ${p.destaque ? '' : 'botao--linha'} plano-botao`} onClick={() => escolher(p.id)}>
-        Quero a {p.nome}
+        Reservar a {p.nome}
       </button>
     </motion.article>
   )
@@ -119,7 +123,7 @@ export default function Planos() {
         <div className="seccao-cabeca">
           <p className="eyebrow">Planos</p>
           <h2>Três planos. Escolhe o que se parece contigo.</h2>
-          <p>Sem fidelização: cancelas quando quiseres.</p>
+          <p>Preços por consultor. Sem fidelização: cancelas quando quiseres. Com a pré-reserva, o 1.º mês é a Clara Elite completa.</p>
         </div>
         <div className="planos-grelha">
           {PLANOS.map((p, i) => <Plano key={p.id} p={p} i={i} />)}

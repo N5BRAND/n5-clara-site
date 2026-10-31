@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { iniciarPixel } from './legal/pixel.js'
 import { iniciarAnalitica, marcar } from './legal/analitica.js'
 import { iniciarIndicacoes } from './logica/indicacoes.js'
+import { iniciarOrigem } from './logica/origem.js'
 import { iniciarBrilho } from './logica/brilho.js'
 import { MotionConfig } from 'motion/react'
 import App from './App.jsx'
@@ -16,6 +17,7 @@ import './estilos/legal.css'
 iniciarPixel()
 iniciarAnalitica()
 iniciarIndicacoes(marcar)
+iniciarOrigem()
 iniciarBrilho()
 
 createRoot(document.getElementById('root')).render(

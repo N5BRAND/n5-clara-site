@@ -32,11 +32,11 @@ describe('teste de arquétipos: o resultado', () => {
     expect(escolher(com({ ontem: 'planeado', angariacoes: 'nenhuma', registo: 'sem-visitas', ligar: 'papeis', mes: 'sem-objetivo', resposta: 'dia' })).arquetipo).toBe('cacador')
   })
 
-  it('com tudo «Não sei» usa a dor do anúncio; sem dor não há resultado', () => {
-    expect(escolher(tudoNaoSei, 'organizacao')).toEqual({ arquetipo: 'bombeiro', segundo: null, pontos: pontuar(tudoNaoSei) })
-    expect(escolher(tudoNaoSei, 'performance').arquetipo).toBe('maratonista')
+  it('com tudo «Não sei» não há perfil, mesmo com a dor do anúncio (a dor só muda o título)', () => {
+    expect(escolher(tudoNaoSei, 'organizacao')).toEqual({ arquetipo: null, segundo: null, pontos: pontuar(tudoNaoSei) })
+    expect(escolher(tudoNaoSei, 'performance').arquetipo).toBeNull()
     expect(escolher(tudoNaoSei).arquetipo).toBeNull()
-    expect(escolher(tudoNaoSei, 'xpto').arquetipo).toBeNull()
+    expect(tituloDe('organizacao')).toBe(TITULOS.organizacao)
   })
 
   it('o segundo arquétipo só aparece com 3 pontos ou mais', () => {
@@ -128,9 +128,10 @@ describe('teste de arquétipos: o topo e os textos', () => {
       expect(x.ver.length).toBeGreaterThan(0)
     }
     expect(Object.keys(ARQUETIPOS).filter(a => ARQUETIPOS[a].aviso)).toEqual(['cacador', 'maratonista'])
-    // a lista de proprietários a vender sozinhos não é prometida para o primeiro dia
+    // a procura de particulares é da Pro e da Elite e começa a 1 de dezembro (Pedro, 31/10)
     expect(ARQUETIPOS.cacador.clara).not.toMatch(/sozinh/)
-    expect(ARQUETIPOS.cacador.aviso.texto).toContain('depois do lançamento')
+    expect(ARQUETIPOS.cacador.aviso.texto).toContain('na Clara Pro e na Elite')
+    expect(ARQUETIPOS.cacador.aviso.texto).toContain('1 de dezembro')
   })
 
   it('o texto segue as regras do site: sem aprovação, ilustrativo, aviso de gravação nem travessões', () => {
@@ -162,21 +163,23 @@ describe('teste de arquétipos: a Clara fala com o consultor', () => {
     const m = mensagemFinal('bombeiro', 'clara')
     expect(m.abertura).toBe('Olha, deu Bombeiro.')
     expect(m.texto).toContain('o plano certo é o plano Clara')
-    expect(m.texto).toContain('o teu primeiro mês fica a 27 € em vez de 53 €')
-    expect(m.preco).toEqual({ rotulo: '1.º mês', antes: '53 €', agora: '27 €' })
+    expect(m.texto).toContain('a pré-reserva de 27 € paga o teu primeiro mês')
+    expect(m.preco).toEqual({ rotulo: 'Pré-reserva', agora: '27 €', nota: 'Sem fidelização' })
 
     const pro = mensagemFinal('maratonista', 'pro')
     expect(pro.texto).toContain('Olha, deu Maratonista.')
     expect(pro.texto).toContain('a Clara Pro')
     expect(pro.texto).toContain('O calendário de performance faz parte da Pro.')
-    expect(pro.texto).toContain('pré-reserva de 27 €')
-    expect(pro.texto).toContain('50% de desconto na primeira mensalidade')
+    expect(pro.texto).toContain('Com a pré-reserva')
+    expect(pro.texto).toContain('se continuares na Pro')
   })
 
-  it('os 53 € só aparecem no plano Clara: a Pro e a Elite ainda não têm preço publicado', () => {
-    for (const p of ['pro', 'elite']) {
+  it('a pré-reserva aparece separada da mensalidade, com o preço da Pro e da Elite no texto', () => {
+    expect(mensagemFinal('malabarista', 'pro').texto).toContain('48,50 € em vez de 97 €')
+    expect(mensagemFinal('malabarista', 'elite').texto).toContain('73,50 € em vez de 147 €')
+    for (const p of ['clara', 'pro', 'elite']) {
       expect(mensagemFinal('malabarista', p).texto).not.toContain('53 €')
-      expect(mensagemFinal('malabarista', p).preco.antes).toBeUndefined()
+      expect(mensagemFinal('malabarista', p).preco.rotulo).toBe('Pré-reserva')
     }
   })
 

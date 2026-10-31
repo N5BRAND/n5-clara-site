@@ -1,10 +1,9 @@
 import { motion, AnimatePresence } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { LANCAMENTO, tempoAte } from '../logica/contagem.js'
-import Mensalidade from './Mensalidade.jsx'
+import OQuePagas from './OQuePagas.jsx'
 import Formulario from './FormularioPassos.jsx'
-import { PROGRAMA } from '../logica/indicacoes.js'
-import { ESGOTADO } from '../logica/pagamento.js'
+import { ESGOTADO, PRE_RESERVA, OFERTA } from '../logica/pagamento.js'
 
 function Contagem() {
   const [t, setT] = useState(() => tempoAte(LANCAMENTO))
@@ -31,96 +30,66 @@ function Contagem() {
   )
 }
 
+/* as 25 vagas são as mesmas em todas as páginas da Clara: uma frase só, igual em todo o lado */
+export const VAGAS = 'Nesta primeira fase, disponibilizamos 25 vagas com as condições de lançamento. São as mesmas vagas em todas as páginas da Clara.'
+
+/* título e frase do bloco quando a página não traz os seus */
+export const RESERVA = { titulo: '1 de dezembro. A Clara começa a trabalhar contigo.', texto: 'Leads respondidas, dia organizado e oportunidades acompanhadas, desde o primeiro dia.' }
+
 /* extra: campos escondidos que algumas páginas juntam à inscrição (por exemplo, o diagnóstico)
-   aviso: nas landing pages, o que a página prometeu e quando chega, junto à oferta */
-export default function Lista({ extra, aviso } = {}) {
+   aviso: nas landing pages, o que a página prometeu e quando chega, junto à oferta
+   reserva: título e frase ligados ao benefício da página; plano: o plano que a página já escolheu, mostrado no resumo */
+export default function Lista({ extra, aviso, reserva = RESERVA, plano = '' } = {}) {
   return (
     <section id="lista" className="seccao escuro prevenda">
       <div className="contentor prevenda-grelha prevenda-grelha--coluna">
         <div className="prevenda-texto">
-          <p className="eyebrow">{ESGOTADO ? 'Lista de espera' : 'Inscrição'}</p>
-          <h2>1 de dezembro. A Clara começa a trabalhar contigo.</h2>
+          <p className="eyebrow">{ESGOTADO ? 'Lista de espera' : 'Reserva'}</p>
+          <h2>{ESGOTADO ? RESERVA.titulo : reserva.titulo || RESERVA.titulo}</h2>
           <Contagem />
           {ESGOTADO ? (
-            <p className="prevenda-lead">
-              As 25 licenças com pré-reserva esgotaram e entram a 1 de dezembro. A seguir, abrimos 30 vagas por semana, pela ordem da lista de espera:
-              entra já na lista e és dos próximos a ter a tua assistente comercial, com leads respondidas, dia organizado e coaching das tuas chamadas. Sem fidelização.
-            </p>
+            <>
+              <p className="prevenda-lead">
+                As 25 licenças com pré-reserva esgotaram e entram a 1 de dezembro. A seguir, abrimos 30 vagas por semana, pela ordem da lista de espera:
+                entra já na lista e és dos próximos a ter a tua assistente comercial, com leads respondidas, dia organizado e coaching das tuas chamadas. Sem fidelização.
+              </p>
+              {aviso && <p className="lp-aviso"><b>{aviso.titulo}.</b> {aviso.texto}</p>}
+              <div className="lista-oferta">
+                <div className="lista-oferta-cartao lista-oferta-cartao--destaque">
+                  <small>Lista de espera</small>
+                  <b>30 vagas por semana</b>
+                  <p>A partir de 1 de dezembro, pela ordem da lista. Avisamos-te por email quando chegar a tua vez.</p>
+                </div>
+                <div className="lista-oferta-cartao">
+                  <small>Licenças reservadas</small>
+                  <b>Esgotadas</b>
+                  <p>As 25 licenças com pré-reserva entram a 1 de dezembro.</p>
+                </div>
+              </div>
+              <p className="prevenda-porque"><b>Porquê por vagas?</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para o fazermos bem, reservamos 25 licenças para o primeiro dia. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
+            </>
           ) : (
-          <p className="prevenda-lead">
-            Inscreve-te e és dos primeiros a ter a tua assistente comercial: leads respondidas, dia organizado e coaching das tuas chamadas.
-            Há 25 licenças reservadas, com pré-reserva de 27 €: entras no primeiro dia e tens 50% de desconto na primeira mensalidade, o copiloto para o CRM da tua marca, uma sessão de configuração com a nossa equipa e 2 formações incluídas. Sem fidelização.
-          </p>
+            <>
+              <p className="prevenda-lead">{reserva.texto || RESERVA.texto}</p>
+              {aviso && <p className="lp-aviso"><b>{aviso.titulo}.</b> {aviso.texto}</p>}
+              <motion.div
+                className="prevenda-reserva prevenda-reserva--explicada"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <p className="prevenda-reserva-titulo">A pré-reserva é de <b>{PRE_RESERVA}</b> e {OFERTA.resumo}. <b>Sem fidelização.</b></p>
+                <OQuePagas />
+                <ul className="prevenda-reserva-condicoes">
+                  <li>Uma das 25 vagas com as condições de lançamento: entras a 1 de dezembro</li>
+                  <li>Copiloto para o CRM da tua marca durante 3 meses, sessão de configuração com a equipa da Nº5 e 2 formações, para ti e para a tua equipa até 5 consultores</li>
+                  <li>Reembolsável após o dia do lançamento, nas <a href="/termos/#pre-reserva" target="_blank" rel="noreferrer">condições da pré-reserva</a></li>
+                </ul>
+              </motion.div>
+              <p className="prevenda-porque">{VAGAS}</p>
+            </>
           )}
-          {aviso && <p className="lp-aviso"><b>{aviso.titulo}.</b> {aviso.texto}</p>}
-          <div className="lista-oferta">
-            <motion.div
-              className="lista-oferta-cartao lista-oferta-cartao--destaque"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <small>{ESGOTADO ? 'Lista de espera' : 'Desconto'}</small>
-              <b>{ESGOTADO ? '30 vagas por semana' : '50% no 1.º mês'}</b>
-              <p>{ESGOTADO ? 'A partir de 1 de dezembro, pela ordem da lista. Avisamos-te por email quando chegar a tua vez.' : 'Para quem faz a pré-reserva antes de 1 de dezembro: a 1.ª mensalidade do plano Clara fica a 26,50 € em vez de 53 €, e os 27 € da pré-reserva pagam-na.'}</p>
-            </motion.div>
-            <motion.div
-              className="lista-oferta-cartao"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              <small>Licenças reservadas</small>
-              <b>{ESGOTADO ? 'Esgotadas' : 'Só 25'}</b>
-              <p>{ESGOTADO ? 'As 25 licenças com pré-reserva entram a 1 de dezembro.' : 'As 25 licenças com pré-reserva entram a 1 de dezembro. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.'}</p>
-            </motion.div>
-            <motion.div
-              className="lista-oferta-cartao"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <small>{PROGRAMA.nome}</small>
-              <b>3 meses grátis</b>
-              <p>Para os {PROGRAMA.vencedores} consultores que trouxerem mais colegas com pré-reserva paga até {PROGRAMA.fim}.</p>
-              <a className="botao botao--linha lista-oferta-botao" href={PROGRAMA.pagina}>Quero explorar as minhas oportunidades de ter 3 meses grátis</a>
-            </motion.div>
-          </div>
-          <p className="prevenda-porque"><b>{ESGOTADO ? 'Porquê por vagas?' : 'Porquê só 25 licenças?'}</b> Cada consultor que entra tem a Clara configurada com o acompanhamento da nossa equipa. Para o fazermos bem, reservamos 25 licenças para o primeiro dia. Depois, abrimos 30 vagas por semana, pela ordem da lista de espera.</p>
-          {!ESGOTADO && <motion.div
-            className="prevenda-reserva prevenda-reserva--explicada"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <p className="prevenda-reserva-titulo">Faz a pré-reserva de 27 € antes de 1 de dezembro, numa das 25 licenças reservadas, e tens <b>50% de desconto na primeira mensalidade</b> do plano Clara. Os 27 € que pagas agora pagam o teu 1.º mês, e os 0,50 € que sobram saem do 2.º.</p>
-            <ol className="prevenda-pagamentos" aria-label="Quanto pagas, mês a mês">
-              <li><small>Agora</small><b>27 €</b><span>pré-reserva</span></li>
-              <li><small>1.º mês</small><b>0 €</b><span>26,50 €, já pagos com a pré-reserva</span></li>
-              <li><small>2.º mês</small><b>52,50 €</b><span>53 € menos os 0,50 € que sobram</span></li>
-              <li><small>A partir do 3.º</small><b>53 €</b><span>valor do plano Clara</span></li>
-            </ol>
-            <div className="prevenda-reserva-linha">
-            <div className="prevenda-reserva-valor">
-              <small>Pré-reserva</small>
-              <span>27 €</span>
-              <Mensalidade />
-            </div>
-            <ul className="prevenda-reserva-condicoes">
-              <li>Uma das 25 licenças reservadas: entras no primeiro dia, a 1 de dezembro</li>
-              <li>Copiloto para o CRM da tua marca incluído</li>
-              <li>Sessão de configuração com a equipa da Nº5</li>
-              <li>2 formações incluídas, para ti e para a tua equipa até 5 consultores</li>
-              <li>Os 27 € pagam a 1.ª mensalidade, já com o desconto</li>
-              <li>Sem fidelização: cancelas quando quiseres</li>
-              <li>Reembolsável após o dia do lançamento</li>
-            </ul>
-            </div>
-          </motion.div>}
-          <Formulario extra={extra} />
+          <Formulario extra={extra} plano={plano} />
         </div>
       </div>
     </section>

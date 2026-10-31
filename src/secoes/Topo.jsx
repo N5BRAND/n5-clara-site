@@ -1,6 +1,7 @@
 import { motion, useScroll, useMotionValueEvent } from 'motion/react'
 import { useState } from 'react'
 import Simbolo from '../marca/Simbolo.jsx'
+import { ESGOTADO } from '../logica/pagamento.js'
 import Partilhar from '../partilha/Partilhar.jsx'
 
 export default function Topo() {
@@ -23,10 +24,10 @@ export default function Topo() {
         <nav className="topo-nav" aria-label="Secções">
           <a href="#dia">Um dia com a Clara</a>
           <a href="#planos">Planos</a>
-          <a href="#lista">Lista de espera</a>
+          <a href="#lista">{ESGOTADO ? 'Lista de espera' : 'Reserva'}</a>
           <Partilhar variante="nav" rotulo="Partilhar" />
         </nav>
-        <a href="#lista" className="botao topo-cta">Lista de espera</a>
+        <a href="#lista" className="botao topo-cta">{ESGOTADO ? 'Lista de espera' : 'Reservar'}</a>
       </div>
     </motion.header>
   )

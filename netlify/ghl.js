@@ -49,20 +49,34 @@ const FORMULARIOS = {
     etiquetas: [ETIQUETA, 'prioridades-respondidas'],
     nota: [`Prioridades: ${d.prioridades || 'nenhuma'}`, ...(d.crm ? [`CRM: ${d.crm}`] : [])].join('\n'),
   }),
+  /* Passa a Clara: quem perdeu a ligação pede-a pelo email; a etiqueta dispara o workflow do GHL que a reenvia,
+     com o código do campo personalizado (o mesmo código, a contagem não se perde) */
+  'recuperar-ligacao': d => ({
+    contacto: { email: d.email },
+    etiquetas: [ETIQUETA, 'recuperar-ligacao'],
+    nota: 'Pediu outra vez a ligação do Passa a Clara (formulário de recuperação).',
+  }),
 }
 
-export function paraGhl(formulario, dados) {
+/* o código Passa a Clara também vai para um campo personalizado do contacto, para o workflow de recuperação o usar.
+   Só com GHL_CAMPO_CODIGO (id do campo) nas variáveis do site: sem ela, fica só na nota, como antes */
+const COM_CODIGO = new Set(['lista-clara', 'lista-espera'])
+const campoDoCodigo = (formulario, d, campo) =>
+  campo && COM_CODIGO.has(formulario) && /^[A-HJ-NP-Z2-9]{6}$/.test(String(d.codigo || '')) ? { customFields: [{ id: campo, field_value: d.codigo }] } : {}
+
+export function paraGhl(formulario, dados, { campoCodigo } = {}) {
   const f = FORMULARIOS[formulario]
   if (!f || !dados?.email) return null
-  const r = f(dados)
+  const base = f(dados)
+  const r = { ...base, contacto: { ...base.contacto, ...campoDoCodigo(formulario, dados, campoCodigo) } }
   /* inscrição de teste (src/legal/teste.js): só a etiqueta «teste», fora das listas e dos workflows */
   if (dados.teste === '1') return { ...r, contacto: sem(r.contacto), etiquetas: [ETIQUETA, 'teste'], nota: `Inscrição de teste.\n${r.nota}` }
   return { ...r, contacto: sem(r.contacto) }
 }
 
 /* cria ou atualiza o contacto pelo email, junta as etiquetas e deixa a nota */
-export async function enviarParaGhl({ formulario, dados, token, localizacao, pedir = fetch }) {
-  const r = paraGhl(formulario, dados)
+export async function enviarParaGhl({ formulario, dados, token, localizacao, pedir = fetch, campoCodigo = typeof process === 'undefined' ? undefined : process.env.GHL_CAMPO_CODIGO }) {
+  const r = paraGhl(formulario, dados, { campoCodigo })
   if (!r) return { ok: false, motivo: 'formulario-desconhecido' }
   const cabecalhos = { Authorization: `Bearer ${token}`, Version: '2021-07-28', 'Content-Type': 'application/json', Accept: 'application/json' }
   const chamar = async (caminho, corpo) => {

@@ -134,9 +134,12 @@ function Resultado({ res, plano, aoRefazer, aoContas }) {
     return (
       <motion.div className="cartao arq-vazio" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <p className="eyebrow">O teu resultado</p>
-        <h3>Com tantos «não sei», ainda não conseguimos dizer.</h3>
-        <p>Pensa só no que fizeste ontem e na última semana, mesmo que não tenham sido dias normais.</p>
-        <button type="button" className="botao" onClick={aoRefazer}>Refazer o teste</button>
+        <h3>Ainda não temos respostas suficientes para identificar o teu perfil.</h3>
+        <p>Pensa no que fizeste ontem e na última semana, mesmo que não tenham sido dias normais. Ou vê primeiro o que a Clara faz.</p>
+        <div className="diag-acoes">
+          <button type="button" className="botao" onClick={aoRefazer}>Completar o teste</button>
+          <a className="botao botao--linha" href="/#dia" target="_blank" rel="noopener">Explorar as funcionalidades</a>
+        </div>
       </motion.div>
     )
   }
@@ -179,7 +182,7 @@ function Resultado({ res, plano, aoRefazer, aoContas }) {
             </div>
           )}
           <div className="diag-acoes">
-            <a href="#lista" className="botao">Quero a {NOMES_PLANO[plano]}</a>
+            <a href="#lista" className="botao">Reservar a {NOMES_PLANO[plano]}</a>
             <button type="button" className="diag-nao-sei" onClick={aoRefazer}>Refazer o teste</button>
           </div>
         </div>
@@ -208,7 +211,7 @@ export default function ArquetipoPagina({ p }) {
   const caixa = useRef(null)
 
   const acabar = respostas => {
-    const res = escolher(respostas, dor)
+    const res = escolher(respostas)
     const plano = res.arquetipo ? planoDe(respostas, res.arquetipo) : null
     setFim({ respostas, res, plano })
     setContas(null)
@@ -236,7 +239,7 @@ export default function ArquetipoPagina({ p }) {
     <>
       <TopoLanding como={{ href: '#teste', texto: 'Teste' }} />
       <main>
-        <HeroLanding p={{ ...p, h1: tituloDe(dor) }} primeiro={{ href: '#teste', texto: 'Fazer o teste' }} segundo={{ href: '#lista', texto: 'Ver a oferta' }} />
+        <HeroLanding p={{ ...p, h1: tituloDe(dor) }} primeiro={{ href: '#teste', texto: 'Fazer o teste' }} segundo={null} urgencia={false} />
         <section id="teste" ref={caixa} className="seccao diag">
           <div className="contentor diag-contentor">
             {fim
@@ -244,7 +247,7 @@ export default function ArquetipoPagina({ p }) {
               : <Questionario dor={dor} aoAcabar={acabar} />}
           </div>
         </section>
-        <Lista aviso={a?.aviso} extra={fim ? { diagnostico: resumo(fim.respostas, fim.res, contas || undefined) } : undefined} />
+        <Lista aviso={a?.aviso} reserva={p.reserva} plano={fim?.plano || ''} extra={fim ? { diagnostico: resumo(fim.respostas, fim.res, contas || undefined) } : undefined} />
       </main>
       <Rodape />
       <AvisoCookies />

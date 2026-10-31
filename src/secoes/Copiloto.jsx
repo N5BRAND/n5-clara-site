@@ -22,7 +22,15 @@ function Escrita({ texto, ativo }) {
   return <>{texto.slice(0, n)}{ativo && n < texto.length && <span className="cursor" />}</>
 }
 
-export default function Copiloto() {
+/* textos por defeito (página principal); a página /crm/ traz os seus, para não repetir a introdução */
+const TEXTOS = {
+  eyebrow: 'Ao lado do CRM da tua marca',
+  titulo: 'Tens um CRM obrigatório? A Clara preenche-o por ti.',
+  texto: 'O copiloto trabalha no browser, na sessão que já tens aberta. Contactos, visitas, feedback e documentos que a Clara captou passam para o CRM da tua marca sem escreveres nada. Nunca te pede palavras-passe.',
+}
+
+export default function Copiloto(props) {
+  const { eyebrow, titulo, texto } = { ...TEXTOS, ...props }
   const ref = useRef(null)
   const visivel = useInView(ref, { amount: 0.5 })
   const [campo, setCampo] = useState(-1)
@@ -40,9 +48,9 @@ export default function Copiloto() {
     <section data-seccao="copiloto" ref={ref} className="seccao copiloto">
       <div className="contentor copiloto-grelha">
         <div className="seccao-cabeca">
-          <p className="eyebrow">Ao lado do CRM da tua marca</p>
-          <h2>Tens um CRM obrigatório? A Clara preenche-o por ti.</h2>
-          <p>O copiloto trabalha no browser, na sessão que já tens aberta. Contactos, visitas, feedback e documentos que a Clara captou passam para o CRM da tua marca sem escreveres nada. Nunca te pede palavras-passe.</p>
+          <p className="eyebrow">{eyebrow}</p>
+          <h2>{titulo}</h2>
+          <p>{texto}</p>
         </div>
 
         <div className="browser" aria-hidden="true">
@@ -66,7 +74,7 @@ export default function Copiloto() {
             </div>
             <div className="crm-clara">
               <div className="crm-clara-topo"><ClaraAvatar tamanho={30} viva={!gravado && campo >= 0} /><b>Clara</b></div>
-              <p>{gravado ? 'Pronto. Fica marcado na Clara o que já está no CRM da marca.' : campo >= 0 ? 'A preencher com o que captei da tua nota de voz…' : 'Abriste um contacto novo.'}</p>
+              <p>{gravado ? 'Gravado. Fica marcado na Clara o que já está no CRM da marca.' : campo >= 0 ? 'A preencher com o que captei da tua nota de voz…' : 'Abriste um contacto novo.'}</p>
               <span className="crm-clara-nota">Histórico, tarefas e próxima sugestão ao lado do teu CRM.</span>
             </div>
           </div>

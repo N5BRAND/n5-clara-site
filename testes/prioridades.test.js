@@ -23,13 +23,16 @@ describe('prioridades', () => {
   })
 })
 
-import { linkValido, VALOR_PRE_RESERVA, MENSALIDADE, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
+import { linkValido, VALOR_PRE_RESERVA, VALOR_EUROS, PRE_RESERVA, OFERTA, LINK_PRE_RESERVA } from '../src/logica/pagamento.js'
 
 describe('link da pré-reserva', () => {
-  it('a pré-reserva da Clara é de 27 €', () => {
+  it('a pré-reserva da Clara é de 27 €, sem falar em IVA', () => {
     expect(VALOR_PRE_RESERVA).toBe('27 €')
-    expect(MENSALIDADE).toEqual({ normal: '53 €', desconto: 50, comDesconto: '26,50 €', meses: 1, plano: 'Clara' })
-    expect(53 * (1 - MENSALIDADE.desconto / 100)).toBe(26.5)
+    expect(VALOR_EUROS).toBe(27)
+    expect(PRE_RESERVA).toBe('27 €')
+    expect(JSON.stringify(OFERTA.meses)).not.toMatch(/IVA/)
+    expect(OFERTA.resumo).toContain('paga o teu primeiro mês')
+    expect(OFERTA.meses.at(-1).valor).toBe('Sem fidelização')
   })
   it('só aceita links de pagamento da Stripe', () => {
     expect(linkValido(LINK_PRE_RESERVA)).toBe(true)

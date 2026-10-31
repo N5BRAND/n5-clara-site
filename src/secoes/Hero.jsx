@@ -1,6 +1,7 @@
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import Simbolo from '../marca/Simbolo.jsx'
+import { CTA } from '../logica/pagamento.js'
 import { ClaraAvatar, Onda } from '../ilustracoes/Clara.jsx'
 
 const CONVERSA = [
@@ -95,12 +96,12 @@ export default function Hero() {
       <div className="contentor hero-grelha">
         <div className="hero-texto">
           <motion.p className="eyebrow" {...subir(0.1)}>N5 Clara · Lançamento a 1 de dezembro</motion.p>
-          <motion.h1 {...subir(0.2)}>A tua assistente comercial.</motion.h1>
+          <motion.h1 {...subir(0.2)}>A tua assistente para responder às leads, organizar o dia e acompanhar oportunidades.</motion.h1>
           <motion.p className="hero-lead" {...subir(0.35)}>
-            A Clara responde às tuas leads, organiza o teu dia e mostra-te onde perdes tempo e negócios. Falas ou escreves, ela faz. Para venderes mais sem trabalhares mais horas.
+            A Clara responde às tuas leads em minutos, põe o teu dia por ordem de prioridade e regista o que lhe dizes por voz. Falas ou escreves, ela faz. Para venderes mais sem trabalhares mais horas.
           </motion.p>
           <motion.div className="hero-botoes" {...subir(0.5)}>
-            <a href="#lista" className="botao">Entrar na lista de espera</a>
+            <a href="#lista" className="botao">{CTA}</a>
             <a href="#dia" className="botao botao--linha">Ver um dia com a Clara</a>
           </motion.div>
         </div>

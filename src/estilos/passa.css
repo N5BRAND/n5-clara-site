@@ -52,3 +52,15 @@
   .passa-contagem { grid-template-columns: 1fr; }
   .passa-contagem-num { max-width: none; }
 }
+
+/* prémio e condição em destaque no topo */
+.passa-premio { margin: 4px 0 0; font-family: var(--titulo); font-size: clamp(22px, 2.6vw, 30px); color: var(--creme); }
+.passa-premio b { color: var(--dourado); }
+.passa-condicao { margin: 6px 0 0; padding-left: 12px; border-left: 3px solid var(--dourado); font-weight: 600; }
+.passa-recuperar { margin-top: 14px; font-size: 14px; color: var(--suave); }
+
+/* recuperar a ligação pelo email (só com VITE_RECUPERAR_LIGACAO=1) */
+.passa-recuperar-form { display: grid; gap: 8px; margin-top: 14px; }
+.passa-recuperar-linha { display: flex; gap: 8px; flex-wrap: wrap; }
+.passa-recuperar-linha input { flex: 1 1 220px; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--linha-forte); background: #fff; color: var(--tinta); }
+.passa-recuperar-linha input:focus { outline: none; border-color: var(--dourado); box-shadow: 0 0 0 4px var(--dourado-claro); }

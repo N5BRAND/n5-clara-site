@@ -3,11 +3,10 @@ import Hero from './secoes/Hero.jsx'
 import Video from './secoes/Video.jsx'
 import Promessas from './secoes/Promessas.jsx'
 import Dia from './dia/Dia.jsx'
-import Agentes from './secoes/Agentes.jsx'
 import Copiloto from './secoes/Copiloto.jsx'
 import Saber from './secoes/Saber.jsx'
 import Planos from './secoes/Planos.jsx'
-import Cresce from './secoes/Cresce.jsx'
+import MaisInfo from './secoes/MaisInfo.jsx'
 import Lista from './secoes/Lista.jsx'
 import Rodape from './secoes/Rodape.jsx'
 import AvisoCookies from './legal/AvisoCookies.jsx'
@@ -21,11 +20,10 @@ export default function App() {
         <Video />
         <Promessas />
         <Dia />
-        <Agentes />
         <Copiloto />
         <Saber />
         <Planos />
-        <Cresce />
+        <MaisInfo />
         <Lista />
       </main>
       <Rodape />
