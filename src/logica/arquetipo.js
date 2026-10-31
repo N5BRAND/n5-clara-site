@@ -126,13 +126,16 @@ export const TITULOS = {
   performance: 'Sabes hoje quanto vais faturar este mês?',
 }
 
+/* sem Object.hasOwn: o navegador do Instagram em iPhones antigos não o tem */
+const conhecida = dor => !!dor && Object.prototype.hasOwnProperty.call(DOR_PARA_ARQUETIPO, dor)
+
 /* a dor do endereço, ou null se não houver ou for desconhecida */
 export function lerDor(pesquisa = '') {
   const dor = new URLSearchParams(pesquisa).get('dor')
-  return dor && Object.hasOwn(DOR_PARA_ARQUETIPO, dor) ? dor : null
+  return conhecida(dor) ? dor : null
 }
 
-export const tituloDe = dor => (dor && Object.hasOwn(DOR_PARA_ARQUETIPO, dor) ? TITULOS[dor] : TITULOS.geral)
+export const tituloDe = dor => (conhecida(dor) ? TITULOS[dor] : TITULOS.geral)
 
 const opcao = (id, valor) => PERGUNTAS.find(p => p.id === id)?.opcoes.find(([v]) => v === valor)
 

@@ -105,5 +105,33 @@
 .diag-plano b { font-family: var(--titulo); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
 .diag-plano p:not(.eyebrow) { color: var(--suave); }
 
+/* ===== teste de arquétipos ===== */
+.arq-cartao { display: grid; gap: 16px; padding: clamp(24px, 3.4vw, 40px); }
+.arq-quem { display: grid; gap: 6px; }
+.arq-nome { font-size: clamp(48px, 7vw, 80px); line-height: 0.95; letter-spacing: -0.045em; }
+.arq-feminino { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); }
+.arq-segundo { justify-self: start; padding: 6px 12px; border-radius: 999px; background: var(--dourado-claro); color: var(--dourado-escuro); font-size: 14px; font-weight: 700; }
+.arq-frase { font-family: var(--titulo); font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+.arq-reconheces { color: var(--suave); }
+.arq-reconheces b { color: var(--tinta); }
+.arq-linhas { display: grid; gap: 10px; margin: 4px 0 0; }
+.arq-linhas div { display: grid; gap: 4px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--linha); }
+.arq-linhas dt { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--suave); }
+.arq-linhas dd { margin: 0; font-weight: 600; }
+.arq-linhas .arq-linha--clara { border-color: transparent; background: var(--dourado-claro); }
+.arq-linhas .arq-linha--clara dt { color: var(--dourado-escuro); }
+.arq-ver { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.arq-ver a { padding: 6px 0; color: var(--dourado-escuro); font-weight: 700; text-underline-offset: 4px; }
+.arq-contas { display: grid; gap: 16px; padding: clamp(22px, 3vw, 32px); }
+.arq-contas h3 { margin-top: 6px; }
+.arq-contas-sub { margin-top: 6px; color: var(--suave); }
+.arq-campo { display: grid; gap: 2px; }
+.arq-campo .diag-nao-sei { justify-self: start; padding: 6px 2px; font-size: 14px; }
+.arq-campo input:disabled { background: rgba(21, 24, 29, 0.04); }
+.arq-contas-resultado { display: grid; gap: 10px; }
+.arq-contas-nota { font-weight: 700; }
+.arq-vazio { display: grid; gap: 14px; justify-items: start; padding: clamp(22px, 3vw, 36px); }
+.arq-vazio p:not(.eyebrow) { color: var(--suave); }
+
 /* o topo fixo não tapa o início das secções quando se salta para elas */
-#como, #lista, #diagnostico { scroll-margin-top: 68px; }
+#como, #lista, #diagnostico, #teste { scroll-margin-top: 68px; }
