@@ -32,6 +32,8 @@ function carregar() {
   n.loaded = true
   n.version = '2.0'
   n.queue = []
+  /* sem isto, o píxel conta um PageView a cada mudança do endereço (um clique em #lista, por exemplo), por fora dos 6 segundos */
+  n.disablePushState = true
   const s = document.createElement('script')
   s.async = true
   s.src = 'https://connect.facebook.net/en_US/fbevents.js'
@@ -61,9 +63,26 @@ export function iniciarPixel() {
   quandoVisivel(SEGUNDOS_VISUALIZACAO, () => { ficou = true; enviarPageView() })
 }
 
-/* eventos só seguem com consentimento; com id, a Meta junta este evento ao que o servidor envia (API de Conversões) */
+/* eventos só seguem com consentimento; com id, a Meta junta este evento ao que o servidor envia (API de Conversões).
+   Diz se o evento seguiu. */
 export function evento(nome, dados = {}, id) {
-  if (consentido && window.fbq) window.fbq('track', nome, { content_name: PRODUTO.nome, ...dados }, ...(id ? [{ eventID: id }] : []))
+  if (!consentido || !window.fbq) return false
+  window.fbq('track', nome, { content_name: PRODUTO.nome, ...dados }, ...(id ? [{ eventID: id }] : []))
+  return true
+}
+
+/* o píxel envia por imagem: se a página muda logo para a Stripe, o navegador pode cortar o pedido.
+   Depois de um evento, o botão espera este tempo antes de seguir. */
+export const ESPERA_ANTES_DE_SAIR = 300
+
+/* clique normal, sem teclas: os outros (abrir noutro separador) seguem como o navegador quiser */
+export const cliqueSimples = e => e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey
+
+/* id da sessão de pagamento que a Stripe põe no endereço de retorno (?session_id={CHECKOUT_SESSION_ID} no Payment Link).
+   É o mesmo event_id que o N5 Controlo usa no Purchase pelo servidor, por isso a Meta junta as duas compras. */
+export function idDaCompra(search = typeof window === 'undefined' ? '' : window.location.search) {
+  const id = new URLSearchParams(search).get('session_id') || ''
+  return /^cs_(live|test)_[A-Za-z0-9]+$/.test(id) ? id : null
 }
 
 /* se o visitante aceitou os cookies de marketing (é a condição para o servidor também enviar à Meta) */
