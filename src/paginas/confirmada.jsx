@@ -58,6 +58,8 @@ try {
   if (!sessionStorage.getItem('n5-compra-registada')) {
     if (COMPRA && !COMPRA_PELO_SERVIDOR) evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' }, COMPRA)
     marcar('pre_reserva_paga')
+    /* os emails de seguimento param (netlify/functions/pagou.mjs) */
+    if (codigo) fetch('/api/pagou', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codigo }), keepalive: true }).catch(() => {})
     sessionStorage.setItem('n5-compra-registada', '1')
   }
 } catch { /* sem armazenamento: não regista */ }
