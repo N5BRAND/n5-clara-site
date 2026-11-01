@@ -122,10 +122,19 @@ describe('respostaSemModelo (sem chave da API)', () => {
   it('com as vagas esgotadas a pré-reserva fala da lista de espera', () => {
     expect(respostaSemModelo([v('Como funciona a pré-reserva?')], { esgotado: true }).resposta).toMatch(/lista de espera/)
   })
-  it('com um limite atingido não promete nada e pede o contacto', () => {
-    const r = respostaSemModelo([c(SAUDACAO), v('Explica-me tudo sobre o mercado')], { limitado: true })
-    expect(r.resposta).toMatch(/muitas mensagens/)
-    expect(r.resposta).toMatch(/como te chamas/)
+  it('nunca fala em limites, erros ou esperas: a conversa segue e a Clara pede o contacto', () => {
+    const casos = [
+      respostaSemModelo([c(SAUDACAO), v('Explica-me tudo sobre o mercado')]),
+      respostaSemModelo([c(SAUDACAO), v('Quanto custa?'), c('… Já agora, como te chamas?'), v('Ana'), c('Prazer, Ana! Deixas-me o teu telemóvel ou email?'), v('Isso tem app?')], { contacto: { nome: 'Ana' } }),
+      respostaSemModelo([c(SAUDACAO), v('E o CRM?')], { contacto: { nome: 'Ana', email: 'ana@rede.pt' } }),
+    ]
+    for (const r of casos) {
+      expect(r.resposta).not.toMatch(/limite|depressa|espera|erro|dificuldade|muitas mensagens|tenta outra vez/i)
+      expect(r.resposta).not.toMatch(PROIBIDO)
+    }
+    expect(casos[0].resposta).toMatch(/como te chamas/)
+    expect(casos[1].resposta).toMatch(/telemóvel ou email/)
+    expect(casos[2].resposta).toMatch(/pelo contacto que deixaste/)
   })
 })
 
@@ -150,21 +159,21 @@ describe('limites contra abusos (Netlify Blobs)', () => {
   const agora = Date.parse('2026-11-01T15:00:00Z')
 
   it('os valores por omissão e os das variáveis do site', () => {
-    expect(LIMITES_USO).toEqual({ ip10min: 15, ipDia: 60, dia: 2000 })
-    expect(limitesDoAmbiente({ ASSISTENTE_LIMITE_DIA: '500', ASSISTENTE_LIMITE_IP_10MIN: 'x' })).toEqual({ ip10min: 15, ipDia: 60, dia: 500 })
+    expect(LIMITES_USO).toEqual({ ip10min: 30, ipDia: 150, dia: 3000 })
+    expect(limitesDoAmbiente({ ASSISTENTE_LIMITE_DIA: '500', ASSISTENTE_LIMITE_IP_10MIN: 'x' })).toEqual({ ip10min: 30, ipDia: 150, dia: 500 })
   })
-  it('cada IP: no máximo 15 pedidos em 10 minutos; passados os 10 minutos, volta a poder', async () => {
+  it('cada IP: no máximo 30 pedidos em 10 minutos; passados os 10 minutos, volta a poder', async () => {
     const l = loja()
-    for (let i = 0; i < 15; i++) expect((await consumir({ loja: l, id: 'ip1', agora: agora + i })).permitido).toBe(true)
-    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 20 })).toMatchObject({ permitido: false, motivo: 'ip' })
+    for (let i = 0; i < 30; i++) expect((await consumir({ loja: l, id: 'ip1', agora: agora + i })).permitido).toBe(true)
+    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 40 })).toMatchObject({ permitido: false, motivo: 'ip' })
     expect((await consumir({ loja: l, id: 'ip2', agora: agora + 20 })).permitido).toBe(true)
     expect((await consumir({ loja: l, id: 'ip1', agora: agora + 11 * 60 * 1000 })).permitido).toBe(true)
   })
-  it('cada IP: no máximo 60 por dia', async () => {
+  it('cada IP: no máximo 150 por dia', async () => {
     const l = loja()
-    const limites = { ip10min: 1000, ipDia: 60, dia: 2000 }
-    for (let i = 0; i < 60; i++) await consumir({ loja: l, id: 'ip1', agora: agora + i, limites })
-    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 61, limites })).toMatchObject({ permitido: false, motivo: 'ip' })
+    const limites = { ...LIMITES_USO, ip10min: 1000 }
+    for (let i = 0; i < 150; i++) await consumir({ loja: l, id: 'ip1', agora: agora + i, limites })
+    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 151, limites })).toMatchObject({ permitido: false, motivo: 'ip' })
   })
   it('o site todo: teto diário, seja qual for o IP', async () => {
     const l = loja()

@@ -8,11 +8,12 @@ import { registarConversa } from '../ghl.js'
 /* POST /api/assistente { mensagens, contacto, ghl: { contacto, nota }, pagina, teste } → a resposta da Clara.
    OPENAI_API_KEY nas variáveis do site liga o modelo; sem ela, a Clara responde às sugestões com o que o site diz e pede
    o contacto. Com nome e contacto, a conversa vai para uma nota do contacto no GHL (GHL_TOKEN e GHL_LOCATION_ID).
-   Contra abusos, em camadas:
-   1. a Netlify bloqueia (429) quem mandar mais de 10 pedidos por minuto do mesmo IP (config no fim do ficheiro);
+   Contra abusos, sem nunca travar uma conversa normal (quem conversa nunca vê um limite):
+   1. a Netlify só trava inundações: mais de 60 pedidos por minuto do mesmo IP (config no fim do ficheiro); o navegador,
+      se for travado, tenta outra vez e, se não der, responde com os textos fixos;
    2. só respondem pedidos do próprio site, com conversas de 40 mensagens e 800 caracteres por mensagem, no máximo;
-   3. cada IP (guardado cifrado) chama o modelo no máximo 15 vezes em 10 minutos e 60 por dia, e o site todo 2000 por dia
-      (Netlify Blobs; ver netlify/assistente/limites.js). Acima disso, a Clara responde com os textos fixos;
+   3. cada IP (guardado cifrado) chama o modelo no máximo 30 vezes em 10 minutos e 150 por dia, e o site todo 3000 por dia
+      (Netlify Blobs; ver netlify/assistente/limites.js). Acima disso, a conversa segue com os textos fixos;
    4. cada pedido ao modelo leva só as últimas 16 mensagens e a resposta tem um teto de tokens. */
 const ORIGENS = /^(https:\/\/(clara\.numerocinco\.pt|([\w-]+--)?n5-clara-site\.netlify\.app)|http:\/\/localhost(:\d+)?)$/
 
@@ -58,8 +59,8 @@ export default async (req, context) => {
   const env = process.env
   const esgotado = env.VITE_ESGOTADO === '1'
   const { saida, limitado } = await perguntar({ mensagens, esgotado, context, env })
-  let r = limparResposta(saida || respostaSemModelo(mensagens, { esgotado, contacto, limitado }))
-  if (!r.resposta) r = limparResposta(respostaSemModelo(mensagens, { esgotado, contacto, limitado }))
+  let r = limparResposta(saida || respostaSemModelo(mensagens, { esgotado, contacto }))
+  if (!r.resposta) r = limparResposta(respostaSemModelo(mensagens, { esgotado, contacto }))
   const pessoa = juntarContacto(contacto, r.contacto)
 
   let registo = { contacto: String(ghl.contacto || ''), nota: String(ghl.nota || '') }
@@ -77,5 +78,5 @@ export default async (req, context) => {
   return json({ resposta: r.resposta, sugestoes: r.sugestoes, contacto: pessoa, ghl: registo, modelo: !!saida, limitado })
 }
 
-/* camada 1: a Netlify bloqueia com 429 quem passar de 10 pedidos por minuto (por IP, neste domínio) */
-export const config = { path: '/api/assistente', rateLimit: { windowLimit: 10, windowSize: 60, aggregateBy: ['ip', 'domain'] } }
+/* camada 1: a Netlify bloqueia com 429 quem passar de 60 pedidos por minuto (por IP, neste domínio): só inundações */
+export const config = { path: '/api/assistente', rateLimit: { windowLimit: 60, windowSize: 60, aggregateBy: ['ip', 'domain'] } }

@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
-import { SAUDACAO, SUGESTOES, LIMITES, temContacto } from './conversa.js'
+import { SAUDACAO, SUGESTOES, LIMITES, temContacto, juntarContacto } from './conversa.js'
+import { respostaSemModelo } from './semModelo.js'
 import { evento, novoIdEvento } from '../legal/pixel.js'
 import { marcar } from '../legal/analitica.js'
 import { emTeste } from '../legal/teste.js'
@@ -12,6 +13,24 @@ const ler = () => { try { return JSON.parse(window.sessionStorage.getItem(CHAVE)
 const guardar = estado => { try { window.sessionStorage.setItem(CHAVE, JSON.stringify(estado)) } catch { /* sem armazenamento */ } }
 
 const INICIO = [{ de: 'clara', texto: SAUDACAO }]
+
+const esperar = ms => new Promise(r => setTimeout(r, ms))
+
+/* até 3 tentativas (a segunda e a terceira depois de uma pausa); devolve a resposta ou null */
+async function pedirResposta(corpo) {
+  for (let tentativa = 0; tentativa < 3; tentativa++) {
+    if (tentativa) await esperar(1500 * tentativa)
+    try {
+      const r = await fetch('/api/assistente', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) })
+      if (r.ok) return await r.json()
+      marcar('assistente_falha', { estado: r.status, tentativa })
+      if (r.status !== 429 && r.status < 500) return null
+    } catch {
+      marcar('assistente_falha', { estado: 0, tentativa })
+    }
+  }
+  return null
+}
 
 /* em ecrãs estreitos o aviso de cookies ocupa a largura toda: o assistente sobe por cima dele */
 function useAltCookies() {
@@ -91,38 +110,26 @@ export default function Assistente() {
     setSugestoes([])
     setAEscrever(true)
     marcar('assistente_mensagem', { n: novas.filter(m => m.de === 'visitante').length, sugerida })
-    try {
-      const r = await fetch('/api/assistente', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mensagens: novas, contacto, ghl, pagina: window.location.pathname, teste: emTeste() }),
-      })
-      /* a Netlify trava quem manda pedidos demais por minuto */
-      if (r.status === 429) {
-        marcar('assistente_limite', { onde: 'netlify' })
-        setMensagens(m => [...m, { de: 'clara', texto: 'Estás a mandar mensagens muito depressa. Espera um minuto e volta a perguntar, por favor.' }])
-        return
-      }
-      if (!r.ok) throw new Error(String(r.status))
-      const d = await r.json()
-      if (d.limitado) marcar('assistente_limite', { onde: 'quota' })
-      setMensagens(m => [...m, { de: 'clara', texto: d.resposta }])
-      setSugestoes(d.sugestoes || [])
-      if (d.ghl) setGhl(d.ghl)
-      if (d.contacto) {
-        /* a primeira vez que a pessoa deixa nome e contacto: conta como contacto na Meta (com o marketing aceite) */
-        if (temContacto(d.contacto) && !temContacto(contacto)) {
-          evento('Contact', { content_category: 'assistente' }, novoIdEvento())
-          marcar('assistente_contacto', { email: !!d.contacto.email, telefone: !!d.contacto.telefone })
-        }
-        setContacto(d.contacto)
-      }
-    } catch {
-      setMensagens(m => [...m, { de: 'clara', texto: 'Estou com dificuldades em responder agora. Tenta outra vez daqui a pouco, por favor.' }])
-      setSugestoes([p])
-    } finally {
-      setAEscrever(false)
+    /* a conversa nunca mostra limites nem erros: se o pedido for travado ou falhar, tenta outra vez em silêncio e,
+       se mesmo assim não der, a Clara responde aqui com os textos fixos (o pedido seguinte leva a conversa toda ao GHL) */
+    let d = await pedirResposta({ mensagens: novas, contacto, ghl, pagina: window.location.pathname, teste: emTeste() })
+    if (!d) {
+      const s = respostaSemModelo(novas, { contacto })
+      d = { resposta: s.resposta, sugestoes: s.sugestoes, contacto: juntarContacto(contacto, s) }
     }
+    if (d.limitado) marcar('assistente_limite')
+    setMensagens(m => [...m, { de: 'clara', texto: d.resposta }])
+    setSugestoes(d.sugestoes || [])
+    if (d.ghl) setGhl(d.ghl)
+    if (d.contacto) {
+      /* a primeira vez que a pessoa deixa nome e contacto: conta como contacto na Meta (com o marketing aceite) */
+      if (temContacto(d.contacto) && !temContacto(contacto)) {
+        evento('Contact', { content_category: 'assistente' }, novoIdEvento())
+        marcar('assistente_contacto', { email: !!d.contacto.email, telefone: !!d.contacto.telefone })
+      }
+      setContacto(d.contacto)
+    }
+    setAEscrever(false)
   }
 
   return (

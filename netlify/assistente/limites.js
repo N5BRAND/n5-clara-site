@@ -1,7 +1,9 @@
-/* limites do assistente, para ninguém disparar a conta da OpenAI: por pessoa (endereço IP cifrado) e no total do dia.
-   Só contam os pedidos que iam chamar o modelo. Acima de um limite, a Clara responde com os textos fixos e pede o contacto.
-   Os valores mudam-se nas variáveis do site, sem publicar código */
-export const LIMITES_USO = { ip10min: 15, ipDia: 60, dia: 2000 }
+/* limites do assistente, para ninguém disparar a conta da OpenAI: por endereço IP cifrado e no total do dia.
+   Só contam os pedidos que iam chamar o modelo. Acima de um limite, a conversa continua com os textos fixos (sem nunca
+   falar em limites) e a Clara pede o contacto. Os valores por IP são largos de propósito: nas redes móveis e nos
+   escritórios muitas pessoas saem pelo mesmo IP; quem trava o custo é o teto do dia (e o limite de gasto na OpenAI).
+   Mudam-se nas variáveis do site, sem publicar código */
+export const LIMITES_USO = { ip10min: 30, ipDia: 150, dia: 3000 }
 const DEZ_MIN = 10 * 60 * 1000
 
 export function limitesDoAmbiente(env = {}) {
