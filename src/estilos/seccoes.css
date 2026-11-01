@@ -440,3 +440,48 @@
 .confirmada .o-que-pagas li:not(.o-que-pagas-destaque) span, .confirmada .o-que-pagas-nota { color: rgba(245, 244, 240, 0.72); }
 .confirmada .o-que-pagas li:not(.o-que-pagas-destaque) small { color: var(--dourado); }
 .confirmada .o-que-pagas { margin: 6px 0 14px; text-align: left; }
+
+/* ===== por onde começar: as landing pages arrumadas pelo que o consultor procura ===== */
+.topo-mapa { all: unset; cursor: pointer; white-space: nowrap; padding: 9px 16px; border-radius: 999px; border: 1px solid currentColor; font-size: 14px; font-weight: 600; }
+.topo-mapa:focus-visible { outline: 2px solid var(--dourado); outline-offset: 3px; }
+/* na página inicial o menu tem mais entradas: abaixo de 1080 px (tablet) fica só o «Por onde começar» e o «Reservar» */
+@media (max-width: 1080px) { .topo--inicio .topo-nav { display: none; } .topo-mapa { margin-left: auto; } .topo-mapa + .topo-cta { margin-left: 0; } }
+@media (max-width: 420px) { .topo-mapa { padding: 8px 12px; font-size: 13px; } }
+
+.mapa-fundo { position: fixed; inset: 0; z-index: 60; overflow: auto; padding: 16px; background: rgba(21, 24, 29, 0.55); backdrop-filter: blur(4px); }
+.mapa { width: min(1100px, 100%); margin: 0 auto; display: grid; gap: 20px; padding: clamp(18px, 3vw, 32px); border-radius: var(--raio); background: var(--creme); color: var(--tinta); box-shadow: var(--sombra); }
+.mapa-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mapa-topo h2 { margin: 0; font-family: var(--titulo); font-size: clamp(24px, 3vw, 32px); letter-spacing: -0.02em; }
+.mapa-grelha { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: clamp(16px, 2.5vw, 28px); align-items: start; }
+.mapa-comecar { display: grid; gap: 12px; padding: clamp(18px, 2.4vw, 24px); border-radius: var(--raio); background: var(--tinta); color: var(--creme); }
+.mapa-comecar h3 { margin: 0 0 4px; font-family: var(--titulo); font-size: 22px; line-height: 1.2; letter-spacing: -0.02em; }
+.mapa-teste { position: relative; display: grid; gap: 4px; padding: 14px 40px 14px 16px; border-radius: 14px; background: var(--dourado); color: var(--tinta); text-decoration: none; }
+.mapa-teste span { font-size: 14px; line-height: 1.4; }
+.mapa-teste i { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-style: normal; font-weight: 700; }
+.mapa-teste:hover { background: #F0B55E; }
+.mapa-dores { display: grid; gap: 12px; }
+.mapa-dores ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.mapa-dor { height: 100%; box-sizing: border-box; display: grid; gap: 6px; align-content: start; padding: 14px 16px; border-radius: 14px; background: var(--cartao); border: 1px solid var(--linha); color: var(--tinta); text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+.mapa-dor:hover { border-color: var(--dourado); transform: translateY(-2px); }
+.mapa-dor b { font-family: var(--titulo); font-size: 17px; line-height: 1.25; letter-spacing: -0.01em; }
+.mapa-dor span { font-size: 14px; line-height: 1.4; color: var(--suave); }
+.mapa-dor small { justify-self: start; padding: 3px 9px; border-radius: 999px; background: var(--cobalto-claro); color: var(--cobalto); font-size: 12px; font-weight: 700; }
+.mapa-teste:focus-visible, .mapa-dor:focus-visible, .mapa-mais a:focus-visible { outline: 2px solid var(--cobalto); outline-offset: 2px; }
+.mapa-mais { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-top: 14px; border-top: 1px solid var(--linha); font-size: 14px; }
+.mapa-mais a { color: var(--suave); text-decoration: none; }
+.mapa-mais a b { color: var(--tinta); }
+.mapa-mais a:hover b { text-decoration: underline; }
+@media (max-width: 860px) {
+  .mapa-grelha { grid-template-columns: minmax(0, 1fr); }
+  .mapa-dores ul { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .mapa-dor { transition: none; } .mapa-dor:hover { transform: none; } }
+
+/* entradas da barra de cima: uma linha dourada por baixo da palavra ao passar o rato */
+.topo-nav a, .partilhar-nav, .topo-mapa span {
+  white-space: nowrap; padding-bottom: 3px;
+  background: linear-gradient(var(--dourado), var(--dourado)) 0 100% / 0 2px no-repeat;
+  transition: background-size 0.25s ease, opacity 0.2s;
+}
+.topo-nav a:hover, .topo-nav a:focus-visible, .partilhar-nav:hover, .partilhar-nav:focus-visible, .topo-mapa:hover span, .topo-mapa:focus-visible span { background-size: 100% 2px; }
+@media (prefers-reduced-motion: reduce) { .topo-nav a, .partilhar-nav, .topo-mapa span { transition: none; } }

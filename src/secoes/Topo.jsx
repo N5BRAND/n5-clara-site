@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Simbolo from '../marca/Simbolo.jsx'
 import { ESGOTADO } from '../logica/pagamento.js'
 import Partilhar from '../partilha/Partilhar.jsx'
+import MapaPaginas from './MapaPaginas.jsx'
 
 export default function Topo() {
   const { scrollY } = useScroll()
@@ -11,7 +12,7 @@ export default function Topo() {
 
   return (
     <motion.header
-      className={`topo ${solido ? 'topo--solido' : ''}`}
+      className={`topo topo--inicio ${solido ? 'topo--solido' : ''}`}
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 260, damping: 30, delay: 0.2 }}
@@ -27,6 +28,8 @@ export default function Topo() {
           <a href="#lista">{ESGOTADO ? 'Lista de espera' : 'Reserva'}</a>
           <Partilhar variante="nav" rotulo="Partilhar" />
         </nav>
+        {/* fora do nav, para se ver também no telemóvel */}
+        <MapaPaginas />
         <a href="#lista" className="botao topo-cta">{ESGOTADO ? 'Lista de espera' : 'Reservar'}</a>
       </div>
     </motion.header>
