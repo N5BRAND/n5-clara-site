@@ -31,9 +31,10 @@ export const handler = async event => {
       if (payload.form_name === 'lista-clara' && r.ok) {
         const d = payload.data || {}
         try {
-          /* esta função usa o formato antigo (handler): o Netlify Blobs só fica disponível depois de connectLambda */
+          /* esta função usa o formato antigo (handler): o Netlify Blobs só fica disponível depois de connectLambda, e sem a
+             leitura com consistência forte (que precisa de uncachedEdgeURL); para registar uma pessoa nova chega a normal */
           connectLambda(event)
-          const novo = await registarSeguimento(getStore({ name: 'seguimento', consistency: 'strong' }), { contactId: r.id, email: d.email, nome: d.nome, tipo: 'inscricao', codigo: d.codigo, indicado: d.indicado_codigo, teste: d.teste === '1' })
+          const novo = await registarSeguimento(getStore({ name: 'seguimento' }), { contactId: r.id, email: d.email, nome: d.nome, tipo: 'inscricao', codigo: d.codigo, indicado: d.indicado_codigo, teste: d.teste === '1' })
           console.log('seguimento:', novo ? 'entrou' : 'já estava')
         } catch (e) {
           console.error('seguimento: não registou:', e.message)
