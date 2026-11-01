@@ -14,6 +14,7 @@ export const PRODUTO = {
     'reenviar-te a ligação do Passa a Clara, se a pedires com o email da inscrição;',
     'no inquérito para consultores, enviar-te por email o voucher e o plano feito com as tuas respostas, e usar as respostas para decidir o que a Clara faz primeiro;',
     'responder às tuas perguntas no assistente do site e, se deixares o nome e um contacto, guardar a conversa para a equipa te responder;',
+    'enviar-te até 3 emails sobre a pré-reserva, se te inscreveres ou deixares o email ao assistente e não a concluíres (respondes «sair» e paramos);',
     'contactar-te sobre o lançamento, previsto para 1 de dezembro de 2026.',
   ],
   /* a oferta tem de dizer o mesmo que OFERTA em src/logica/pagamento.js */

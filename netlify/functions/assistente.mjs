@@ -4,6 +4,7 @@ import { conversaValida, juntarContacto, temContacto, transcricao } from '../../
 import { pedirAoModelo, limparResposta, respostaSemModelo } from '../assistente/responder.js'
 import { consumir, limitesDoAmbiente } from '../assistente/limites.js'
 import { registarConversa } from '../ghl.js'
+import { registarSeguimento } from '../seguimento.js'
 
 /* POST /api/assistente { mensagens, contacto, ghl: { contacto, nota }, pagina, teste } → a resposta da Clara.
    OPENAI_API_KEY nas variáveis do site liga o modelo; sem ela, a Clara responde às sugestões com o que o site diz e pede
@@ -71,6 +72,11 @@ export default async (req, context) => {
         contacto: pessoa, conversa: transcricao([...mensagens, { de: 'clara', texto: r.resposta }], { pagina: pag }), pagina: pag,
         teste: teste === true, contactoId: registo.contacto, notaId: registo.nota, token: env.GHL_TOKEN, localizacao: env.GHL_LOCATION_ID,
       })
+      /* com email, entra no seguimento por email (só na primeira vez; se pagar, sai sozinha) */
+      if (registo.contacto && pessoa.email) {
+        await registarSeguimento(getStore({ name: 'seguimento', consistency: 'strong' }), { contactId: registo.contacto, email: pessoa.email, nome: pessoa.nome, tipo: 'assistente', teste: teste === true })
+          .catch(e => console.error('seguimento: não registou:', e.message))
+      }
     } catch (e) {
       console.error('assistente: GHL falhou:', e.message)
     }

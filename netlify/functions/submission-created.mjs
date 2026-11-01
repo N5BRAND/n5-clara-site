@@ -1,6 +1,8 @@
 import { enviarParaGhl } from '../ghl.js'
 import { codigoVoucher, enviarEmailVoucher } from '../voucher.js'
 import { paraConversoes, enviarConversao } from '../meta.js'
+import { getStore } from '@netlify/blobs'
+import { registarSeguimento } from '../seguimento.js'
 
 /* corre a cada inscrição válida dos formulários da Netlify (o spam fica de fora).
    GHL: precisa de GHL_TOKEN e GHL_LOCATION_ID; sem elas, não envia para o GHL. No inquérito, o GHL também envia o email
@@ -25,6 +27,12 @@ export const handler = async event => {
       const dados = inquerito ? { ...payload.data, voucher: codigoVoucher(payload.data?.email) } : payload.data
       const r = await enviarParaGhl({ formulario: payload.form_name, dados, token, localizacao })
       console.log('GHL', payload.form_name, r.ok ? 'contacto atualizado' : r.motivo)
+      /* inscrição sem pagamento: entra no seguimento por email (netlify/seguimento.js); se pagar, sai sozinha */
+      if (payload.form_name === 'lista-clara' && r.ok) {
+        const d = payload.data || {}
+        await registarSeguimento(getStore({ name: 'seguimento', consistency: 'strong' }), { contactId: r.id, email: d.email, nome: d.nome, tipo: 'inscricao', codigo: d.codigo, indicado: d.indicado_codigo, teste: d.teste === '1' })
+          .catch(e => console.error('seguimento: não registou:', e.message))
+      }
       /* inquérito: o voucher e o plano seguem por email, pelo GHL, para o contacto que acabou de ser criado */
       if (inquerito && r.ok) {
         try {
