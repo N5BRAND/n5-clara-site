@@ -416,8 +416,9 @@ export const INQUERITO = {
 
 /* «Tudo num sítio» (/tudo/), para a leva 3 de criativos (Criativos/2026-11-01 N5 Clara leva 3 tudo num sitio).
    Fica fora de PAGINAS, como o diagnóstico, porque tem secções próprias. O topo muda com ?perfil= (rede, conta-propria);
-   o resto é igual para todos, para os números se compararem. Só factos que o site já diz: a ficha de cada cliente, a etapa
-   de cada negócio, a qualificação dos proprietários e o plano do dia. Ficaram de fora as fichas de imóveis e o histórico. */
+   o resto é igual para todos, para os números se compararem. Só factos que o site já diz: as fichas de contactos e imóveis
+   (o Pedro confirmou a 01/11 que existem desde o dia 1), a etapa de cada negócio, a qualificação dos proprietários e o
+   plano do dia. O histórico fica de fora até estar confirmado. */
 const TUDO_DIA = {
   id: 'tudo-dia',
   hora: '08:00',
@@ -450,14 +451,14 @@ export const TUDO = {
   perfis: {
     geral: { h1: 'Tudo num sítio.', lead: 'Os teus contactos e imóveis, os teus proprietários e o teu dia, com IA a trabalhar em cada um.' },
     rede: { h1: 'Não precisas de trocar de CRM.', lead: 'O da tua marca continua. A Clara responde às tuas leads, qualifica os proprietários e monta o teu dia.' },
-    'conta-propria': { h1: 'A Clara é o teu CRM. Com IA a trabalhar por ti.', lead: 'Contactos, imóveis e pipeline num sítio. Proprietários que chegam qualificados. O teu dia por ordem de prioridade.' },
+    'conta-propria': { h1: 'A Clara é o teu CRM. Com IA a trabalhar por ti.', lead: 'Fichas de contactos e imóveis e o pipeline num sítio. Proprietários que chegam qualificados. O teu dia por ordem de prioridade.' },
   },
   cena: TUDO_DIA,
   conta: {
     eyebrow: 'A conta é simples',
     titulo: 'Um CRM, mais IA para os proprietários, mais IA para o teu dia.',
     parcelas: [
-      { nome: 'CRM que se preenche pela conversa', texto: 'A ficha de cada cliente enche-se com as conversas da Clara com as tuas leads e com as tuas notas de voz, e cada negócio fica na sua etapa. Sem campos para preencher.' },
+      { nome: 'CRM que se preenche pela conversa', texto: 'Fichas de contactos e imóveis e o pipeline de cada negócio, preenchidos pelas conversas da Clara com as tuas leads e pelas tuas notas de voz. Sem campos para preencher.' },
       { nome: 'IA que qualifica os teus proprietários', texto: 'Cada lead de proprietário chega qualificada: motivação, prazo, preço e documentos, com a prioridade e os motivos.' },
       { nome: 'IA que organiza o teu dia', texto: 'Por ordem de prioridade, no teu Google Calendar, com o que fazer primeiro.' },
     ],
@@ -467,7 +468,7 @@ export const TUDO = {
     eyebrow: 'Do Excel para a Clara',
     titulo: 'O que muda no teu dia a dia.',
     linhas: [
-      ['Contactos num Excel', 'Fichas que se preenchem pela conversa, com a etapa de cada negócio'],
+      ['Contactos num Excel', 'Fichas de contactos e imóveis e o pipeline, que se preenchem pela conversa'],
       ['Proprietários perdidos no WhatsApp', 'Leads de proprietários qualificadas, com prioridade'],
       ['O dia na cabeça', 'O dia por ordem de prioridade, no teu Google Calendar'],
     ],
@@ -493,6 +494,6 @@ export const TUDO = {
     texto: 'Responde às tuas leads, qualifica os proprietários e monta o teu dia por ordem de prioridade. O CRM da tua marca fica como está.',
     nota: PAGINAS.crm.nota,
   },
-  reserva: { titulo: 'Junta tudo num sítio.', texto: 'Os teus contactos, os teus proprietários e o teu dia, com a Clara a trabalhar em cada um, a partir de 1 de dezembro.' },
+  reserva: { titulo: 'Junta tudo num sítio.', texto: 'Os teus contactos e imóveis, os teus proprietários e o teu dia, com a Clara a trabalhar em cada um, a partir de 1 de dezembro.' },
   plano: 'clara',
 }
