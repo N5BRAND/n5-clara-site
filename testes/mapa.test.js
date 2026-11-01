@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { existsSync, readFileSync } from 'node:fs'
-import { PAGINAS } from '../src/landing/paginas.js'
+import { PAGINAS, TUDO } from '../src/landing/paginas.js'
 import { COMECAR, DORES, MAIS } from '../src/logica/mapa.js'
 
 const todas = [...COMECAR, ...DORES, ...MAIS]
@@ -10,7 +10,7 @@ describe('por onde começar', () => {
   it('mostra todas as landing pages ativas, cada uma uma vez', () => {
     const hrefs = todas.map(p => p.href)
     expect(new Set(hrefs).size).toBe(hrefs.length)
-    for (const id of [...Object.keys(PAGINAS), 'diagnostico', 'arquetipo', 'inquerito', 'passa-a-clara']) expect(hrefs, id).toContain(`/${id}/`)
+    for (const id of [...Object.keys(PAGINAS), 'diagnostico', 'arquetipo', 'inquerito', 'passa-a-clara', 'tudo']) expect(hrefs, id).toContain(`/${id}/`)
   })
 
   it('cada ligação leva a uma página que existe e entra no build', () => {
@@ -25,7 +25,7 @@ describe('por onde começar', () => {
   it('cada dor tem a resposta da Clara e o plano bate certo com a página', () => {
     for (const d of DORES) {
       expect(d.dor && d.resposta, d.href).toBeTruthy()
-      const plano = PAGINAS[pasta(d.href)].plano
+      const plano = (PAGINAS[pasta(d.href)] ?? { tudo: TUDO }[pasta(d.href)]).plano
       expect(d.plano ?? null, d.href).toBe({ pro: 'Pro e Elite', elite: 'Elite' }[plano] ?? null)
     }
   })
