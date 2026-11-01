@@ -9,7 +9,8 @@ import { emTeste } from './teste.js'
    - Com a estatística rejeitada: só contagem anónima, sem cookies nem nada guardado no navegador (cookieless on_reject).
    - Sem escolha feita: não sai nenhum evento; os nossos ficam à espera e saem quando a pessoa escolher.
    O PostHog só se carrega depois da página, para não atrasar quem chega pelo anúncio.
-   Só liga no domínio real, para os testes e o desenvolvimento não entrarem nos números. */
+   Só liga no domínio real, para os testes e o desenvolvimento não entrarem nos números.
+   Os eventos saem pelo próprio domínio (/r, proxy no netlify.toml), para os bloqueadores de anúncios não os cortarem. */
 const TOKEN = import.meta.env.VITE_POSTHOG_KEY
 const HOST = import.meta.env.VITE_POSTHOG_HOST
 const DOMINIOS = ['clara.numerocinco.pt']
@@ -75,6 +76,7 @@ function carregar() {
     .then(({ default: posthog }) => {
       posthog.init(TOKEN, {
         api_host: HOST,
+        ui_host: 'https://eu.posthog.com',
         defaults: '2026-08-30',
         cookieless_mode: 'on_reject',
         person_profiles: 'identified_only',

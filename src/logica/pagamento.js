@@ -54,7 +54,7 @@ export const linkValido = url => /^https:\/\/(buy|checkout)\.stripe\.com\/[\w/-]
 
 /* quando as 25 licenças esgotam, o site deixa de levar ao pagamento. Liga-se com VITE_ESGOTADO=1 nas variáveis
    da Netlify e volta-se a publicar; desligado, o site fica como está */
-export const ESGOTADO = import.meta.env.VITE_ESGOTADO === '1'
+export const ESGOTADO = import.meta.env?.VITE_ESGOTADO === '1'
 
 /* botão principal das páginas com reserva */
 export const CTA = ESGOTADO ? 'Entrar na lista de espera' : `Reservar a minha Clara por ${PRE_RESERVA}`

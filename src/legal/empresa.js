@@ -4,5 +4,5 @@ export const EMPRESA = {
   nif: '504428918',
   sede: 'Rua Manuel Ferreira n.º 19C, 2795-229 Linda-a-Velha',
   email: 'pedro.ferreira@numerocinco.pt',
-  atualizado: '30 de outubro de 2026',
+  atualizado: '1 de novembro de 2026',
 }

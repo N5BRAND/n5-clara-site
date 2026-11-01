@@ -1,5 +1,6 @@
 /* cada formulário do site vira um contacto no GHL: dados, etiquetas para os workflows e uma nota com o resto */
 import { etiquetaPagina } from '../src/logica/origem.js'
+import { lerRespostas, resumoInquerito, planoDoConsultor } from '../src/logica/inquerito.js'
 
 export const PRODUTO = 'N5 Clara'
 export const ETIQUETA = 'n5-clara'
@@ -49,6 +50,16 @@ const FORMULARIOS = {
     etiquetas: [ETIQUETA, 'prioridades-respondidas'],
     nota: [`Prioridades: ${d.prioridades || 'nenhuma'}`, ...(d.crm ? [`CRM: ${d.crm}`] : [])].join('\n'),
   }),
+  /* inquérito para consultores: as respostas, o plano que sai delas e o voucher (o código vem de netlify/voucher.js) */
+  'inquerito-clara': d => {
+    const r = lerRespostas(d.respostas)
+    const p = planoDoConsultor(r)
+    return {
+      contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), source: `Inquérito ${PRODUTO}` },
+      etiquetas: [ETIQUETA, 'inquerito-clara', 'voucher-elite-2-meses', `plano-${p.plano}`, ...daOrigem(d)],
+      nota: [`Inquérito da ${PRODUTO}.`, `Voucher: ${d.voucher || 'por gerar'} (2 primeiros meses da Clara Elite, ativar entre 1 e 31/12/2026, um por pessoa, não se junta à pré-reserva).`, `Plano que cobre o que escolheu: ${p.nomePlano}`, '', resumoInquerito(r), ...linhasExtra(d)].join('\n'),
+    }
+  },
   /* Passa a Clara: quem perdeu a ligação pede-a pelo email; a etiqueta dispara o workflow do GHL que a reenvia,
      com o código do campo personalizado (o mesmo código, a contagem não se perde) */
   'recuperar-ligacao': d => ({
@@ -72,6 +83,35 @@ export function paraGhl(formulario, dados, { campoCodigo } = {}) {
   /* inscrição de teste (src/legal/teste.js): só a etiqueta «teste», fora das listas e dos workflows */
   if (dados.teste === '1') return { ...r, contacto: sem(r.contacto), etiquetas: [ETIQUETA, 'teste'], nota: `Inscrição de teste.\n${r.nota}` }
   return { ...r, contacto: sem(r.contacto) }
+}
+
+const ID_GHL = /^[A-Za-z0-9]{8,40}$/
+
+/* assistente do site: cada pessoa que deixa o nome e um contacto fica com a conversa toda numa nota do contacto.
+   A primeira resposta cria a nota; as seguintes atualizam essa mesma nota (os ids voltam ao navegador e regressam a cada pedido) */
+export async function registarConversa({ contacto, conversa, pagina = '', teste = false, contactoId = '', notaId = '', token, localizacao, pedir = fetch }) {
+  const cabecalhos = { Authorization: `Bearer ${token}`, Version: '2021-07-28', 'Content-Type': 'application/json', Accept: 'application/json' }
+  const chamar = async (metodo, caminho, corpo) => {
+    const resp = await pedir(API + caminho, { method: metodo, headers: cabecalhos, body: JSON.stringify(corpo) })
+    if (!resp.ok) throw Object.assign(new Error(`GHL ${metodo} ${caminho} respondeu ${resp.status}`), { estado: resp.status })
+    return resp.json()
+  }
+  const dados = sem({ ...nomeSeparado(contacto.nome), email: contacto.email, phone: telefone(contacto.telefone), source: `Assistente do site ${PRODUTO}` })
+  const { contact } = await chamar('POST', '/contacts/upsert', { locationId: localizacao, ...dados })
+  const mesmo = ID_GHL.test(contactoId) && contact.id === contactoId
+  /* conversa de teste: só a etiqueta «teste», fora das listas e dos workflows */
+  if (!mesmo) await chamar('POST', `/contacts/${contact.id}/tags`, { tags: teste ? [ETIQUETA, 'teste'] : [ETIQUETA, 'assistente', ...daOrigem({ origem: pagina })] })
+  const nota = { body: teste ? `Conversa de teste.\n${conversa}` : conversa }
+  if (mesmo && ID_GHL.test(notaId)) {
+    try {
+      await chamar('PUT', `/contacts/${contact.id}/notes/${notaId}`, nota)
+      return { contacto: contact.id, nota: notaId }
+    } catch (e) {
+      if (e.estado !== 404) throw e // a nota foi apagada no GHL: escreve-se outra
+    }
+  }
+  const r = await chamar('POST', `/contacts/${contact.id}/notes`, nota)
+  return { contacto: contact.id, nota: r.note?.id || r.id || '' }
 }
 
 /* cria ou atualiza o contacto pelo email, junta as etiquetas e deixa a nota */

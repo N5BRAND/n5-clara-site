@@ -33,6 +33,7 @@ function Privacidade() {
           {PRODUTO.campos.map(c => <li key={c}>{c};</li>)}
           <li>a tua autorização para te contactarmos e a data da inscrição.</li>
         </ul>
+        <p id="assistente">Se falares com a Clara no assistente do site, as mensagens que escreves passam pela OpenAI para a Clara te responder. Para evitar abusos, contamos quantas mensagens chegam de cada endereço IP, guardado só como um resumo cifrado que não permite voltar ao endereço. Se lhe deixares o teu nome e um contacto, guardamos a conversa toda com esse contacto, para a equipa da Nº 5 te responder. Sem nome e contacto, não guardamos a conversa.</p>
         <p>Como em qualquer site, o alojamento regista dados técnicos das visitas, como o endereço IP e o tipo de navegador, para segurança e funcionamento.</p>
       </Seccao>
 
@@ -42,7 +43,8 @@ function Privacidade() {
       </Seccao>
 
       <Seccao id="fundamento" n="4" titulo="Com que fundamento">
-        <p>Tratamos os dados da inscrição com base no teu consentimento, que dás ao marcar a caixa de autorização no formulário (artigo 6.º, n.º 1, alínea a) do Regulamento Geral sobre a Proteção de Dados, RGPD). Podes retirá-lo a qualquer momento, sem afetar o que foi feito antes.</p>
+        <p>Tratamos os dados da inscrição com base no teu consentimento, que dás ao carregar no botão final do formulário, logo abaixo do aviso de autorização (artigo 6.º, n.º 1, alínea a) do Regulamento Geral sobre a Proteção de Dados, RGPD). Podes retirá-lo a qualquer momento, sem afetar o que foi feito antes.</p>
+        <p>As conversas do assistente em que deixas o teu contacto tratamo-las para responder ao que nos pediste (artigo 6.º, n.º 1, alínea b) do RGPD).</p>
         <p>Os registos técnicos do alojamento assentam no nosso interesse legítimo em manter o site seguro e a funcionar. Os cookies de estatística e de marketing só são usados com o teu consentimento (ver <a href="#cookies">ponto 8</a>). Sem ele, a estatística conta a tua visita só de forma anónima, sem cookies, com base no nosso interesse legítimo em saber quantas pessoas visitam o site.</p>
       </Seccao>
 
@@ -50,6 +52,7 @@ function Privacidade() {
         <ul className="forn">
           <li><strong>Netlify</strong>, nos EUA: alojamento do site e receção das inscrições do formulário.</li>
           <li><strong>HighLevel (LeadConnector)</strong>, nos EUA: gestão dos contactos e envio dos emails e mensagens sobre o lançamento.</li>
+          <li><strong>OpenAI</strong>, nos EUA: o modelo de IA que responde no assistente do site. Recebe as mensagens que escreves na conversa; pedimos-lhe que não guarde as respostas e, nos termos da API da OpenAI, não as usa para treinar modelos.</li>
           <li><strong>Stripe Payments Europe</strong>, na Irlanda: pagamento da pré-reserva. Os dados do cartão, do MB WAY ou do Multibanco ficam só na Stripe.</li>
           <li><strong>Google</strong> (Gmail): caixa de correio onde recebemos os teus pedidos e de onde te podemos escrever.</li>
           <li><strong>PostHog</strong>, na nuvem da União Europeia (Frankfurt): estatística de utilização do site. Com a tua autorização, inclui gravações das visitas em que tudo o que escreves fica escondido; sem ela, só uma contagem anónima, sem cookies (ver <a href="#cookies">ponto 8</a>).</li>
@@ -61,6 +64,8 @@ function Privacidade() {
       <Seccao id="conservacao" n="6" titulo="Durante quanto tempo guardamos os dados">
         <ul>
           <li>Dados da inscrição: até 12 meses depois do lançamento, ou menos se pedires para sair da lista.</li>
+          <li>Conversas do assistente com nome e contacto: como os dados da inscrição, até 12 meses depois do lançamento.</li>
+          <li>Contadores de mensagens do assistente por endereço IP cifrado: até ao dia seguinte.</li>
           <li>Registos técnicos do alojamento: até 30 dias.</li>
           <li>Gravações das visitas (só com a estatística aceite): 30 dias.</li>
           <li>Eventos de estatística (páginas vistas, cliques, passos do formulário): até 12 meses.</li>
@@ -148,19 +153,32 @@ function Termos() {
         <p>Os dados usados no programa são os da inscrição e da pré-reserva, tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>
       </Seccao>
 
-      <Seccao id="propriedade" n="6" titulo="Propriedade intelectual">
+      <Seccao id="voucher" n="6" titulo="Voucher do inquérito para consultores">
+        <p>Quem responde até ao fim ao inquérito para consultores, em {PRODUTO.url.replace('https://', '')}/inquerito/, recebe por email um voucher da {PRODUTO.nome}, enviado pela {EMPRESA.nome}.</p>
+        <ul>
+          <li><b>O que dá:</b> os 2 primeiros meses da Clara Elite completa, sem pagar.</li>
+          <li><b>Quantos:</b> um voucher por pessoa e por email. Responder outra vez com o mesmo email devolve o mesmo voucher. Cada voucher só se usa uma vez.</li>
+          <li><b>Quando:</b> ativa-se entre 1 e 31 de dezembro de 2026.</li>
+          <li><b>Com a pré-reserva:</b> não se junta à pré-reserva de {PRODUTO.reserva.valor}.</li>
+          <li><b>Depois dos 2 meses oferecidos:</b> quem continuar na Clara Pro ou na Clara Elite tem 50% de desconto na primeira mensalidade desse plano. Não há período de fidelização.</li>
+          <li><b>Abusos:</b> podemos recusar vouchers pedidos com dados falsos ou em nome de outras pessoas.</li>
+        </ul>
+        <p>As respostas e os dados do inquérito são tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>
+      </Seccao>
+
+      <Seccao id="propriedade" n="7" titulo="Propriedade intelectual">
         <p>Os textos, as ilustrações, o símbolo Nº5 e o resto do conteúdo do site pertencem à {EMPRESA.nome} ou são usados com autorização. Não os podes copiar nem usar para fins comerciais sem autorização escrita.</p>
       </Seccao>
 
-      <Seccao id="responsabilidade" n="7" titulo="Responsabilidade">
+      <Seccao id="responsabilidade" n="8" titulo="Responsabilidade">
         <p>Fazemos o possível para manter o site disponível e correto, mas não garantimos que esteja sempre acessível nem sem erros. O site pode ter ligações para sites de terceiros, pelos quais não somos responsáveis.</p>
       </Seccao>
 
-      <Seccao id="lei" n="8" titulo="Lei aplicável">
+      <Seccao id="lei" n="9" titulo="Lei aplicável">
         <p>Estes termos regem-se pela lei portuguesa. Qualquer litígio é resolvido pelos tribunais portugueses competentes.</p>
       </Seccao>
 
-      <Seccao id="alteracoes" n="9" titulo="Alterações a estes termos">
+      <Seccao id="alteracoes" n="10" titulo="Alterações a estes termos">
         <p>Se estes termos mudarem, publicamos aqui a versão nova, com a data de atualização no topo.</p>
       </Seccao>
     </>

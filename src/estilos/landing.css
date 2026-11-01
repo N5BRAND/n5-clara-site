@@ -150,7 +150,7 @@
 /* o topo fixo não tapa o início das secções quando se salta para elas */
 #como, #lista, #diagnostico, #teste { scroll-margin-top: 68px; }
 
-/* símbolo do ChatGPT ou do Claude no topo de uma conversa */
+/* símbolo do assistente (ChatGPT, Claude ou Grok Bot) no topo de uma conversa */
 .avatar--logo { background: var(--cartao); color: var(--tinta); border: 1px solid var(--linha); }
 
 /* a peça que faltava (/ia/): o mesmo par de assistentes; em baixo, tu a colar contexto ou a Clara ligada aos dois */
@@ -174,4 +174,53 @@
 @media (max-width: 760px) {
   .pecas-grelha { grid-template-columns: 1fr; }
   .pecas-meio .chip { font-size: 13px; }
+}
+
+/* ===== inquérito para consultores ===== */
+/* vídeo do produto */
+.video-moldura { position: relative; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: var(--tinta); box-shadow: 0 30px 80px rgba(21, 24, 29, 0.22); }
+.video-moldura video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.video-play { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(180deg, rgba(21, 24, 29, 0) 40%, rgba(21, 24, 29, 0.35)); border: 0; cursor: pointer; }
+.video-play-botao { display: grid; place-items: center; width: clamp(64px, 9vw, 96px); aspect-ratio: 1; border-radius: 50%; background: var(--dourado); box-shadow: 0 12px 40px rgba(21, 24, 29, 0.35); }
+.video-play-botao svg { width: 42%; fill: var(--tinta); margin-left: 6%; }
+@media (max-width: 600px) { .video-moldura { border-radius: 14px; } }
+
+/* a dor e a resposta da Clara, lado a lado */
+.inq-dores-grelha { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.inq-dor { display: grid; gap: 14px; align-content: start; padding: clamp(20px, 2.6vw, 28px); border-radius: 20px; border: 1px solid rgba(245, 244, 240, 0.14); }
+.inq-dor-antes { font-family: var(--titulo); font-size: clamp(20px, 2.1vw, 26px); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; }
+.inq-dor-clara { display: flex; gap: 10px; align-items: flex-start; color: rgba(245, 244, 240, 0.78); }
+.inq-dor-clara span { padding-top: 2px; }
+@media (max-width: 700px) { .inq-dores-grelha { grid-template-columns: 1fr; } }
+
+/* o voucher por cima das perguntas */
+.inq-voucher { display: grid; gap: 10px; margin-bottom: 24px; }
+.inq-voucher p:not(.eyebrow) { color: var(--suave); }
+.inq-texto textarea {
+  width: 100%; padding: 13px 14px; border-radius: 12px; border: 1.5px solid var(--linha-forte); background: #fff; color: var(--tinta);
+  font: inherit; font-size: 16px; font-weight: 400; line-height: 1.45; resize: vertical;
+}
+.inq-texto textarea:focus { outline: none; border-color: var(--dourado); box-shadow: 0 0 0 4px var(--dourado-claro); }
+.inq-texto > span { color: var(--suave); font-weight: 600; }
+.inq-contacto { gap: 16px; }
+
+/* o plano */
+.inq-enviado { display: flex; gap: 14px; align-items: flex-start; padding: 20px 22px; background: var(--dourado-claro); border-color: transparent; }
+.inq-enviado p:not(.eyebrow) { margin-top: 4px; }
+.inq-antes { color: var(--suave); font-size: 15px; }
+.diag-bloco .inq-depois { color: var(--tinta); font-weight: 700; margin-top: 0; }
+.inq-linha, .inq-semanas { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.inq-linha li { display: grid; grid-template-columns: 150px 1fr; column-gap: 18px; row-gap: 4px; padding: 16px 0; border-top: 1px solid var(--linha); }
+.inq-linha li > b, .inq-linha li > span:not(.inq-quando) { grid-column: 2; }
+.inq-linha li > span:not(.inq-quando), .inq-semanas li > span:not(.inq-quando) { color: var(--suave); }
+.inq-quando { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dourado-escuro); padding-top: 3px; }
+.inq-linha .inq-quando { grid-row: 1 / span 2; }
+.inq-semanas { grid-template-columns: repeat(2, 1fr); }
+.inq-semanas li { display: grid; gap: 6px; align-content: start; padding: 18px 20px; }
+.inq-pedidos { color: var(--suave); }
+@media (max-width: 700px) {
+  .inq-linha li { grid-template-columns: 1fr; }
+  .inq-linha li > b, .inq-linha li > span:not(.inq-quando) { grid-column: 1; }
+  .inq-linha .inq-quando { grid-row: auto; }
+  .inq-semanas { grid-template-columns: 1fr; }
 }

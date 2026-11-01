@@ -118,7 +118,7 @@ function Resultado({ res, aoRefazer }) {
         <b>{NOMES_PLANO[res.plano]}</b>
         <p>{semRespostas
           ? 'Com «Não sei» nas respostas, não é uma recomendação feita à tua medida: é o plano base, por onde se começa. Na sessão de configuração vemos contigo o que faz sentido.'
-          : 'Já o deixámos escolhido no formulário. Se fizeres a reserva, guardamos estas respostas para a tua sessão de configuração.'}</p>
+          : 'Já o deixámos escolhido na tua reserva. Se a fizeres, guardamos estas respostas para a tua sessão de configuração.'}</p>
         <div className="diag-acoes">
           <a href="#lista" className="botao">Reservar a {NOMES_PLANO[res.plano]}</a>
           <button type="button" className="diag-nao-sei" onClick={aoRefazer}>Refazer o diagnóstico</button>

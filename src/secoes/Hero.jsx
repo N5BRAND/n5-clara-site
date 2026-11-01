@@ -35,11 +35,14 @@ export function Bolha({ m }) {
   )
 }
 
+/* tempo para ler a última mensagem antes de aparecer a seguinte: cresce com o tamanho do texto */
+const tempoDeLeitura = m => Math.max(2400, 1000 + m.texto.length * 40)
+
 /* conversa que se escreve sozinha, em ciclo */
 function ConversaViva() {
   const [n, setN] = useState(0)
   useEffect(() => {
-    const t = setTimeout(() => setN(x => (x >= CONVERSA.length + 2 ? 0 : x + 1)), n === 0 ? 900 : n > CONVERSA.length ? 2600 : 1900)
+    const t = setTimeout(() => setN(x => (x >= CONVERSA.length + 2 ? 0 : x + 1)), n === 0 ? 900 : n > CONVERSA.length ? 2600 : tempoDeLeitura(CONVERSA[n - 1]))
     return () => clearTimeout(t)
   }, [n])
   const vistas = CONVERSA.slice(0, Math.min(n, CONVERSA.length))
