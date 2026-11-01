@@ -6,10 +6,11 @@ import { iniciarAnalitica, marcar } from '../legal/analitica.js'
 import { iniciarIndicacoes } from '../logica/indicacoes.js'
 import { iniciarOrigem } from '../logica/origem.js'
 import { iniciarBrilho } from '../logica/brilho.js'
-import { PAGINAS, DIAGNOSTICO, ARQUETIPO } from './paginas.js'
+import { PAGINAS, DIAGNOSTICO, ARQUETIPO, INQUERITO } from './paginas.js'
 import Landing from './Landing.jsx'
 import DiagnosticoPagina from './Diagnostico.jsx'
 import ArquetipoPagina from './Arquetipo.jsx'
+import InqueritoPagina from './Inquerito.jsx'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
@@ -32,6 +33,7 @@ createRoot(document.getElementById('root')).render(
     <MotionConfig reducedMotion="user">
       {id === 'diagnostico' ? <DiagnosticoPagina p={DIAGNOSTICO} />
         : id === 'arquetipo' ? <ArquetipoPagina p={ARQUETIPO} />
+        : id === 'inquerito' ? <InqueritoPagina p={INQUERITO} />
         : <Landing p={PAGINAS[id]} />}
     </MotionConfig>
   </React.StrictMode>,
