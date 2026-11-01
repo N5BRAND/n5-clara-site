@@ -1,6 +1,7 @@
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
-import { validarInscricao, PLANOS } from '../logica/validar.js'
+import { validarInscricao, erroDoCampo, PLANOS } from '../logica/validar.js'
+import { PERGUNTAS, primeiroNome } from '../logica/inscricao.js'
 import { codificar } from '../logica/netlify.js'
 import Prioridades from './Prioridades.jsx'
 import PreReserva from './PreReserva.jsx'
@@ -14,47 +15,55 @@ import Partilhar from '../partilha/Partilhar.jsx'
 import { TEXTOS } from '../logica/partilha.js'
 import { PROGRAMA, codigoValido, normalizarCodigo, lerRef, guardarRef, meuCodigo, guardarMeuCodigo, novoCodigo, ligacaoPessoal } from '../logica/indicacoes.js'
 
-const VAZIO = { nome: '', email: '', telefone: '', agencia: '', plano: '', indicado_por: '', consentimento: false }
+const VAZIO = { nome: '', email: '', telefone: '', plano: '', indicado_por: '' }
 
 /* com as 25 pré-reservas esgotadas, quem se inscreve vai para a lista de espera (30 vagas por semana) */
 const FORMULARIO = ESGOTADO ? 'lista-espera' : 'lista-clara'
-
-/* ordem dos campos no ecrã: o primeiro com erro recebe o foco */
-const ORDEM = ['nome', 'email', 'telefone', 'agencia', 'indicado_por', 'plano', 'consentimento']
 
 const armazenamento = () => { try { return window.localStorage } catch { return null } }
 
 const nomeDoPlano = id => PLANOS.find(p => p.id === id)?.nome || ''
 
-function Campo({ nome, rotulo, ajuda, erro, ...resto }) {
+/* um balão da Clara; com «escreve», mostra primeiro os três pontos de quem está a escrever */
+function FalaClara({ texto, ajuda, escreve = false, compacta = false }) {
+  const reduzir = useReducedMotion()
+  const [pronta, setPronta] = useState(!escreve || reduzir)
+  useEffect(() => {
+    if (pronta) return
+    const t = setTimeout(() => setPronta(true), 550)
+    return () => clearTimeout(t)
+  }, [pronta])
   return (
-    <label className={`campo ${erro ? 'campo--erro' : ''}`}>
-      <span>{rotulo}</span>
-      <input id={`campo-${nome}`} name={nome} aria-invalid={!!erro} {...resto} />
-      {ajuda && !erro && <em className="campo-ajuda">{ajuda}</em>}
-      {erro && <small role="alert">{erro}</small>}
-    </label>
+    <motion.div className={`clara-fala ${compacta ? 'clara-fala--compacta' : ''}`} initial={compacta ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+      <ClaraAvatar tamanho={compacta ? 26 : 36} viva={!compacta} />
+      <div className="clara-fala-balao">
+        {pronta
+          ? <><p>{texto}</p>{ajuda && <small>{ajuda}</small>}</>
+          : <span className="clara-a-escrever" role="status" aria-label="A Clara está a escrever"><i /><i /><i /></span>}
+      </div>
+    </motion.div>
   )
 }
 
-/* inscrição num ecrã: dados, quem indicou (opcional) e o plano já escolhido em resumo; depois, o pagamento.
-   plano: o plano que a página ou o teste já escolheram */
+/* inscrição em conversa: a Clara pergunta o nome, o email e o telemóvel, uma coisa de cada vez; depois, o pagamento.
+   plano: o plano que a página ou o teste já escolheram (não se pergunta, segue com a inscrição) */
 export default function Formulario({ extra, plano = '' } = {}) {
-  const [d, setD] = useState(() => {
-    const ref = lerRef(armazenamento(), Date.now())
-    return { ...VAZIO, plano, ...(ref ? { indicado_por: ref } : {}) }
-  })
+  const [d, setD] = useState(() => ({ ...VAZIO, plano }))
   const [porLigacao] = useState(() => !!lerRef(armazenamento(), Date.now()))
-  const [mudarPlano, setMudarPlano] = useState(false)
+  const [i, setI] = useState(0)
+  const [escreve, setEscreve] = useState(false)
+  const [codigoAberto, setCodigoAberto] = useState(false)
   const [erros, setErros] = useState({})
   const [estado, setEstado] = useState('pronto') // pronto | a-enviar | falhou | prioridades | pre-reserva | enviado
   const [codigo, setCodigo] = useState(null)
   const [indicacao, setIndicacao] = useState(null)
   const iniciada = useRef(false)
+  /* só depois da primeira resposta é que o campo seguinte recebe o foco: ao abrir a página, nada salta */
+  const respondeu = useRef(false)
 
   /* os botões dos planos e os testes escolhem o plano aqui */
   useEffect(() => {
-    const escolher = e => { setD(x => ({ ...x, plano: e.detail })); setMudarPlano(false) }
+    const escolher = e => setD(x => ({ ...x, plano: e.detail }))
     window.addEventListener('escolher-plano', escolher)
     return () => window.removeEventListener('escolher-plano', escolher)
   }, [])
@@ -74,20 +83,44 @@ export default function Formulario({ extra, plano = '' } = {}) {
   }
 
   const muda = e => {
-    const { name, value, type, checked } = e.target
-    setD(x => ({ ...x, [name]: type === 'checkbox' ? checked : value }))
+    const { name, value } = e.target
+    setD(x => ({ ...x, [name]: value }))
     if (erros[name]) setErros(x => ({ ...x, [name]: undefined }))
   }
 
-  async function enviar(e) {
+  /* voltar a uma pergunta já respondida, pelo «Voltar» ou a tocar na resposta */
+  function irPara(k) {
+    respondeu.current = true
+    setErros({})
+    setEscreve(false)
+    setI(k)
+  }
+
+  function seguinte(e) {
     e.preventDefault()
+    const q = PERGUNTAS[i]
+    const erro = erroDoCampo(q.id, d)
+    if (erro) {
+      setErros({ [q.id]: erro })
+      marcar('inscricao_com_erros', { campos: [q.id] })
+      return
+    }
+    marcar('inscricao_pergunta', { n: i + 1, id: q.id })
+    respondeu.current = true
+    if (i + 1 < PERGUNTAS.length) {
+      setErros({})
+      setEscreve(true)
+      setI(i + 1)
+    } else enviar(e.target)
+  }
+
+  async function enviar(form) {
     const v = validarInscricao(d)
     if (!v.ok) {
+      const k = PERGUNTAS.findIndex(p => v.erros[p.id])
+      if (k >= 0) { setEscreve(false); setI(k) }
       setErros(v.erros)
-      const primeiro = ORDEM.find(c => v.erros[c])
-      if (primeiro === 'plano') setMudarPlano(true)
       marcar('inscricao_com_erros', { campos: Object.keys(v.erros) })
-      setTimeout(() => document.getElementById(`campo-${primeiro}`)?.focus(), 0)
       return
     }
     setErros({})
@@ -107,7 +140,8 @@ export default function Formulario({ extra, plano = '' } = {}) {
       const r = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: codificar({ 'form-name': FORMULARIO, ...d, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), meta_evento: idLead, meta_consentimento: aceite ? '1' : '', meta_fbp: fbp, meta_fbc: fbc, teste: emTeste() ? '1' : '', 'empresa-site': e.target.elements['empresa-site']?.value || '' }),
+        /* consentimento: dado ao carregar no botão final, logo abaixo do aviso de autorização */
+        body: codificar({ 'form-name': FORMULARIO, ...d, plano: nomeDoPlano(d.plano) ? d.plano : '', indicado_por: escrito || ref || '', consentimento: true, codigo: meu, indicado_codigo: ref || '', origem: origemDe(window.location.pathname, window.location.search), ...(extra || {}), meta_evento: idLead, meta_consentimento: aceite ? '1' : '', meta_fbp: fbp, meta_fbc: fbc, teste: emTeste() ? '1' : '', 'empresa-site': form.elements['empresa-site']?.value || '' }),
       })
       if (!r.ok) throw new Error(String(r.status))
       evento('Lead', {}, idLead)
@@ -123,7 +157,9 @@ export default function Formulario({ extra, plano = '' } = {}) {
 
   const ligacao = codigo ? ligacaoPessoal(codigo) : null
   const whatsapp = codigo ? `${TEXTOS.inscrito} ${ligacaoPessoal(codigo, 'whatsapp')}` : ''
-  const mostrarPlanos = !d.plano || mudarPlano
+  const q = PERGUNTAS[i]
+  const ultima = i === PERGUNTAS.length - 1
+  const nome = primeiroNome(d.nome)
 
   return (
     <div className="cartao prevenda-form">
@@ -146,46 +182,47 @@ export default function Formulario({ extra, plano = '' } = {}) {
         ) : estado === 'pre-reserva' ? (
           <PreReserva key="pre-reserva" indicacao={indicacao} plano={nomeDoPlano(d.plano)} aoAcabar={() => setEstado('enviado')} />
         ) : (
-          <motion.form key="form" name={FORMULARIO} onSubmit={enviar} noValidate exit={{ opacity: 0, y: -10 }} onFocusCapture={comecar}>
+          <motion.form key="form" name={FORMULARIO} className="clara-form" onSubmit={seguinte} noValidate exit={{ opacity: 0, y: -10 }} onFocusCapture={comecar}>
             <h3>{ESGOTADO ? 'Entra na lista de espera' : 'Reserva a tua Clara'}</h3>
-            <p className="prevenda-form-sub">{ESGOTADO ? 'As 25 licenças com pré-reserva esgotaram. Deixa os teus dados e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : `Os teus dados e, a seguir, o pagamento da pré-reserva de ${PRE_RESERVA}.`}</p>
+            <p className="prevenda-form-sub">{ESGOTADO ? 'Três perguntas e guardamos o teu lugar: a partir de 1 de dezembro abrimos 30 vagas por semana.' : `Três perguntas e, a seguir, o pagamento da pré-reserva de ${PRE_RESERVA}.`}</p>
             <p className="so-leitores"><label>Não preenchas: <input name="empresa-site" tabIndex={-1} autoComplete="off" /></label></p>
-            <div className="prevenda-campos">
-              <Campo nome="nome" rotulo="Nome" value={d.nome} onChange={muda} erro={erros.nome} autoComplete="name" />
-              <Campo nome="email" rotulo="Email" type="email" inputMode="email" value={d.email} onChange={muda} erro={erros.email} autoComplete="email" />
-              <Campo nome="telefone" rotulo="Telemóvel (opcional)" type="tel" inputMode="tel" value={d.telefone} onChange={muda} erro={erros.telefone} autoComplete="tel" />
-              <Campo nome="agencia" rotulo="Agência ou rede" placeholder="Ex.: RE/MAX, KW, ERA" value={d.agencia} onChange={muda} erro={erros.agencia} autoComplete="organization" />
-              <Campo
-                nome="indicado_por" rotulo="Alguém te falou da Clara? (opcional)" value={d.indicado_por} onChange={muda} erro={erros.indicado_por} autoComplete="off"
-                placeholder="Nome ou código de 6 letras"
-                ajuda={porLigacao ? 'Vieste pela ligação de um colega: o código dele já está aqui.' : null}
-              />
+            <div className="clara-passos">
+              <span className="eyebrow">Pergunta {i + 1} de {PERGUNTAS.length}</span>
+              {i > 0 && <button type="button" className="clara-voltar" onClick={() => irPara(i - 1)}>← Voltar</button>}
             </div>
-            {mostrarPlanos ? (
-              <fieldset className="passo-planos">
-                <legend className="campo-legenda">Que plano te interessa mais?</legend>
-                <div role="radiogroup" aria-label="Planos">
-                  {PLANOS.map((p, k) => (
-                    <button key={p.id} id={k === 0 ? 'campo-plano' : undefined} type="button" role="radio" aria-checked={d.plano === p.id}
-                      className={`passo-plano ${d.plano === p.id ? 'passo-plano--escolhido' : ''}`}
-                      onClick={() => { setD(x => ({ ...x, plano: p.id })); setErros(x => ({ ...x, plano: undefined })); setMudarPlano(false) }}>{p.nome}</button>
-                  ))}
+            <div className="clara-progresso" aria-hidden="true"><span style={{ width: `${(i / PERGUNTAS.length) * 100}%` }} /></div>
+            {/* as respostas ficam à vista como mensagens: fora das gravações do PostHog, que só escondem os campos */}
+            <div className="clara-conversa ph-no-capture" aria-live="polite">
+              {PERGUNTAS.slice(0, i).map((p, k) => (
+                <div key={p.id} className="clara-troca">
+                  <FalaClara texto={p.fala(nome)} compacta />
+                  <button type="button" className="clara-resposta" onClick={() => irPara(k)} aria-label={`${p.rotulo}: ${d[p.id]}. Mudar`}>{d[p.id]}</button>
                 </div>
-                {erros.plano && <small className="erro-solto" role="alert">{erros.plano}</small>}
-              </fieldset>
-            ) : (
-              <p className="form-plano">
-                <span>Plano escolhido: <b>{nomeDoPlano(d.plano)}</b></span>
-                <button type="button" className="passos-voltar" onClick={() => setMudarPlano(true)}>Mudar</button>
-              </p>
-            )}
-            <label className={`consentimento ${erros.consentimento ? 'campo--erro' : ''}`}>
-              <input id="campo-consentimento" type="checkbox" name="consentimento" checked={d.consentimento} onChange={muda} />
-              <span>Autorizo a Nº 5 a guardar estes dados e a contactar-me sobre o lançamento da N5 Clara, nos termos da <a href="/privacidade/" target="_blank" rel="noreferrer">política de privacidade</a>.</span>
+              ))}
+              <FalaClara key={q.id} texto={q.fala(nome)} ajuda={q.ajuda} escreve={escreve} />
+            </div>
+            <label className={`campo clara-campo ${erros[q.id] ? 'campo--erro' : ''}`}>
+              <span className="so-leitores">{q.rotulo}</span>
+              <input
+                key={q.id} id={`campo-${q.id}`} name={q.id} value={d[q.id]} onChange={muda}
+                aria-invalid={!!erros[q.id]} enterKeyHint={ultima ? 'send' : 'next'} autoFocus={respondeu.current}
+                {...q.campo}
+              />
+              {erros[q.id] && <small role="alert">{erros[q.id]}</small>}
             </label>
-            {erros.consentimento && <small className="erro-solto" role="alert">{erros.consentimento}</small>}
+            {/* quem chega pela ligação de um colega já traz o código; para os outros, fica à mão sem ser mais uma pergunta */}
+            {ultima && !porLigacao && (codigoAberto ? (
+              <label className={`campo clara-codigo ${erros.indicado_por ? 'campo--erro' : ''}`}>
+                <span>Código ou nome do colega que te falou da Clara</span>
+                <input id="campo-indicado_por" name="indicado_por" value={d.indicado_por} onChange={muda} autoComplete="off" placeholder="Ex.: ABC234" autoFocus />
+                {erros.indicado_por && <small role="alert">{erros.indicado_por}</small>}
+              </label>
+            ) : (
+              <button type="button" className="clara-voltar clara-codigo-abrir" onClick={() => setCodigoAberto(true)}>Tens o código de um colega?</button>
+            ))}
+            {ultima && <p className="clara-aviso">Ao continuares, autorizas a Nº 5 a guardar estes dados e a contactar-te sobre o lançamento da N5 Clara, nos termos da <a href="/privacidade/" target="_blank" rel="noreferrer">política de privacidade</a>.</p>}
             <button className="botao prevenda-botao" type="submit" disabled={estado === 'a-enviar'}>
-              {estado === 'a-enviar' ? 'A enviar…' : ESGOTADO ? 'Quero entrar na lista' : 'Continuar para o pagamento'}
+              {estado === 'a-enviar' ? 'A enviar…' : !ultima ? 'Seguinte' : ESGOTADO ? 'Quero entrar na lista' : 'Continuar para o pagamento'}
             </button>
             {estado === 'falhou' && <p className="erro-solto">Não conseguimos enviar. Tenta outra vez daqui a pouco.</p>}
           </motion.form>

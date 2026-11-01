@@ -410,11 +410,39 @@
 .pre-reserva-resumo .pre-reserva-total dd { color: var(--dourado); font-family: var(--titulo); font-size: 22px; }
 .pre-reserva-inclui { margin: 0; padding: 0 0 0 18px; display: grid; gap: 4px; font-size: 14px; color: var(--suave); }
 
-/* formulário num ecrã */
-.campo-ajuda { font-style: normal; font-size: 13px; font-weight: 500; color: var(--suave); }
-.campo-legenda { padding: 0; font-size: 14px; font-weight: 600; }
-.passo-planos [role="radiogroup"] { grid-template-columns: repeat(2, 1fr); }
-.form-plano { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 12px 16px; border-radius: 12px; background: var(--dourado-claro); font-size: 15px; }
+/* inscrição em conversa: a Clara pergunta uma coisa de cada vez e as respostas ficam como mensagens */
+.prevenda-form .clara-form { gap: 14px; }
+.clara-passos { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: -6px; }
+.clara-voltar {
+  background: none; border: 0; padding: 6px 2px; cursor: pointer;
+  color: var(--suave); font: inherit; font-size: 14px; font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.clara-progresso { height: 5px; border-radius: 999px; background: var(--linha); overflow: hidden; }
+.clara-progresso span { display: block; height: 100%; background: var(--dourado); transition: width 0.3s ease; }
+.clara-conversa { display: grid; gap: 12px; padding-top: 4px; }
+.clara-troca { display: grid; gap: 8px; }
+.clara-fala { display: flex; gap: 10px; align-items: flex-start; }
+.clara-fala-balao { display: grid; gap: 4px; max-width: 46ch; padding: 12px 16px; border-radius: 4px 18px 18px 18px; background: var(--dourado-claro); }
+.clara-fala-balao p { font-size: clamp(17px, 1.6vw, 19px); font-weight: 700; line-height: 1.35; }
+.clara-fala-balao small { font-size: 14px; font-weight: 500; color: var(--suave); }
+.clara-fala--compacta .clara-fala-balao { padding: 8px 12px; }
+.clara-fala--compacta .clara-fala-balao p { font-size: 14px; font-weight: 600; color: var(--suave); }
+.clara-resposta {
+  justify-self: end; max-width: 80%; padding: 8px 14px; border: 0; cursor: pointer;
+  border-radius: 18px 18px 4px 18px; background: var(--tinta); color: var(--creme);
+  font: inherit; font-size: 15px; font-weight: 600; text-align: right; overflow-wrap: anywhere;
+}
+.clara-resposta:hover { opacity: 0.85; }
+.clara-a-escrever { display: inline-flex; gap: 4px; padding: 7px 2px; }
+.clara-a-escrever i { width: 7px; height: 7px; border-radius: 50%; background: var(--dourado); animation: clara-ponto 1s infinite ease-in-out; }
+.clara-a-escrever i:nth-child(2) { animation-delay: 0.15s; }
+.clara-a-escrever i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes clara-ponto { 0%, 60%, 100% { opacity: 0.35; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .clara-a-escrever i { animation: none; opacity: 0.7; } }
+.clara-campo input { font-size: 18px; }
+.clara-codigo-abrir { justify-self: start; }
+.clara-aviso { margin: 0; font-size: 13px; line-height: 1.5; color: var(--suave); }
 /* na página de confirmação o fundo é escuro */
 .confirmada .o-que-pagas li:not(.o-que-pagas-destaque) { background: rgba(245, 244, 240, 0.08); }
 .confirmada .o-que-pagas li:not(.o-que-pagas-destaque) span, .confirmada .o-que-pagas-nota { color: rgba(245, 244, 240, 0.72); }

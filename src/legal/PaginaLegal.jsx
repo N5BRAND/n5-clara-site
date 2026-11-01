@@ -42,7 +42,7 @@ function Privacidade() {
       </Seccao>
 
       <Seccao id="fundamento" n="4" titulo="Com que fundamento">
-        <p>Tratamos os dados da inscrição com base no teu consentimento, que dás ao marcar a caixa de autorização no formulário (artigo 6.º, n.º 1, alínea a) do Regulamento Geral sobre a Proteção de Dados, RGPD). Podes retirá-lo a qualquer momento, sem afetar o que foi feito antes.</p>
+        <p>Tratamos os dados da inscrição com base no teu consentimento, que dás ao carregar no botão final do formulário, logo abaixo do aviso de autorização (artigo 6.º, n.º 1, alínea a) do Regulamento Geral sobre a Proteção de Dados, RGPD). Podes retirá-lo a qualquer momento, sem afetar o que foi feito antes.</p>
         <p>Os registos técnicos do alojamento assentam no nosso interesse legítimo em manter o site seguro e a funcionar. Os cookies de estatística e de marketing só são usados com o teu consentimento (ver <a href="#cookies">ponto 8</a>). Sem ele, a estatística conta a tua visita só de forma anónima, sem cookies, com base no nosso interesse legítimo em saber quantas pessoas visitam o site.</p>
       </Seccao>
 
