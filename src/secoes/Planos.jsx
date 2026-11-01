@@ -1,9 +1,9 @@
 import { motion } from 'motion/react'
 import { useEffect, useRef } from 'react'
-import { LogoChatGPT, LogoClaude } from '../ilustracoes/LogosIA.jsx'
+import { LogoChatGPT, LogoClaude, LogoGrokBot } from '../ilustracoes/LogosIA.jsx'
 import { PRECOS } from '../logica/pagamento.js'
 
-const MCP = { mcp: true, texto: 'Ideal para ligar ao teu ChatGPT e ao teu Claude' }
+const MCP = { mcp: true, texto: 'Ideal para ligar ao teu ChatGPT, ao teu Claude e ao teu Grok Bot' }
 
 const PLANOS = [
   {
@@ -103,7 +103,7 @@ function Plano({ p, i }) {
       <ul>
         {p.inclui.map(item => item.mcp ? (
           <li key="mcp" className="plano-mcp">
-            <span className="plano-mcp-logos"><LogoChatGPT /><LogoClaude /></span>
+            <span className="plano-mcp-logos"><LogoChatGPT /><LogoClaude /><LogoGrokBot /></span>
             {item.texto}
           </li>
         ) : <li key={item}>{item}</li>)}

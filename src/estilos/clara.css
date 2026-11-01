@@ -271,7 +271,7 @@
 .plano--destaque .plano-capacidade-rotulo { color: rgba(245, 244, 240, 0.6); }
 .plano--destaque .plano-capacidade-barra { background: rgba(245, 244, 240, 0.14); }
 
-/* linha do MCP: símbolos do ChatGPT e do Claude no lugar do visto */
+/* linha do MCP: símbolos do ChatGPT, do Claude e do Grok Bot no lugar do visto */
 .plano li.plano-mcp { align-items: center; font-weight: 700; }
 .plano li.plano-mcp::before { content: none; }
 .plano-mcp-logos { display: inline-flex; gap: 6px; flex: none; }

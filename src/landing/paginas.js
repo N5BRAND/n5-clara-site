@@ -114,7 +114,50 @@ const REATIVACAO = {
   ],
 }
 
-export const CENAS_LANDING = [LEAD_NOITE, FSBO, PROPRIETARIO, REATIVACAO]
+/* o ChatGPT e o Claude do consultor, ligados à Clara: as respostas vêm do assistente («outro»), com o que a Clara sabe */
+const CHATGPT = {
+  id: 'chatgpt',
+  hora: '14:40',
+  curto: 'No ChatGPT',
+  passos: 4,
+  eyebrow: '14:40 · No teu ChatGPT, com a Clara ligada',
+  titulo: 'Perguntas ao ChatGPT. Ele já sabe quem é o cliente.',
+  texto: 'Não colas a conversa nem explicas o imóvel. O ChatGPT vai buscar à Clara o que ela sabe: a ficha, as conversas, as visitas e os documentos.',
+  exemplo: 'Exemplo: nomes e imóveis fictícios.',
+  canal: { nome: 'ChatGPT', sub: 'a tua conta', logo: 'chatgpt' },
+  mensagens: [
+    { de: 'rui', texto: 'Tenho a reunião de angariação com o Carlos às 15h. Prepara-me.', p: 1 },
+    { de: 'outro', texto: 'Fui ver à Clara: moradia T4 em Oeiras, quer vender até março e já tem a caderneta e a certidão. Falou com ela ontem pelo WhatsApp.', p: 2 },
+    { de: 'outro', texto: 'Preparei-te 3 perguntas para a reunião e a resposta a «a comissão é muito alta».', p: 3 },
+  ],
+  cartoes: [
+    { tipo: 'resumo', p: 2, titulo: 'O que o ChatGPT foi buscar à Clara', chips: ['Ficha do Carlos', 'Conversa de ontem', 'Caderneta e certidão'], nota: 'Não copiaste nem colaste nada.' },
+    { tipo: 'numero', p: 4, numero: '0', texto: 'vezes que tiveste de explicar quem é o Carlos' },
+  ],
+}
+
+const CLAUDE = {
+  id: 'claude',
+  hora: '17:10',
+  curto: 'No Claude',
+  passos: 4,
+  eyebrow: '17:10 · No teu Claude, a mesma Clara',
+  titulo: 'Mudas para o Claude e não começas do zero.',
+  texto: 'O Claude liga-se à mesma Clara. Os compradores, os imóveis e as conversas que o ChatGPT viu, o Claude também vê.',
+  exemplo: 'Exemplo: nomes e imóveis fictícios.',
+  canal: { nome: 'Claude', sub: 'a tua conta', logo: 'claude' },
+  mensagens: [
+    { de: 'rui', texto: 'Angariei a moradia do Carlos. Que compradores meus encaixam?', p: 1 },
+    { de: 'outro', texto: 'Na Clara tens 3: a Ana, o João e a Carla procuram T4 em Oeiras dentro deste preço. O João já visitou uma moradia na mesma rua.', p: 2 },
+    { de: 'rui', texto: 'Escreve uma mensagem para cada um.', p: 3 },
+  ],
+  cartoes: [
+    { tipo: 'match', p: 2, titulo: '3 compradores da tua carteira encaixam', chips: ['Zona', 'Tipologia', 'Orçamento'], nomes: ['AR', 'JM', 'CS'] },
+    { tipo: 'feito', p: 4, texto: '3 mensagens escritas no Claude, cada uma com o que a Clara sabe desse comprador.' },
+  ],
+}
+
+export const CENAS_LANDING = [LEAD_NOITE, FSBO, PROPRIETARIO, REATIVACAO, CHATGPT, CLAUDE]
 
 /* plano: fica escolhido no formulário e aparece no resumo; nota: aviso honesto sobre o que entra e quando;
    reserva: título e frase do bloco da reserva, ligados ao benefício da página */
@@ -275,6 +318,53 @@ export const PAGINAS = {
     nota: { titulo: 'Clara Elite', texto: `As chamadas e o coaching fazem parte da Clara Elite, com 500 minutos por mês de chamadas pela aplicação da Clara incluídos. ${OFERTA.planoSuperior('elite')}` },
     reserva: { titulo: 'Reserva a Clara Elite.', texto: 'Análise, transcrição e coaching das tuas chamadas.' },
     plano: 'elite',
+  },
+  /* para quem já usa o ChatGPT e o Claude: a Clara é a peça que os liga ao trabalho do consultor (MCP, Pro e Elite) */
+  ia: {
+    titulo: 'A peça que faltava ao teu ChatGPT e ao teu Claude · N5 Clara',
+    descricao: 'A Clara liga-se ao ChatGPT e ao Claude. Os dois passam a saber o que ela sabe dos teus clientes, imóveis e visitas, e deixas de colar contexto.',
+    eyebrow: 'N5 Clara · ChatGPT e Claude',
+    h1: 'Usas o ChatGPT e o Claude. E explicas tudo outra vez a cada um.',
+    lead: 'Colas a conversa do cliente num, explicas o imóvel no outro, e nenhum sabe o que o outro sabe. A Clara é a peça que faltava: junta o teu trabalho num só sítio, liga-se aos dois e organiza o teu dia, o de trabalho e o resto.',
+    pecas: {
+      eyebrow: 'A peça que faltava',
+      titulo: 'Hoje, quem liga o ChatGPT ao Claude és tu. À mão.',
+      texto: 'Cada assistente liga-se às suas coisas e nenhum sabe o que o outro sabe. A Clara junta o teu trabalho num só sítio e liga-se aos dois, e também ao Grok Bot.',
+    },
+    cenas: [
+      CHATGPT,
+      CLAUDE,
+      cena('plano', {
+        titulo: 'O teu dia inteiro, não só o trabalho.',
+        texto: 'A Clara organiza as prioridades à volta do que já está no teu Google Calendar, incluindo o que é pessoal, e só marca visitas dentro dos horários que definiste.',
+        exemplo: 'Exemplo: agenda, nomes e imóveis fictícios.',
+        mensagens: [
+          { de: 'rui', texto: 'Bom dia, Clara. O que tenho hoje?', p: 1 },
+          { de: 'clara', texto: 'Bom dia, Rui! Reunião com o Carlos às 15h e 2 visitas. Às 18h30 é o futebol do Tomás, por isso não marquei nada depois das 18h.', p: 2 },
+        ],
+        cartoes: [
+          {
+            tipo: 'plano', p: 2, titulo: 'Plano de hoje',
+            itens: [
+              { h: '10:00', t: 'Visita ao T3 de Benfica com a Marta' },
+              { h: '15:00', t: 'Reunião de angariação com o Carlos' },
+              { h: '16:30', t: 'Visita ao T2 de Alvalade' },
+              { h: '18:30', t: 'Futebol do Tomás' },
+            ],
+          },
+          { tipo: 'alerta', p: 3, texto: 'A Ana pediu a ficha do T3 ontem e ainda não respondeste.' },
+          { tipo: 'numero', p: 4, numero: '6', texto: 'chamadas na tua fila de hoje, por ordem de prioridade' },
+        ],
+      }),
+    ],
+    passos: [
+      { titulo: 'Ligas a Clara aos teus assistentes', texto: 'Na sessão de configuração, a Clara fica ligada ao teu ChatGPT e ao teu Claude, e ao Grok Bot se o usares, cada um com a tua conta e só com as tuas permissões.' },
+      { titulo: 'Todos sabem o que a Clara sabe', texto: 'Leads, conversas do WhatsApp, visitas, imóveis, compradores e documentos ficam num só sítio. Os teus assistentes vão lá buscar o que precisam e continuam ligados ao que já ligaste neles.' },
+      { titulo: 'Pedes onde estiveres', texto: 'No ChatGPT, no Claude, no Grok Bot ou no WhatsApp com a Clara: perguntas pelo teu dia, preparas reuniões e escreves mensagens sem explicar tudo outra vez.' },
+    ],
+    nota: { titulo: 'Clara Pro e Elite', texto: `A ligação ao ChatGPT, ao Claude e ao Grok Bot faz parte da Clara Pro e da Clara Elite e está disponível desde o lançamento, a 1 de dezembro. Usas a tua conta do ChatGPT, do Claude ou do Grok Bot; na sessão de configuração confirmamos contigo se o teu plano dessas aplicações aceita ligações externas. ${OFERTA.planoSuperior('pro-elite')}` },
+    reserva: { titulo: 'Junta a peça que faltava ao teu ChatGPT e ao teu Claude.', texto: 'A ligação ao ChatGPT, ao Claude e ao Grok Bot está na Clara Pro e na Clara Elite.' },
+    plano: 'pro',
   },
 }
 
