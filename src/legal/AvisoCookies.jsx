@@ -53,7 +53,7 @@ export default function AvisoCookies() {
         >
           <b className="cookies-titulo">Cookies</b>
           <p>
-            Usamos só o essencial para o site funcionar. Com a tua autorização, usamos também cookies de estatística (PostHog, na UE) para perceber como o site é usado e melhorá-lo, e cookies de marketing da Meta para medir os nossos anúncios e mostrá-los a quem já visitou o site.{' '}
+            Usamos cookies essenciais e, se aceitares, de estatística e da Meta, para melhorar o site e os nossos anúncios.{' '}
             <a href="/privacidade/#cookies">Saber mais</a>
           </p>
           {detalhe && (
