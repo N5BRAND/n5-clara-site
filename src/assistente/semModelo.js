@@ -17,6 +17,23 @@ const pedeContacto = nome => `Prazer, ${nome}! Deixas-me o teu telemóvel ou ema
 const EMAIL = /[^\s@]+@[^\s@]+\.[^\s@]{2,}/
 const TELEFONE = /(?:\+|00)?\d[\d\s-]{7,16}\d/
 
+/* «o meu nome é Pedro», «chamo-me Pedro», «sou o Pedro» */
+const APRESENTA = /(?:o meu nome é|chamo-me|sou (?:o|a)|trata-me por|podes chamar-me)\s+(\p{L}[\p{L}'-]*(?:\s+\p{L}[\p{L}'-]*){0,2})/iu
+/* «Pedro, enganei-me», «enganei-me, é Pedro», «desculpa, Pedro» */
+const CORRIGE = /engan|desculp|corrij|corrig|afinal|queria dizer|ups|oops/iu
+const NAO_NOME = new Set(['é', 'e', 'o', 'a', 'me', 'nome', 'meu', 'era', 'sou', 'escrevi', 'mal', 'sorry'])
+
+/* o nome que a pessoa diz numa apresentação ou numa correção; vazio se a mensagem não for isso.
+   Uma correção é curta e sem pergunta («Desculpa, quanto custa?» não é uma correção) */
+export function nomeDito(texto) {
+  const t = String(texto || '').trim()
+  const a = t.match(APRESENTA)
+  if (a) return a[1].trim()
+  if (!CORRIGE.test(t) || t.includes('?') || t.split(/\s+/).length > 5) return ''
+  const palavras = t.replace(/[,.!;:]/g, ' ').split(/\s+/).filter(p => p && !CORRIGE.test(p) && !NAO_NOME.has(p.toLowerCase()) && /^\p{L}[\p{L}'-]*$/u.test(p))
+  return palavras.slice(0, 3).join(' ')
+}
+
 export function respostaSemModelo(mensagens, { esgotado = false, contacto = {} } = {}) {
   const visitante = mensagens.filter(m => m.de === 'visitante')
   const ultima = visitante[visitante.length - 1].texto.trim()
@@ -26,10 +43,19 @@ export function respostaSemModelo(mensagens, { esgotado = false, contacto = {} }
     c.email ||= contactoDe({ email: m.texto.match(EMAIL)?.[0] }).email
     c.telefone ||= contactoDe({ telefone: m.texto.match(TELEFONE)?.[0] }).telefone
   }
-  /* a resposta à pergunta do nome: curta, sem números nem arrobas */
-  if (!c.nome && /como te chamas\?$/i.test(anterior) && /^[\p{L}' .-]{2,60}$/u.test(ultima) && ultima.split(/\s+/).length <= 4) c.nome = ultima
+  /* a resposta à pergunta do nome: curta, sem números nem arrobas, ou uma apresentação («chamo-me Pedro») */
+  const dito = nomeDito(ultima)
+  const pediuNome = /como te chamas\?$/i.test(anterior)
+  if (!c.nome && pediuNome && dito) c.nome = dito
+  else if (!c.nome && pediuNome && /^[\p{L}' .-]{2,60}$/u.test(ultima) && ultima.split(/\s+/).length <= 4) c.nome = ultima
+  /* a pessoa corrigiu o nome que já tinha dado: aceita-se e segue */
+  const corrigiu = !!(contactoDe(contacto).nome && dito && dito.toLowerCase() !== contactoDe(contacto).nome.toLowerCase())
+  if (corrigiu) c.nome = dito
   const primeiro = c.nome.split(' ')[0]
   const base = { ...c, sugestoes: [] }
+  if (corrigiu) {
+    return { ...base, resposta: c.email || c.telefone ? `Ah, ${primeiro}! Desculpa. Em que mais te posso ajudar?` : `Ah, ${primeiro}! Desculpa. Deixas-me o teu telemóvel ou email? Assim a equipa da Nº5 pode enviar-te os detalhes.`, sugestoes: SUGESTOES.slice(0, 2) }
+  }
   const conhecida = RESPOSTAS(esgotado)[ultima]
   if (conhecida) return { ...base, resposta: c.nome ? conhecida : `${conhecida} ${PEDE_NOME}`, sugestoes: SUGESTOES.filter(s => s !== ultima).slice(0, 2) }
   if (c.nome && !c.email && !c.telefone && /como te chamas\?$/i.test(anterior)) return { ...base, resposta: pedeContacto(primeiro) }

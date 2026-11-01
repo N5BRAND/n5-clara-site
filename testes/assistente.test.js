@@ -4,6 +4,7 @@ import { instrucoes, ESQUEMA, MODELO } from '../netlify/assistente/conhecimento.
 import { pedirAoModelo, limparResposta, respostaSemModelo } from '../netlify/assistente/responder.js'
 import { registarConversa } from '../netlify/ghl.js'
 import { consumir, limitesDoAmbiente, LIMITES_USO } from '../netlify/assistente/limites.js'
+import { nomeDito } from '../src/assistente/semModelo.js'
 import { PRECOS, PRE_RESERVA } from '../src/logica/pagamento.js'
 import { PROGRAMA } from '../src/logica/indicacoes.js'
 
@@ -118,6 +119,20 @@ describe('respostaSemModelo (sem chave da API)', () => {
     const r2 = respostaSemModelo([...m, c(r1.resposta), v('o meu é 912 345 678')], { contacto: { nome: 'Ana Silva' } })
     expect(r2).toMatchObject({ nome: 'Ana Silva', telefone: '912 345 678' })
     expect(r2.resposta).toMatch(/Obrigada, Ana/)
+  })
+  it('reconhece quem corrige o nome, sem tratar a correção como pergunta', () => {
+    expect(nomeDito('Pedro enganei-me')).toBe('Pedro')
+    expect(nomeDito('enganei-me, é Pedro')).toBe('Pedro')
+    expect(nomeDito('Desculpa, o meu nome é Pedro Ferreira')).toBe('Pedro Ferreira')
+    expect(nomeDito('chamo-me Ana')).toBe('Ana')
+    expect(nomeDito('Desculpa, quanto custa?')).toBe('')
+    expect(nomeDito('Funciona com o CRM da RE/MAX?')).toBe('')
+    const m = [c(SAUDACAO), v('Quanto custa?'), c('… Já agora, como te chamas?'), v('epdro'), c('Prazer, epdro! Deixas-me o teu telemóvel ou email?'), v('Pedro enganei-me')]
+    const r = respostaSemModelo(m, { contacto: { nome: 'epdro' } })
+    expect(r.nome).toBe('Pedro')
+    expect(r.resposta).toMatch(/^Ah, Pedro! Desculpa\. Deixas-me o teu telemóvel ou email\?/)
+    expect(r.resposta).not.toMatch(/Boa pergunta/)
+    expect(respostaSemModelo([c('… como te chamas?'), v('sou o Rui')]).nome).toBe('Rui')
   })
   it('com as vagas esgotadas a pré-reserva fala da lista de espera', () => {
     expect(respostaSemModelo([v('Como funciona a pré-reserva?')], { esgotado: true }).resposta).toMatch(/lista de espera/)
