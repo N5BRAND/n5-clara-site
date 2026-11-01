@@ -56,8 +56,8 @@ const FORMULARIOS = {
     const p = planoDoConsultor(r)
     return {
       contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), source: `Inquérito ${PRODUTO}` },
-      etiquetas: [ETIQUETA, 'inquerito-clara', 'voucher-elite-1-mes', `plano-${p.plano}`, ...daOrigem(d)],
-      nota: [`Inquérito da ${PRODUTO}.`, `Voucher: ${d.voucher || 'por gerar'} (1.º mês da Clara Elite, ativar entre 1 e 31/12/2026, um por pessoa, não se junta à pré-reserva).`, `Plano que cobre o que escolheu: ${p.nomePlano}`, '', resumoInquerito(r), ...linhasExtra(d)].join('\n'),
+      etiquetas: [ETIQUETA, 'inquerito-clara', 'voucher-elite-2-meses', `plano-${p.plano}`, ...daOrigem(d)],
+      nota: [`Inquérito da ${PRODUTO}.`, `Voucher: ${d.voucher || 'por gerar'} (2 primeiros meses da Clara Elite, ativar entre 1 e 31/12/2026, um por pessoa, não se junta à pré-reserva).`, `Plano que cobre o que escolheu: ${p.nomePlano}`, '', resumoInquerito(r), ...linhasExtra(d)].join('\n'),
     }
   },
   /* Passa a Clara: quem perdeu a ligação pede-a pelo email; a etiqueta dispara o workflow do GHL que a reenvia,

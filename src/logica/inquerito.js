@@ -1,5 +1,5 @@
 /* inquérito para consultores (/inquerito/): valida a Clara, mostra o que é útil e as dores de cada um e, com as respostas,
-   monta o plano de como a Clara organiza o trabalho do consultor. Quem acaba recebe por email o voucher do 1.º mês da
+   monta o plano de como a Clara organiza o trabalho do consultor. Quem acaba recebe por email o voucher de 2 meses da
    Clara Elite (netlify/voucher.js). O plano sai só das respostas: não há médias de ninguém nem horas poupadas inventadas.
    O mesmo módulo corre na página e no servidor, para o email ter o mesmo plano que o ecrã. */
 import { PRECOS } from './pagamento.js'
@@ -154,7 +154,7 @@ const TITULO_OBJETIVO = {
   organizar: 'para teres tudo organizado num só sítio',
 }
 
-/* o plano: o que muda no dia, as primeiras 4 semanas e o plano da Clara a seguir ao mês oferecido */
+/* o plano: o que muda no dia, as primeiras 4 semanas e o plano da Clara a seguir aos 2 meses oferecidos */
 export function planoDoConsultor(entrada = {}) {
   const r = limparRespostas(entrada)
   const ids = momentosDe(r)
@@ -180,7 +180,7 @@ export function planoDoConsultor(entrada = {}) {
     segundo
       ? { n: 3, titulo: segundo.titulo, texto: 'Junta-se a segunda frente. A Clara já conhece o teu guião e os teus horários.' }
       : { n: 3, titulo: 'O dia por ordem, todos os dias', texto: 'Usas as prioridades da manhã todos os dias. A Clara afina o teu guião com as respostas das leads.' },
-    { n: 4, titulo: 'Ver o que mudou', texto: 'Olhas para o primeiro mês com a Clara: as leads que ela respondeu, as que avançaram e o que ficou por fazer. No fim do mês oferecido, decides se continuas.' },
+    { n: 4, titulo: 'Ver o que mudou', texto: 'Olhas para o primeiro mês com a Clara: as leads que ela respondeu, as que avançaram e o que ficou por fazer. Ainda tens um mês oferecido para decidires se continuas.' },
   ]
 
   const pedidos = (r.dores || []).filter(d => SEM_RESPOSTA[d]).map(d => SEM_RESPOSTA[d])

@@ -258,7 +258,7 @@ function Resultado({ plano: p, email }) {
         <ClaraAvatar tamanho={48} viva />
         <div>
           <p className="eyebrow">Voucher enviado</p>
-          <p>Enviámos o voucher do 1.º mês da Clara Elite para <b>{email}</b>, com este plano. Se não o vires em alguns minutos, procura no spam ou nas promoções.</p>
+          <p>Enviámos o voucher de 2 meses da Clara Elite para <b>{email}</b>, com este plano. Se não o vires em alguns minutos, procura no spam ou nas promoções.</p>
         </div>
       </div>
       <div className="diag-resultado-topo">
@@ -306,7 +306,7 @@ function Resultado({ plano: p, email }) {
         <p className="inq-pedidos">Também te custa: {p.pedidos.join('; ').toLowerCase()}. A Clara ainda não faz isto e ficou registado para decidirmos o que desenvolvemos a seguir.</p>
       )}
       <div className="cartao diag-plano">
-        <p className="eyebrow">Depois do mês oferecido</p>
+        <p className="eyebrow">Depois dos 2 meses oferecidos</p>
         <b>{p.nomePlano}</b>
         <p>{p.depois}</p>
         <div className="diag-acoes">

@@ -74,7 +74,7 @@ describe('inquérito: o plano', () => {
     expect(planoDoConsultor({ rede: 'kw', dores: ['crm'] }).dia.map(m => m.id)).toContain('copiloto')
   })
 
-  it('o desconto depois do mês oferecido é o da oferta: 50% na primeira mensalidade', () => {
+  it('o desconto depois dos 2 meses oferecidos é o da oferta: 50% na primeira mensalidade', () => {
     expect(planoDoConsultor({ uteis: ['chamadas'] }).depois).toContain('73,50 € em vez de 147 €')
     expect(planoDoConsultor({ uteis: ['particulares'] }).depois).toContain('48,50 € em vez de 97 €')
   })
@@ -90,7 +90,7 @@ describe('inquérito: voucher e email', () => {
 
   it('o email tem o voucher, o plano e as condições, sem o texto livre e sem falar em IVA', () => {
     const { assunto, html } = emailVoucher({ nome: '<b>Rui</b> Silva', codigo: 'ELITE-ABC234', respostas: RESPOSTAS })
-    expect(assunto).toBe('O teu voucher: 1.º mês da Clara Elite oferecido')
+    expect(assunto).toBe('O teu voucher: 2 meses da Clara Elite oferecidos')
     expect(html).toContain('ELITE-ABC234')
     expect(html).toContain('Olá &lt;b&gt;Rui&lt;/b&gt;,')
     expect(html).toContain('O CRM da tua marca preenchido')
@@ -122,7 +122,7 @@ describe('inquérito: voucher e email', () => {
   it('o contacto do inquérito fica no GHL com o voucher, o plano e as respostas', () => {
     const r = paraGhl('inquerito-clara', { nome: 'Rui Silva', email: 'rui@rede.pt', telefone: '912345678', respostas: JSON.stringify(RESPOSTAS), voucher: 'ELITE-ABC234', origem: '/inquerito/' })
     expect(r.contacto).toEqual({ firstName: 'Rui', lastName: 'Silva', email: 'rui@rede.pt', phone: '+351912345678', source: 'Inquérito N5 Clara' })
-    expect(r.etiquetas).toEqual(['n5-clara', 'inquerito-clara', 'voucher-elite-1-mes', 'plano-elite', 'pagina-inquerito'])
+    expect(r.etiquetas).toEqual(['n5-clara', 'inquerito-clara', 'voucher-elite-2-meses', 'plano-elite', 'pagina-inquerito'])
     expect(r.nota).toContain('Voucher: ELITE-ABC234')
     expect(r.nota).toContain('quero menos papelada')
   })

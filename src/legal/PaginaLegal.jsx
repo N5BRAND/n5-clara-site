@@ -151,11 +151,11 @@ function Termos() {
       <Seccao id="voucher" n="6" titulo="Voucher do inquérito para consultores">
         <p>Quem responde até ao fim ao inquérito para consultores, em {PRODUTO.url.replace('https://', '')}/inquerito/, recebe por email um voucher da {PRODUTO.nome}, enviado pela {EMPRESA.nome}.</p>
         <ul>
-          <li><b>O que dá:</b> o primeiro mês da Clara Elite completa, sem pagar.</li>
+          <li><b>O que dá:</b> os 2 primeiros meses da Clara Elite completa, sem pagar.</li>
           <li><b>Quantos:</b> um voucher por pessoa e por email. Responder outra vez com o mesmo email devolve o mesmo voucher. Cada voucher só se usa uma vez.</li>
           <li><b>Quando:</b> ativa-se entre 1 e 31 de dezembro de 2026.</li>
           <li><b>Com a pré-reserva:</b> não se junta à pré-reserva de {PRODUTO.reserva.valor}.</li>
-          <li><b>Depois do mês oferecido:</b> quem continuar na Clara Pro ou na Clara Elite tem 50% de desconto na primeira mensalidade desse plano. Não há período de fidelização.</li>
+          <li><b>Depois dos 2 meses oferecidos:</b> quem continuar na Clara Pro ou na Clara Elite tem 50% de desconto na primeira mensalidade desse plano. Não há período de fidelização.</li>
           <li><b>Abusos:</b> podemos recusar vouchers pedidos com dados falsos ou em nome de outras pessoas.</li>
         </ul>
         <p>As respostas e os dados do inquérito são tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>

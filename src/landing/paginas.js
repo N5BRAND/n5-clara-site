@@ -297,14 +297,14 @@ export const ARQUETIPO = {
   reserva: { titulo: 'Reserva o plano que o teste te recomendou.', texto: 'As tuas respostas seguem com a reserva, para a sessão de configuração.' },
 }
 
-/* inquérito para consultores (/inquerito/): o vídeo, o que a Clara resolve e o inquérito que dá o voucher do 1.º mês
+/* inquérito para consultores (/inquerito/): o vídeo, o que a Clara resolve e o inquérito que dá o voucher de 2 meses
    da Clara Elite. Página para o Pedro partilhar com consultores; fica fora dos anúncios e dos motores de busca */
 const N_PERGUNTAS = PERGUNTAS_INQUERITO.length
 export const INQUERITO = {
   titulo: 'Inquérito para consultores · N5 Clara',
-  descricao: `Vê o vídeo, responde a ${N_PERGUNTAS} perguntas sobre o teu dia e recebe no email o voucher do 1.º mês da Clara Elite e o teu plano com a Clara.`,
+  descricao: `Vê o vídeo, responde a ${N_PERGUNTAS} perguntas sobre o teu dia e recebe no email o voucher de 2 meses da Clara Elite e o teu plano com a Clara.`,
   eyebrow: 'N5 Clara · Inquérito para consultores',
-  h1: 'Ajuda-nos a afinar a Clara. O 1.º mês da Clara Elite é por nossa conta.',
+  h1: 'Ajuda-nos a afinar a Clara. Os 2 primeiros meses da Clara Elite são por nossa conta.',
   lead: `A Clara é a assistente que responde às tuas leads, organiza o teu dia e regista o que lhe dizes por voz. Vê o vídeo, responde a ${N_PERGUNTAS} perguntas e recebe no email o voucher e o plano de como a Clara organiza o teu trabalho.`,
   video: { eyebrow: 'Em um minuto', titulo: 'Vê um dia com a Clara.', texto: 'Das oito da manhã ao fim do dia, num minuto. Liga o som.' },
   dores: {
@@ -319,7 +319,7 @@ export const INQUERITO = {
   },
   voucher: {
     eyebrow: 'O teu voucher',
-    titulo: `${N_PERGUNTAS} perguntas, 2 minutos. O 1.º mês da Clara Elite oferecido.`,
+    titulo: `${N_PERGUNTAS} perguntas, 2 minutos. Os 2 primeiros meses da Clara Elite oferecidos.`,
     texto: 'No fim, recebes por email o voucher e o teu plano com a Clara. Um voucher por pessoa, para ativar entre 1 e 31 de dezembro de 2026. Não se junta à pré-reserva de 27 €.',
   },
 }
