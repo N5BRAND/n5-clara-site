@@ -5,6 +5,7 @@ import { iniciarAnalitica, marcar } from './legal/analitica.js'
 import { iniciarIndicacoes } from './logica/indicacoes.js'
 import { iniciarOrigem } from './logica/origem.js'
 import { iniciarBrilho } from './logica/brilho.js'
+import { iniciarAssistente } from './assistente/iniciar.js'
 import { MotionConfig } from 'motion/react'
 import App from './App.jsx'
 import './estilos/fontes.js'
@@ -19,6 +20,7 @@ iniciarAnalitica()
 iniciarIndicacoes(marcar)
 iniciarOrigem()
 iniciarBrilho()
+iniciarAssistente()
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

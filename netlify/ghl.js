@@ -74,6 +74,35 @@ export function paraGhl(formulario, dados, { campoCodigo } = {}) {
   return { ...r, contacto: sem(r.contacto) }
 }
 
+const ID_GHL = /^[A-Za-z0-9]{8,40}$/
+
+/* assistente do site: cada pessoa que deixa o nome e um contacto fica com a conversa toda numa nota do contacto.
+   A primeira resposta cria a nota; as seguintes atualizam essa mesma nota (os ids voltam ao navegador e regressam a cada pedido) */
+export async function registarConversa({ contacto, conversa, pagina = '', teste = false, contactoId = '', notaId = '', token, localizacao, pedir = fetch }) {
+  const cabecalhos = { Authorization: `Bearer ${token}`, Version: '2021-07-28', 'Content-Type': 'application/json', Accept: 'application/json' }
+  const chamar = async (metodo, caminho, corpo) => {
+    const resp = await pedir(API + caminho, { method: metodo, headers: cabecalhos, body: JSON.stringify(corpo) })
+    if (!resp.ok) throw Object.assign(new Error(`GHL ${metodo} ${caminho} respondeu ${resp.status}`), { estado: resp.status })
+    return resp.json()
+  }
+  const dados = sem({ ...nomeSeparado(contacto.nome), email: contacto.email, phone: telefone(contacto.telefone), source: `Assistente do site ${PRODUTO}` })
+  const { contact } = await chamar('POST', '/contacts/upsert', { locationId: localizacao, ...dados })
+  const mesmo = ID_GHL.test(contactoId) && contact.id === contactoId
+  /* conversa de teste: só a etiqueta «teste», fora das listas e dos workflows */
+  if (!mesmo) await chamar('POST', `/contacts/${contact.id}/tags`, { tags: teste ? [ETIQUETA, 'teste'] : [ETIQUETA, 'assistente', ...daOrigem({ origem: pagina })] })
+  const nota = { body: teste ? `Conversa de teste.\n${conversa}` : conversa }
+  if (mesmo && ID_GHL.test(notaId)) {
+    try {
+      await chamar('PUT', `/contacts/${contact.id}/notes/${notaId}`, nota)
+      return { contacto: contact.id, nota: notaId }
+    } catch (e) {
+      if (e.estado !== 404) throw e // a nota foi apagada no GHL: escreve-se outra
+    }
+  }
+  const r = await chamar('POST', `/contacts/${contact.id}/notes`, nota)
+  return { contacto: contact.id, nota: r.note?.id || r.id || '' }
+}
+
 /* cria ou atualiza o contacto pelo email, junta as etiquetas e deixa a nota */
 export async function enviarParaGhl({ formulario, dados, token, localizacao, pedir = fetch, campoCodigo = typeof process === 'undefined' ? undefined : process.env.GHL_CAMPO_CODIGO }) {
   const r = paraGhl(formulario, dados, { campoCodigo })

@@ -6,6 +6,7 @@ import { iniciarAnalitica, marcar } from '../legal/analitica.js'
 import { iniciarIndicacoes } from '../logica/indicacoes.js'
 import { iniciarOrigem } from '../logica/origem.js'
 import { iniciarBrilho } from '../logica/brilho.js'
+import { iniciarAssistente } from '../assistente/iniciar.js'
 import { PAGINAS, DIAGNOSTICO, ARQUETIPO } from './paginas.js'
 import Landing from './Landing.jsx'
 import DiagnosticoPagina from './Diagnostico.jsx'
@@ -26,6 +27,7 @@ iniciarAnalitica()
 iniciarIndicacoes(marcar)
 iniciarOrigem()
 iniciarBrilho()
+iniciarAssistente()
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
