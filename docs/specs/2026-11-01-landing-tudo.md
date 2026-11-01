@@ -61,8 +61,10 @@ Um valor desconhecido fica no topo por defeito. O resto da página é igual para
 - O topo usa a conversa da Clara de quinta às 08:00 (a ligação ao Carlos às 10:00 e 2 proprietários qualificados durante
   a noite), marcada como exemplo.
 - Plano escolhido no formulário: Clara (a ficha, a qualificação dos proprietários e o plano do dia estão no plano Clara).
-- Ficaram de fora, por não terem apoio no site: as fichas de imóveis e o histórico (anúncios 03 e 07). A página fala da
-  ficha de cada cliente, da etapa de cada negócio e dos imóveis em geral.
+- Fichas de imóveis: no PR #23 ficaram de fora, por não terem apoio no site. O Pedro confirmou a 01/11 que existem desde
+  o dia 1, e a página passou a falar das fichas de contactos e imóveis (na conta, na linha do Excel, no topo da conta
+  própria e na reserva), como os anúncios 01 e 02. O assistente também o sabe (`netlify/assistente/conhecimento.js`).
+- O histórico (anúncios 03 e 07) continua por confirmar e fica de fora.
 - O site nunca se tinha chamado CRM. A página passa a dizê-lo («CRM que se preenche pela conversa»; no topo da conta
   própria, «A Clara é o teu CRM»), apoiada no que o site já diz: a ficha de cada cliente, as notas de voz registadas, a
   etapa de cada negócio e o pipeline de proprietários.

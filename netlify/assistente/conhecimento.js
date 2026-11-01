@@ -27,6 +27,7 @@ O que é
 - Responde e qualifica cada lead em minutos, com o guião do consultor, e faz os follow-ups. Nenhuma lead fica sem resposta.
 - Organiza o plano do dia por prioridade: visitas, angariações, documentos em falta e compradores que encaixam.
 - Transcreve as notas de voz do consultor e regista tudo na ficha certa. Sem formulários.
+- Tem fichas de contactos e de imóveis e o pipeline de cada negócio, que se preenchem pelas conversas e pelas notas de voz.
 - Cruza compradores e imóveis da carteira e diz porquê. Pede e acompanha os documentos de cada imóvel.
 - Prevê os negócios que o consultor pode fechar a partir do histórico e do ciclo de vendas dele, não de médias do mercado. Mede cada etapa do processo.
 - Marca visitas dentro dos horários que o consultor definir; fora deles, pergunta-lhe primeiro.

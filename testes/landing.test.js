@@ -175,9 +175,13 @@ describe('tudo num sítio (/tudo/)', () => {
     expect(TUDO.plano).toBe('clara')
   })
 
-  it('só diz o que o site já diz: sem fichas de imóveis nem histórico', () => {
+  it('fala das fichas de contactos e imóveis como os anúncios, e o histórico fica de fora', () => {
     const texto = JSON.stringify(TUDO)
-    expect(texto).not.toMatch(/fichas? de (contactos e )?imóveis|histórico/i)
+    expect(TUDO.conta.parcelas[0].texto).toContain('Fichas de contactos e imóveis')
+    expect(TUDO.excel.linhas[0][1]).toContain('Fichas de contactos e imóveis')
+    expect(TUDO.perfis.geral.lead).toContain('contactos e imóveis')
+    expect(TUDO.perfis['conta-propria'].lead).toContain('Fichas de contactos e imóveis')
+    expect(texto).not.toMatch(/histórico/i)
     expect(texto).not.toMatch(/\bIVA\b/)
   })
 })
