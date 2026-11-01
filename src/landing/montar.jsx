@@ -28,7 +28,8 @@ iniciarAnalitica()
 iniciarIndicacoes(marcar)
 iniciarOrigem()
 iniciarBrilho()
-iniciarAssistente()
+/* no inquérito não há assistente (Pedro, 01/11): a pessoa só responde às perguntas */
+if (id !== 'inquerito') iniciarAssistente()
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
