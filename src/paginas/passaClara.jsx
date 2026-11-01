@@ -14,6 +14,7 @@ import { codificar } from '../logica/netlify.js'
 import { emTeste } from '../legal/teste.js'
 import { PRE_RESERVA } from '../logica/pagamento.js'
 import { iniciarOrigem } from '../logica/origem.js'
+import { iniciarAssistente } from '../assistente/iniciar.js'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
@@ -292,6 +293,7 @@ iniciarPixel()
 iniciarAnalitica()
 iniciarIndicacoes(marcar)
 iniciarOrigem()
+iniciarAssistente()
 codigoDaMorada()
 
 createRoot(document.getElementById('root')).render(
