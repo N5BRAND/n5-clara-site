@@ -1,21 +1,25 @@
 import { motion, useInView, useReducedMotion } from 'motion/react'
 import { useRef } from 'react'
 import { ClaraAvatar } from '../ilustracoes/Clara.jsx'
-import { LogoChatGPT, LogoClaude } from '../ilustracoes/LogosIA.jsx'
+import { LogoChatGPT, LogoClaude, LogoGrokBot } from '../ilustracoes/LogosIA.jsx'
 
 const COLADO = ['Conversa do WhatsApp', 'Dados do imóvel', 'Notas da visita']
 const LIGACOES = ['WhatsApp e Meta', 'Google Calendar', 'O teu telefone', 'CRM da tua marca']
+const ASSISTENTES = [['ChatGPT', LogoChatGPT], ['Claude', LogoClaude], ['Grok Bot', LogoGrokBot]]
 
+/* um cartão por nota: com duas notas ficam o ChatGPT e o Claude, com três entra o Grok Bot */
 function Assistentes({ notas }) {
   return (
     <div className="pecas-topo">
-      <div className="pecas-assistente"><LogoChatGPT tamanho={26} /><b>ChatGPT</b><span>{notas[0]}</span></div>
-      <div className="pecas-assistente"><LogoClaude tamanho={26} /><b>Claude</b><span>{notas[1]}</span></div>
+      {notas.map((nota, i) => {
+        const [nome, Logo] = ASSISTENTES[i]
+        return <div key={nome} className="pecas-assistente"><Logo tamanho={26} /><b>{nome}</b><span>{nota}</span></div>
+      })}
     </div>
   )
 }
 
-/* página /ia/: hoje o consultor faz de ligação entre o ChatGPT e o Claude; com a Clara, os dois ligam-se a ela */
+/* página /ia/: hoje o consultor faz de ligação entre o ChatGPT e o Claude; com a Clara, eles e o Grok Bot ligam-se a ela */
 export default function PecaQueFaltava({ eyebrow, titulo, texto }) {
   const ref = useRef(null)
   const visivel = useInView(ref, { amount: 0.35 })
@@ -50,9 +54,9 @@ export default function PecaQueFaltava({ eyebrow, titulo, texto }) {
 
           <div className="pecas-painel pecas-painel--clara">
             <p className="eyebrow">Com a Clara</p>
-            <Assistentes notas={['Vê o que a Clara sabe', 'Vê o mesmo que o ChatGPT']} />
+            <Assistentes notas={['Vê o que a Clara sabe', 'Vê o mesmo', 'Vê o mesmo']} />
             <div className="pecas-fios">
-              {[0, 1].map(i => (
+              {[0, 1, 2].map(i => (
                 <motion.i key={i} initial={{ scaleY: 0 }} animate={{ scaleY: visivel ? 1 : 0 }} transition={{ type: 'spring', stiffness: 120, damping: 18, delay: 0.3 + i * 0.15 }} />
               ))}
             </div>
@@ -61,7 +65,7 @@ export default function PecaQueFaltava({ eyebrow, titulo, texto }) {
               <b>Clara</b>
               <div className="chips">{LIGACOES.map(l => <span key={l} className="chip">{l}</span>)}</div>
             </div>
-            <p className="pecas-legenda">O teu trabalho num só sítio. O que um sabe, o outro também sabe.</p>
+            <p className="pecas-legenda">O teu trabalho num só sítio. O que um sabe, os outros também sabem.</p>
           </div>
         </div>
       </div>

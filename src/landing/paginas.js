@@ -328,7 +328,7 @@ export const PAGINAS = {
     pecas: {
       eyebrow: 'A peça que faltava',
       titulo: 'Hoje, quem liga o ChatGPT ao Claude és tu. À mão.',
-      texto: 'Cada assistente liga-se às suas coisas e nenhum sabe o que o outro sabe. A Clara junta o teu trabalho num só sítio e liga-se aos dois.',
+      texto: 'Cada assistente liga-se às suas coisas e nenhum sabe o que o outro sabe. A Clara junta o teu trabalho num só sítio e liga-se aos dois, e também ao Grok Bot.',
     },
     cenas: [
       CHATGPT,
@@ -357,12 +357,12 @@ export const PAGINAS = {
       }),
     ],
     passos: [
-      { titulo: 'Ligas a Clara aos teus assistentes', texto: 'Na sessão de configuração, a Clara fica ligada ao teu ChatGPT e ao teu Claude, cada um com a tua conta e só com as tuas permissões.' },
-      { titulo: 'Os dois sabem o que a Clara sabe', texto: 'Leads, conversas do WhatsApp, visitas, imóveis, compradores e documentos ficam num só sítio. O ChatGPT e o Claude vão lá buscar o que precisam e continuam ligados ao que já ligaste neles.' },
-      { titulo: 'Pedes onde estiveres', texto: 'No ChatGPT, no Claude ou no WhatsApp com a Clara: perguntas pelo teu dia, preparas reuniões e escreves mensagens sem explicar tudo outra vez.' },
+      { titulo: 'Ligas a Clara aos teus assistentes', texto: 'Na sessão de configuração, a Clara fica ligada ao teu ChatGPT e ao teu Claude, e ao Grok Bot se o usares, cada um com a tua conta e só com as tuas permissões.' },
+      { titulo: 'Todos sabem o que a Clara sabe', texto: 'Leads, conversas do WhatsApp, visitas, imóveis, compradores e documentos ficam num só sítio. Os teus assistentes vão lá buscar o que precisam e continuam ligados ao que já ligaste neles.' },
+      { titulo: 'Pedes onde estiveres', texto: 'No ChatGPT, no Claude, no Grok Bot ou no WhatsApp com a Clara: perguntas pelo teu dia, preparas reuniões e escreves mensagens sem explicar tudo outra vez.' },
     ],
-    nota: { titulo: 'Clara Pro e Elite', texto: `A ligação ao ChatGPT e ao Claude faz parte da Clara Pro e da Clara Elite e chega numa segunda fase, depois do lançamento de 1 de dezembro. Usas a tua conta do ChatGPT ou do Claude; na sessão de configuração confirmamos contigo se o teu plano dessas aplicações aceita ligações externas. ${OFERTA.planoSuperior('pro-elite')}` },
-    reserva: { titulo: 'Junta a peça que faltava ao teu ChatGPT e ao teu Claude.', texto: 'A ligação ao ChatGPT e ao Claude está na Clara Pro e na Clara Elite.' },
+    nota: { titulo: 'Clara Pro e Elite', texto: `A ligação ao ChatGPT, ao Claude e ao Grok Bot faz parte da Clara Pro e da Clara Elite e chega numa segunda fase, depois do lançamento de 1 de dezembro. Usas a tua conta do ChatGPT, do Claude ou do Grok Bot; na sessão de configuração confirmamos contigo se o teu plano dessas aplicações aceita ligações externas. ${OFERTA.planoSuperior('pro-elite')}` },
+    reserva: { titulo: 'Junta a peça que faltava ao teu ChatGPT e ao teu Claude.', texto: 'A ligação ao ChatGPT, ao Claude e ao Grok Bot está na Clara Pro e na Clara Elite.' },
     plano: 'pro',
   },
 }

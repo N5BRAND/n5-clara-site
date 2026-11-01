@@ -157,7 +157,7 @@
 .pecas-grelha { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 3vw, 32px); }
 .pecas-painel { display: grid; gap: 14px; align-content: start; padding: clamp(20px, 3vw, 32px); border-radius: var(--raio); background: var(--cartao); border: 1px solid var(--linha); }
 .pecas-painel--clara { background: var(--tinta); color: var(--creme); border-color: transparent; }
-.pecas-topo, .pecas-fios { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pecas-topo, .pecas-fios { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; }
 .pecas-assistente { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 14px 10px; border-radius: 14px; background: var(--creme); color: var(--tinta); border: 1px solid var(--linha); }
 .pecas-assistente b { font-size: 16px; }
 .pecas-assistente span { font-size: 13px; line-height: 1.35; color: var(--suave); }

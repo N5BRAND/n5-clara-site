@@ -12,7 +12,7 @@ const AGENTES = [
   { nome: 'Chamadas', faz: 'Analisa as chamadas que fazes pela aplicação e faz o coaching.' },
 ]
 
-const LIGACOES = ['WhatsApp e Meta', 'Google Calendar', 'O teu telefone', 'CRM da tua marca', 'ChatGPT e Claude']
+const LIGACOES = ['WhatsApp e Meta', 'Google Calendar', 'O teu telefone', 'CRM da tua marca', 'ChatGPT, Claude e Grok Bot']
 
 export default function MaisInfo() {
   return (
@@ -29,7 +29,7 @@ export default function MaisInfo() {
         <details className="mais-info-bloco">
           <summary>Com que ferramentas se liga</summary>
           <div className="chips">{LIGACOES.map(l => <span key={l} className="chip">{l}</span>)}</div>
-          <p>Na Clara Pro e na Clara Elite também falas com o sistema a partir do ChatGPT ou do Claude (MCP).</p>
+          <p>Na Clara Pro e na Clara Elite também falas com o sistema a partir do ChatGPT, do Claude ou do Grok Bot (MCP).</p>
         </details>
       </div>
     </section>

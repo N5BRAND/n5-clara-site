@@ -59,6 +59,7 @@ describe('landing pages', () => {
     expect(ia.plano).toBe('pro')
     expect(ia.nota.texto).toMatch(/Clara Pro e da Clara Elite/)
     expect(ia.nota.texto).toContain('segunda fase')
+    expect(ia.nota.texto).toContain('Grok Bot')
     expect(ia.nota.texto).not.toMatch(/plano Clara/)
     expect(ia.pecas.titulo).toBeTruthy()
     expect(ia.cenas.map(c => c.canal.logo)).toEqual(['chatgpt', 'claude', undefined])
