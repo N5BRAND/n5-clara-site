@@ -1,24 +1,35 @@
 import { SUGESTOES, paraModelo, contactoDe } from '../../src/assistente/conversa.js'
-import { instrucoes, ESQUEMA, MODELO } from './conhecimento.js'
+import { instrucoes, ESQUEMA, MODELO, ESFORCO } from './conhecimento.js'
 
-/* pede a resposta ao modelo; devolve null se ele recusar ou a resposta não vier em JSON.
-   cliente: um Anthropic do SDK (os testes passam um falso) */
-export async function pedirAoModelo({ cliente, mensagens, esgotado = false, modelo = MODELO }) {
-  const pedido = {
+/* o modelo só vê as últimas mensagens: cada pedido tem um tamanho máximo, e o custo também */
+export const MENSAGENS_PARA_MODELO = 16
+
+/* pede a resposta à OpenAI (API Responses); devolve null se o modelo recusar, cortar a resposta ou não devolver JSON.
+   identificador: o IP cifrado, para a OpenAI detetar abusos sem saber quem é. pedir: fetch (os testes passam um falso) */
+export async function pedirAoModelo({ chave, mensagens, esgotado = false, modelo = MODELO, esforco = ESFORCO, identificador = '', pedir = fetch }) {
+  const corpo = {
     model: modelo,
-    max_tokens: 4000,
-    cache_control: { type: 'ephemeral' },
-    system: [{ type: 'text', text: instrucoes({ esgotado }), cache_control: { type: 'ephemeral' } }],
-    messages: paraModelo(mensagens),
-    output_config: { effort: 'low', format: { type: 'json_schema', schema: ESQUEMA } },
+    instructions: instrucoes({ esgotado }),
+    input: paraModelo(mensagens.slice(-MENSAGENS_PARA_MODELO)),
+    max_output_tokens: 800,
+    store: false,
+    reasoning: { effort: esforco },
+    text: { format: { type: 'json_schema', name: 'resposta_clara', strict: true, schema: ESQUEMA } },
+    prompt_cache_key: 'n5-clara-assistente',
+    ...(identificador ? { safety_identifier: identificador } : {}),
   }
-  /* se o modelo recusar, a API tenta outro modelo no mesmo pedido; o Haiku não tem esta opção */
-  const r = modelo.startsWith('claude-haiku')
-    ? await cliente.messages.create(pedido)
-    : await cliente.beta.messages.create({ ...pedido, betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' })
-  if (r.stop_reason === 'refusal' || r.stop_reason === 'max_tokens') return null
-  const texto = r.content.find(b => b.type === 'text')?.text
-  try { return JSON.parse(texto) } catch { return null }
+  const r = await pedir('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${chave}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(corpo),
+    signal: AbortSignal.timeout(9000),
+  })
+  if (!r.ok) throw Object.assign(new Error(`a OpenAI respondeu ${r.status}`), { status: r.status })
+  const d = await r.json()
+  if (d.status !== 'completed') return null
+  const conteudo = (d.output || []).filter(o => o.type === 'message').flatMap(o => o.content || [])
+  if (conteudo.some(c => c.type === 'refusal')) return null
+  try { return JSON.parse(conteudo.filter(c => c.type === 'output_text').map(c => c.text).join('')) } catch { return null }
 }
 
 /* o que sai para o navegador: texto aparado, contacto validado e no máximo 3 sugestões curtas */
@@ -28,8 +39,8 @@ export function limparResposta(s) {
   return { resposta, sugestoes, contacto: contactoDe(s) }
 }
 
-/* sem chave da API (ou se a API falhar), a Clara responde às sugestões com o que o site diz, pede o nome e o contacto
-   e, ao resto, diz que a equipa da Nº5 responde */
+/* sem chave da API, com um limite atingido ou se a API falhar, a Clara responde às sugestões com o que o site diz,
+   pede o nome e o contacto e, ao resto, diz que a equipa da Nº5 responde */
 const RESPOSTAS = esgotado => ({
   [SUGESTOES[0]]: 'Respondo e qualifico as tuas leads em minutos, faço os follow-ups, organizo o teu plano do dia e registo as tuas notas de voz na ficha certa. Tu ficas com o que só tu fazes: estar com clientes.',
   [SUGESTOES[1]]: 'O plano Clara fica a 53 € por mês, a Pro a 97 € e a Elite a 147 €, por consultor e sem fidelização. A pré-reserva é de 27 € e paga o teu primeiro mês, com a Clara Elite completa.',
@@ -44,7 +55,7 @@ const pedeContacto = nome => `Prazer, ${nome}! Deixas-me o teu telemóvel ou ema
 const EMAIL = /[^\s@]+@[^\s@]+\.[^\s@]{2,}/
 const TELEFONE = /(?:\+|00)?\d[\d\s-]{7,16}\d/
 
-export function respostaSemModelo(mensagens, { esgotado = false, contacto = {} } = {}) {
+export function respostaSemModelo(mensagens, { esgotado = false, contacto = {}, limitado = false } = {}) {
   const visitante = mensagens.filter(m => m.de === 'visitante')
   const ultima = visitante[visitante.length - 1].texto.trim()
   const anterior = [...mensagens].reverse().find(m => m.de === 'clara')?.texto || ''
@@ -60,5 +71,6 @@ export function respostaSemModelo(mensagens, { esgotado = false, contacto = {} }
   if (conhecida) return { ...base, resposta: c.nome ? conhecida : `${conhecida} ${PEDE_NOME}`, sugestoes: SUGESTOES.filter(s => s !== ultima).slice(0, 2) }
   if (c.nome && !c.email && !c.telefone && anterior.endsWith(PEDE_NOME)) return { ...base, resposta: pedeContacto(c.nome.split(' ')[0]) }
   if (c.nome && (c.email || c.telefone)) return { ...base, resposta: `Obrigada, ${c.nome.split(' ')[0]}! A equipa da Nº5 vai falar contigo. Entretanto, se tiveres mais perguntas, estou aqui.`, sugestoes: SUGESTOES.slice(0, 2) }
+  if (limitado) return { ...base, resposta: `Por agora já trocámos muitas mensagens 🙂 Para não ficares sem resposta, a equipa da Nº5 fala contigo.${c.nome ? ' Deixas-me o teu telemóvel ou email?' : ` ${PEDE_NOME}`}`, sugestoes: SUGESTOES.slice(0, 2) }
   return { ...base, resposta: `Boa pergunta! Essa não te sei responder aqui, mas a equipa da Nº5 responde-te.${c.nome ? '' : ` ${PEDE_NOME}`}`, sugestoes: SUGESTOES.slice(0, 2) }
 }

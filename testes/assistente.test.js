@@ -3,6 +3,7 @@ import { SAUDACAO, SUGESTOES, conversaValida, paraModelo, contactoDe, juntarCont
 import { instrucoes, ESQUEMA, MODELO } from '../netlify/assistente/conhecimento.js'
 import { pedirAoModelo, limparResposta, respostaSemModelo } from '../netlify/assistente/responder.js'
 import { registarConversa } from '../netlify/ghl.js'
+import { consumir, limitesDoAmbiente, LIMITES_USO } from '../netlify/assistente/limites.js'
 import { PRECOS, PRE_RESERVA } from '../src/logica/pagamento.js'
 import { PROGRAMA } from '../src/logica/indicacoes.js'
 
@@ -69,32 +70,32 @@ describe('o que a Clara sabe', () => {
   })
 })
 
-describe('pedirAoModelo', () => {
+describe('pedirAoModelo (OpenAI)', () => {
   const resposta = JSON.stringify({ resposta: 'Olá!', nome: '', email: '', telefone: '', sugestoes: [] })
-  const falso = (r = { stop_reason: 'end_turn', content: [{ type: 'thinking', thinking: '' }, { type: 'text', text: resposta }] }) => {
+  const ok = (texto = resposta) => ({ status: 'completed', output: [{ type: 'reasoning' }, { type: 'message', role: 'assistant', content: [{ type: 'output_text', text: texto }] }] })
+  const falso = (corpo = ok(), estado = 200) => {
     const pedidos = []
-    const criar = async p => { pedidos.push(p); return r }
-    return { pedidos, beta: { messages: { create: criar } }, messages: { create: criar } }
+    const pedir = async (url, o) => { pedidos.push({ url, cabecalhos: o.headers, corpo: JSON.parse(o.body) }); return { ok: estado < 400, status: estado, json: async () => corpo } }
+    return { pedidos, pedir }
   }
-  it('pede JSON com o esquema, pouco esforço, cache e modelo de reserva', async () => {
-    const cliente = falso()
-    expect(await pedirAoModelo({ cliente, mensagens: [c(SAUDACAO), v('Olá')] })).toEqual(JSON.parse(resposta))
-    const p = cliente.pedidos[0]
-    expect(p.model).toBe(MODELO)
-    expect(p.output_config).toEqual({ effort: 'low', format: { type: 'json_schema', schema: ESQUEMA } })
-    expect(p.system[0].cache_control).toEqual({ type: 'ephemeral' })
-    expect(p.fallbacks).toBe('default')
-    expect(p.betas).toEqual(['server-side-fallback-2026-07-01'])
-    expect(p.messages).toEqual([{ role: 'user', content: 'Olá' }])
+  it('pede JSON estrito, sem guardar, com o IP cifrado e só as últimas 16 mensagens', async () => {
+    const { pedidos, pedir } = falso()
+    const longa = Array.from({ length: 30 }, (_, i) => (i % 2 ? c(`r${i}`) : v(`p${i}`))).concat(v('Olá'))
+    expect(await pedirAoModelo({ chave: 'sk-teste', mensagens: longa, identificador: 'abc', pedir })).toEqual(JSON.parse(resposta))
+    const { url, cabecalhos, corpo } = pedidos[0]
+    expect(url).toBe('https://api.openai.com/v1/responses')
+    expect(cabecalhos.Authorization).toBe('Bearer sk-teste')
+    expect(corpo).toMatchObject({ model: MODELO, store: false, max_output_tokens: 800, reasoning: { effort: 'none' }, safety_identifier: 'abc' })
+    expect(corpo.text.format).toEqual({ type: 'json_schema', name: 'resposta_clara', strict: true, schema: ESQUEMA })
+    expect(corpo.instructions).toBe(instrucoes())
+    expect(corpo.input.length).toBeLessThanOrEqual(16)
+    expect(corpo.input.at(-1)).toEqual({ role: 'user', content: 'Olá' })
   })
-  it('com o Haiku não pede modelo de reserva', async () => {
-    const cliente = falso()
-    await pedirAoModelo({ cliente, mensagens: [v('Olá')], modelo: 'claude-haiku-5-5' })
-    expect(cliente.pedidos[0].fallbacks).toBeUndefined()
-  })
-  it('recusa ou resposta cortada dão null', async () => {
-    expect(await pedirAoModelo({ cliente: falso({ stop_reason: 'refusal', content: [] }), mensagens: [v('x')] })).toBeNull()
-    expect(await pedirAoModelo({ cliente: falso({ stop_reason: 'max_tokens', content: [{ type: 'text', text: '{"resp' }] }), mensagens: [v('x')] })).toBeNull()
+  it('recusa, resposta cortada ou JSON partido dão null; erro da API lança', async () => {
+    expect(await pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso({ status: 'completed', output: [{ type: 'message', content: [{ type: 'refusal', refusal: 'não' }] }] }).pedir })).toBeNull()
+    expect(await pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso({ status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' }, output: [] }).pedir })).toBeNull()
+    expect(await pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso(ok('{"resp')).pedir })).toBeNull()
+    await expect(pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso({}, 429).pedir })).rejects.toThrow(/429/)
   })
   it('limparResposta tira travessões, valida o contacto e corta as sugestões', () => {
     const r = limparResposta({ resposta: 'Sim — claro', nome: 'Ana', email: 'ana@', telefone: '', sugestoes: ['a', 'b', 'c', 'd'] })
@@ -120,6 +121,70 @@ describe('respostaSemModelo (sem chave da API)', () => {
   })
   it('com as vagas esgotadas a pré-reserva fala da lista de espera', () => {
     expect(respostaSemModelo([v('Como funciona a pré-reserva?')], { esgotado: true }).resposta).toMatch(/lista de espera/)
+  })
+  it('com um limite atingido não promete nada e pede o contacto', () => {
+    const r = respostaSemModelo([c(SAUDACAO), v('Explica-me tudo sobre o mercado')], { limitado: true })
+    expect(r.resposta).toMatch(/muitas mensagens/)
+    expect(r.resposta).toMatch(/como te chamas/)
+  })
+})
+
+describe('limites contra abusos (Netlify Blobs)', () => {
+  /* um Blobs em memória com etags, como o verdadeiro: escrita condicional falha se outro escreveu entretanto */
+  const loja = () => {
+    const dados = new Map()
+    let versao = 0
+    return {
+      dados,
+      async getWithMetadata(k) { const e = dados.get(k); return e ? { data: structuredClone(e.v), etag: e.etag, metadata: {} } : null },
+      async setJSON(k, v, o = {}) {
+        const e = dados.get(k)
+        if ((o.onlyIfNew && e) || (o.onlyIfMatch && (!e || e.etag !== o.onlyIfMatch))) return { modified: false }
+        dados.set(k, { v, etag: `e${++versao}` })
+        return { modified: true, etag: `e${versao}` }
+      },
+      async list() { return { blobs: [...dados.keys()].map(key => ({ key })) } },
+      async delete(k) { dados.delete(k) },
+    }
+  }
+  const agora = Date.parse('2026-11-01T15:00:00Z')
+
+  it('os valores por omissão e os das variáveis do site', () => {
+    expect(LIMITES_USO).toEqual({ ip10min: 15, ipDia: 60, dia: 2000 })
+    expect(limitesDoAmbiente({ ASSISTENTE_LIMITE_DIA: '500', ASSISTENTE_LIMITE_IP_10MIN: 'x' })).toEqual({ ip10min: 15, ipDia: 60, dia: 500 })
+  })
+  it('cada IP: no máximo 15 pedidos em 10 minutos; passados os 10 minutos, volta a poder', async () => {
+    const l = loja()
+    for (let i = 0; i < 15; i++) expect((await consumir({ loja: l, id: 'ip1', agora: agora + i })).permitido).toBe(true)
+    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 20 })).toMatchObject({ permitido: false, motivo: 'ip' })
+    expect((await consumir({ loja: l, id: 'ip2', agora: agora + 20 })).permitido).toBe(true)
+    expect((await consumir({ loja: l, id: 'ip1', agora: agora + 11 * 60 * 1000 })).permitido).toBe(true)
+  })
+  it('cada IP: no máximo 60 por dia', async () => {
+    const l = loja()
+    const limites = { ip10min: 1000, ipDia: 60, dia: 2000 }
+    for (let i = 0; i < 60; i++) await consumir({ loja: l, id: 'ip1', agora: agora + i, limites })
+    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 61, limites })).toMatchObject({ permitido: false, motivo: 'ip' })
+  })
+  it('o site todo: teto diário, seja qual for o IP', async () => {
+    const l = loja()
+    const limites = { ip10min: 15, ipDia: 60, dia: 3 }
+    for (const id of ['a', 'b', 'c']) expect((await consumir({ loja: l, id, agora, limites })).permitido).toBe(true)
+    expect(await consumir({ loja: l, id: 'd', agora, limites })).toMatchObject({ permitido: false, motivo: 'total' })
+    expect((await consumir({ loja: l, id: 'd', agora: agora + 24 * 3600 * 1000, limites })).permitido).toBe(true)
+  })
+  it('pedidos ao mesmo tempo não passam o limite', async () => {
+    const l = loja()
+    const limites = { ip10min: 5, ipDia: 60, dia: 2000 }
+    const r = await Promise.all(Array.from({ length: 12 }, () => consumir({ loja: l, id: 'ip1', agora, limites })))
+    expect(r.filter(x => x.permitido).length).toBeLessThanOrEqual(5)
+  })
+  it('o primeiro pedido do dia apaga os contadores dos dias anteriores', async () => {
+    const l = loja()
+    await consumir({ loja: l, id: 'ip1', agora })
+    const amanha = await consumir({ loja: l, id: 'ip1', agora: agora + 24 * 3600 * 1000 })
+    await amanha.limpar()
+    expect([...l.dados.keys()].every(k => k.startsWith('2026-11-02/'))).toBe(true)
   })
 })
 

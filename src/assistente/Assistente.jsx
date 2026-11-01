@@ -97,8 +97,15 @@ export default function Assistente() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mensagens: novas, contacto, ghl, pagina: window.location.pathname, teste: emTeste() }),
       })
+      /* a Netlify trava quem manda pedidos demais por minuto */
+      if (r.status === 429) {
+        marcar('assistente_limite', { onde: 'netlify' })
+        setMensagens(m => [...m, { de: 'clara', texto: 'Estás a mandar mensagens muito depressa. Espera um minuto e volta a perguntar, por favor.' }])
+        return
+      }
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
+      if (d.limitado) marcar('assistente_limite', { onde: 'quota' })
       setMensagens(m => [...m, { de: 'clara', texto: d.resposta }])
       setSugestoes(d.sugestoes || [])
       if (d.ghl) setGhl(d.ghl)

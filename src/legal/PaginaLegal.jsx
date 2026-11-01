@@ -33,7 +33,7 @@ function Privacidade() {
           {PRODUTO.campos.map(c => <li key={c}>{c};</li>)}
           <li>a tua autorização para te contactarmos e a data da inscrição.</li>
         </ul>
-        <p id="assistente">Se falares com a Clara no assistente do site, as mensagens que escreves passam pela Anthropic para a Clara te responder. Se lhe deixares o teu nome e um contacto, guardamos a conversa toda com esse contacto, para a equipa da Nº 5 te responder. Sem nome e contacto, não guardamos a conversa.</p>
+        <p id="assistente">Se falares com a Clara no assistente do site, as mensagens que escreves passam pela OpenAI para a Clara te responder. Para evitar abusos, contamos quantas mensagens chegam de cada endereço IP, guardado só como um resumo cifrado que não permite voltar ao endereço. Se lhe deixares o teu nome e um contacto, guardamos a conversa toda com esse contacto, para a equipa da Nº 5 te responder. Sem nome e contacto, não guardamos a conversa.</p>
         <p>Como em qualquer site, o alojamento regista dados técnicos das visitas, como o endereço IP e o tipo de navegador, para segurança e funcionamento.</p>
       </Seccao>
 
@@ -52,7 +52,7 @@ function Privacidade() {
         <ul className="forn">
           <li><strong>Netlify</strong>, nos EUA: alojamento do site e receção das inscrições do formulário.</li>
           <li><strong>HighLevel (LeadConnector)</strong>, nos EUA: gestão dos contactos e envio dos emails e mensagens sobre o lançamento.</li>
-          <li><strong>Anthropic</strong>, nos EUA: o modelo de IA que responde no assistente do site. Recebe as mensagens que escreves na conversa e, nos termos comerciais da Anthropic, não as usa para treinar modelos.</li>
+          <li><strong>OpenAI</strong>, nos EUA: o modelo de IA que responde no assistente do site. Recebe as mensagens que escreves na conversa; pedimos-lhe que não guarde as respostas e, nos termos da API da OpenAI, não as usa para treinar modelos.</li>
           <li><strong>Stripe Payments Europe</strong>, na Irlanda: pagamento da pré-reserva. Os dados do cartão, do MB WAY ou do Multibanco ficam só na Stripe.</li>
           <li><strong>Google</strong> (Gmail): caixa de correio onde recebemos os teus pedidos e de onde te podemos escrever.</li>
           <li><strong>PostHog</strong>, na nuvem da União Europeia (Frankfurt): estatística de utilização do site. Com a tua autorização, inclui gravações das visitas em que tudo o que escreves fica escondido; sem ela, só uma contagem anónima, sem cookies (ver <a href="#cookies">ponto 8</a>).</li>
@@ -65,6 +65,7 @@ function Privacidade() {
         <ul>
           <li>Dados da inscrição: até 12 meses depois do lançamento, ou menos se pedires para sair da lista.</li>
           <li>Conversas do assistente com nome e contacto: como os dados da inscrição, até 12 meses depois do lançamento.</li>
+          <li>Contadores de mensagens do assistente por endereço IP cifrado: até ao dia seguinte.</li>
           <li>Registos técnicos do alojamento: até 30 dias.</li>
           <li>Gravações das visitas (só com a estatística aceite): 30 dias.</li>
           <li>Eventos de estatística (páginas vistas, cliques, passos do formulário): até 12 meses.</li>

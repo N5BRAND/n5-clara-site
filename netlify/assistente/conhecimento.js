@@ -1,7 +1,9 @@
 import { PRODUTO } from '../../src/legal/produto.js'
 
-/* o modelo do assistente; ASSISTENTE_MODELO nas variáveis do site troca-o sem publicar código */
-export const MODELO = 'claude-opus-5-5'
+/* o modelo da OpenAI e o esforço de raciocínio: o mais económico e rápido. OPENAI_MODELO e OPENAI_ESFORCO nas variáveis
+   do site trocam-nos sem publicar código (nem todos os modelos aceitam o esforço «none») */
+export const MODELO = 'gpt-6-luna'
+export const ESFORCO = 'none'
 
 /* o que o modelo devolve em cada resposta */
 export const ESQUEMA = {
