@@ -17,8 +17,9 @@ const subir = (atraso = 0) => ({
   transition: { type: 'spring', stiffness: 120, damping: 20, delay: atraso },
 })
 
-/* topo das landing pages: a marca leva ao site, o resto fica na página */
-export function TopoLanding({ como = { href: '#como', texto: 'Como funciona' } }) {
+/* topo das landing pages: a marca leva ao site, o resto fica na página. «cta» troca a reserva por outro botão
+   (o inquérito não tem reserva) */
+export function TopoLanding({ como = { href: '#como', texto: 'Como funciona' }, cta = null }) {
   const { scrollY } = useScroll()
   const [solido, setSolido] = useState(false)
   useMotionValueEvent(scrollY, 'change', y => setSolido(y > 40))
@@ -31,9 +32,9 @@ export function TopoLanding({ como = { href: '#como', texto: 'Como funciona' } }
         </a>
         <nav className="topo-nav" aria-label="Secções">
           <a href={como.href}>{como.texto}</a>
-          <a href="#lista">Reserva</a>
+          {!cta && <a href="#lista">Reserva</a>}
         </nav>
-        <a href="#lista" className="botao topo-cta">{ESGOTADO ? 'Lista de espera' : 'Reservar'}</a>
+        <a href={cta ? cta.href : '#lista'} className="botao topo-cta">{cta ? cta.texto : ESGOTADO ? 'Lista de espera' : 'Reservar'}</a>
       </div>
     </motion.header>
   )

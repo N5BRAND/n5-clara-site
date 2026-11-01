@@ -153,19 +153,32 @@ function Termos() {
         <p>Os dados usados no programa são os da inscrição e da pré-reserva, tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>
       </Seccao>
 
-      <Seccao id="propriedade" n="6" titulo="Propriedade intelectual">
+      <Seccao id="voucher" n="6" titulo="Voucher do inquérito para consultores">
+        <p>Quem responde até ao fim ao inquérito para consultores, em {PRODUTO.url.replace('https://', '')}/inquerito/, recebe por email um voucher da {PRODUTO.nome}, enviado pela {EMPRESA.nome}.</p>
+        <ul>
+          <li><b>O que dá:</b> os 2 primeiros meses da Clara Elite completa, sem pagar.</li>
+          <li><b>Quantos:</b> um voucher por pessoa e por email. Responder outra vez com o mesmo email devolve o mesmo voucher. Cada voucher só se usa uma vez.</li>
+          <li><b>Quando:</b> ativa-se entre 1 e 31 de dezembro de 2026.</li>
+          <li><b>Com a pré-reserva:</b> não se junta à pré-reserva de {PRODUTO.reserva.valor}.</li>
+          <li><b>Depois dos 2 meses oferecidos:</b> quem continuar na Clara Pro ou na Clara Elite tem 50% de desconto na primeira mensalidade desse plano. Não há período de fidelização.</li>
+          <li><b>Abusos:</b> podemos recusar vouchers pedidos com dados falsos ou em nome de outras pessoas.</li>
+        </ul>
+        <p>As respostas e os dados do inquérito são tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>
+      </Seccao>
+
+      <Seccao id="propriedade" n="7" titulo="Propriedade intelectual">
         <p>Os textos, as ilustrações, o símbolo Nº5 e o resto do conteúdo do site pertencem à {EMPRESA.nome} ou são usados com autorização. Não os podes copiar nem usar para fins comerciais sem autorização escrita.</p>
       </Seccao>
 
-      <Seccao id="responsabilidade" n="7" titulo="Responsabilidade">
+      <Seccao id="responsabilidade" n="8" titulo="Responsabilidade">
         <p>Fazemos o possível para manter o site disponível e correto, mas não garantimos que esteja sempre acessível nem sem erros. O site pode ter ligações para sites de terceiros, pelos quais não somos responsáveis.</p>
       </Seccao>
 
-      <Seccao id="lei" n="8" titulo="Lei aplicável">
+      <Seccao id="lei" n="9" titulo="Lei aplicável">
         <p>Estes termos regem-se pela lei portuguesa. Qualquer litígio é resolvido pelos tribunais portugueses competentes.</p>
       </Seccao>
 
-      <Seccao id="alteracoes" n="9" titulo="Alterações a estes termos">
+      <Seccao id="alteracoes" n="10" titulo="Alterações a estes termos">
         <p>Se estes termos mudarem, publicamos aqui a versão nova, com a data de atualização no topo.</p>
       </Seccao>
     </>

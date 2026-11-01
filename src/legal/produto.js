@@ -3,7 +3,7 @@ export const PRODUTO = {
   nome: 'N5 Clara',
   url: 'https://clara.numerocinco.pt',
   formulario: 'lista de espera',
-  campos: ['nome', 'email', 'número de telemóvel', 'o plano que escolhes na página, se escolheres um', 'o código ou o nome do colega que te indicou, se vieres pela ligação dele ou o escreveres (opcional)', 'as prioridades que escolhes (opcional, no passo seguinte)', 'a página do site onde te inscreves e o anúncio que te trouxe', 'as respostas ao diagnóstico, se o fizeres (opcional)'],
+  campos: ['nome', 'email', 'número de telemóvel', 'o plano que escolhes na página, se escolheres um', 'o código ou o nome do colega que te indicou, se vieres pela ligação dele ou o escreveres (opcional)', 'as prioridades que escolhes (opcional, no passo seguinte)', 'a página do site onde te inscreves e o anúncio que te trouxe', 'as respostas ao diagnóstico, se o fizeres (opcional)', 'no inquérito para consultores, as tuas respostas, o nome, o email e o telemóvel, se o deres (opcional)'],
   finalidades: [
     'gerir a lista de espera da N5 Clara;',
     'perceber que plano te interessa, para te mostrarmos o que faz sentido para ti;',
@@ -12,6 +12,7 @@ export const PRODUTO = {
     'perceber que página e que anúncio te trouxeram, para sabermos que mensagens funcionam;',
     'usar as respostas ao diagnóstico, se o fizeres, para preparar contigo a configuração da tua Clara (as respostas de quem faz o diagnóstico sem se inscrever ficam guardadas sem nome nem contacto);',
     'reenviar-te a ligação do Passa a Clara, se a pedires com o email da inscrição;',
+    'no inquérito para consultores, enviar-te por email o voucher e o plano feito com as tuas respostas, e usar as respostas para decidir o que a Clara faz primeiro;',
     'responder às tuas perguntas no assistente do site e, se deixares o nome e um contacto, guardar a conversa para a equipa te responder;',
     'contactar-te sobre o lançamento, previsto para 1 de dezembro de 2026.',
   ],

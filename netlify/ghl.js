@@ -1,5 +1,6 @@
 /* cada formulário do site vira um contacto no GHL: dados, etiquetas para os workflows e uma nota com o resto */
 import { etiquetaPagina } from '../src/logica/origem.js'
+import { lerRespostas, resumoInquerito, planoDoConsultor } from '../src/logica/inquerito.js'
 
 export const PRODUTO = 'N5 Clara'
 export const ETIQUETA = 'n5-clara'
@@ -49,6 +50,16 @@ const FORMULARIOS = {
     etiquetas: [ETIQUETA, 'prioridades-respondidas'],
     nota: [`Prioridades: ${d.prioridades || 'nenhuma'}`, ...(d.crm ? [`CRM: ${d.crm}`] : [])].join('\n'),
   }),
+  /* inquérito para consultores: as respostas, o plano que sai delas e o voucher (o código vem de netlify/voucher.js) */
+  'inquerito-clara': d => {
+    const r = lerRespostas(d.respostas)
+    const p = planoDoConsultor(r)
+    return {
+      contacto: { ...nomeSeparado(d.nome), email: d.email, phone: telefone(d.telefone), source: `Inquérito ${PRODUTO}` },
+      etiquetas: [ETIQUETA, 'inquerito-clara', 'voucher-elite-2-meses', `plano-${p.plano}`, ...daOrigem(d)],
+      nota: [`Inquérito da ${PRODUTO}.`, `Voucher: ${d.voucher || 'por gerar'} (2 primeiros meses da Clara Elite, ativar entre 1 e 31/12/2026, um por pessoa, não se junta à pré-reserva).`, `Plano que cobre o que escolheu: ${p.nomePlano}`, '', resumoInquerito(r), ...linhasExtra(d)].join('\n'),
+    }
+  },
   /* Passa a Clara: quem perdeu a ligação pede-a pelo email; a etiqueta dispara o workflow do GHL que a reenvia,
      com o código do campo personalizado (o mesmo código, a contagem não se perde) */
   'recuperar-ligacao': d => ({

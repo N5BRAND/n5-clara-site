@@ -5,6 +5,7 @@
    «exemplo» identifica o que é simulação (horas, nomes, números). */
 import { CENAS } from '../dia/dados.js'
 import { OFERTA, PRE_RESERVA } from '../logica/pagamento.js'
+import { PERGUNTAS as PERGUNTAS_INQUERITO } from '../logica/inquerito.js'
 
 const cena = (id, mudar = {}) => ({ ...CENAS.find(c => c.id === id), ...mudar })
 
@@ -294,4 +295,31 @@ export const ARQUETIPO = {
   eyebrow: 'N5 Clara · Teste para consultores',
   lead: '8 perguntas sobre como trabalhas no dia a dia. No fim, sabes que tipo de consultor és, onde estás a perder negócios e o plano da Clara que te serve.',
   reserva: { titulo: 'Reserva o plano que o teste te recomendou.', texto: 'As tuas respostas seguem com a reserva, para a sessão de configuração.' },
+}
+
+/* inquérito para consultores (/inquerito/): o vídeo, o que a Clara resolve e o inquérito que dá o voucher de 2 meses
+   da Clara Elite. Página para o Pedro partilhar com consultores; fica fora dos anúncios e dos motores de busca */
+const N_PERGUNTAS = PERGUNTAS_INQUERITO.length
+export const INQUERITO = {
+  titulo: 'Inquérito para consultores · N5 Clara',
+  descricao: `Vê o vídeo, responde a ${N_PERGUNTAS} perguntas sobre o teu dia e recebe no email o voucher de 2 meses da Clara Elite e o teu plano com a Clara.`,
+  eyebrow: 'N5 Clara · Inquérito para consultores',
+  h1: 'Ajuda-nos a afinar a Clara. Os 2 primeiros meses da Clara Elite são por nossa conta.',
+  lead: `A Clara é a assistente que responde às tuas leads, organiza o teu dia e regista o que lhe dizes por voz. Vê o vídeo, responde a ${N_PERGUNTAS} perguntas e recebe no email o voucher e o plano de como a Clara organiza o teu trabalho.`,
+  video: { eyebrow: 'Em um minuto', titulo: 'Vê um dia com a Clara.', texto: 'Das oito da manhã ao fim do dia, num minuto. Liga o som.' },
+  dores: {
+    eyebrow: 'O que a Clara resolve',
+    titulo: 'O que te faz perder tempo e negócios. E o que a Clara faz com isso.',
+    itens: [
+      { dor: 'As leads arrefecem enquanto estás numa visita.', clara: 'A Clara responde em minutos, a qualquer hora, com o teu guião, e diz-te quem está pronto.' },
+      { dor: 'Começas o dia sem saber por onde pegar.', clara: 'De manhã tens as prioridades do dia por ordem, no teu Google Calendar.' },
+      { dor: 'Passas horas a escrever no CRM o que já fizeste.', clara: 'Sais da visita, gravas uma nota de voz e a Clara regista. Na Elite, o copiloto preenche o CRM da tua marca.' },
+      { dor: 'Angariar dá cada vez mais trabalho.', clara: 'Na Pro e na Elite, todas as segundas tens os particulares a vender sem agência na tua zona, por prioridade.' },
+    ],
+  },
+  voucher: {
+    eyebrow: 'O teu voucher',
+    titulo: `${N_PERGUNTAS} perguntas, 2 minutos. Os 2 primeiros meses da Clara Elite oferecidos.`,
+    texto: 'No fim, recebes por email o voucher e o teu plano com a Clara. Um voucher por pessoa, para ativar entre 1 e 31 de dezembro de 2026. Não se junta à pré-reserva de 27 €.',
+  },
 }
