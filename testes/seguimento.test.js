@@ -145,3 +145,15 @@ describe('seguimento: uma volta', () => {
     expect((await correr({ loja: loja(), token: 't', ativo: true, esgotado: true, pedir, log: () => {} })).vistos).toBe(0)
   })
 })
+
+describe('/api/pagou', () => {
+  it('responde 204 sem corpo (um 204 com corpo rebenta a função), recusa outras origens e outros métodos', async () => {
+    const { default: pagou } = await import('../netlify/functions/pagou.mjs')
+    const pedido = (o = {}) => new Request('https://clara.numerocinco.pt/api/pagou', { method: 'POST', headers: { origin: 'https://clara.numerocinco.pt', 'content-type': 'application/json' }, body: JSON.stringify({ codigo: 'ABC234' }), ...o })
+    const r = await pagou(pedido())
+    expect(r.status).toBe(204)
+    expect(await r.text()).toBe('')
+    expect((await pagou(pedido({ headers: { origin: 'https://mau.example' } }))).status).toBe(403)
+    expect((await pagou(new Request('https://clara.numerocinco.pt/api/pagou'))).status).toBe(405)
+  })
+})
