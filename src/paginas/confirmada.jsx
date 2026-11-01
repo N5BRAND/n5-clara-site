@@ -9,6 +9,7 @@ import { iniciarPixel, evento, idDaCompra } from '../legal/pixel.js'
 import { iniciarAnalitica, marcar } from '../legal/analitica.js'
 import { OFERTA, VALOR_EUROS } from '../logica/pagamento.js'
 import { PROGRAMA, meuCodigo, ligacaoPessoal, iniciarIndicacoes } from '../logica/indicacoes.js'
+import { iniciarAssistente } from '../assistente/iniciar.js'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
@@ -52,6 +53,7 @@ const COMPRA = idDaCompra()
 iniciarPixel()
 iniciarAnalitica()
 iniciarIndicacoes(marcar)
+iniciarAssistente()
 try {
   if (!sessionStorage.getItem('n5-compra-registada')) {
     if (COMPRA && !COMPRA_PELO_SERVIDOR) evento('Purchase', { value: VALOR_EUROS, currency: 'EUR' }, COMPRA)

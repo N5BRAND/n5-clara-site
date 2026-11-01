@@ -1,0 +1,236 @@
+import { describe, it, expect } from 'vitest'
+import { SAUDACAO, SUGESTOES, conversaValida, paraModelo, contactoDe, juntarContacto, temContacto, transcricao } from '../src/assistente/conversa.js'
+import { instrucoes, ESQUEMA, MODELO } from '../netlify/assistente/conhecimento.js'
+import { pedirAoModelo, limparResposta, respostaSemModelo } from '../netlify/assistente/responder.js'
+import { registarConversa } from '../netlify/ghl.js'
+import { consumir, limitesDoAmbiente, LIMITES_USO } from '../netlify/assistente/limites.js'
+import { PRECOS, PRE_RESERVA } from '../src/logica/pagamento.js'
+import { PROGRAMA } from '../src/logica/indicacoes.js'
+
+const PROIBIDO = /aprovação|aprovar|ilustrativ|IVA\b|—|–/
+
+const v = texto => ({ de: 'visitante', texto })
+const c = texto => ({ de: 'clara', texto })
+
+describe('conversa do assistente', () => {
+  it('a Clara abre com a pergunta de ajuda e 4 sugestões, sem palavras proibidas', () => {
+    expect(SAUDACAO).toMatch(/Precisas de ajuda/)
+    expect(SUGESTOES).toHaveLength(4)
+    expect(SAUDACAO + SUGESTOES.join(' ')).not.toMatch(PROIBIDO)
+  })
+  it('só aceita conversas que acabam no visitante e não são enormes', () => {
+    expect(conversaValida([c(SAUDACAO), v('Olá')])).toBe(true)
+    expect(conversaValida([c(SAUDACAO)])).toBe(false)
+    expect(conversaValida([v('x'.repeat(5000))])).toBe(false)
+    expect(conversaValida(Array.from({ length: 41 }, () => v('a')))).toBe(false)
+    expect(conversaValida('olá')).toBe(false)
+  })
+  it('para a API começa no visitante e junta mensagens seguidas', () => {
+    expect(paraModelo([c(SAUDACAO), v('Quanto custa?'), v('E a Elite?'), c('147 €'), v('Ok')])).toEqual([
+      { role: 'user', content: 'Quanto custa?\n\nE a Elite?' },
+      { role: 'assistant', content: '147 €' },
+      { role: 'user', content: 'Ok' },
+    ])
+  })
+  it('o contacto passa pela validação do formulário e o novo não apaga o antigo', () => {
+    expect(contactoDe({ nome: 'Rui', email: 'rui@', telefone: '912 345 678' })).toEqual({ nome: 'Rui', email: '', telefone: '912 345 678' })
+    expect(juntarContacto({ nome: 'Rui', telefone: '912345678' }, { nome: '', email: 'rui@rede.pt' })).toEqual({ nome: 'Rui', email: 'rui@rede.pt', telefone: '912345678' })
+    expect(temContacto({ nome: 'Rui', email: '' })).toBe(false)
+    expect(temContacto({ nome: 'Rui', telefone: '912345678' })).toBe(true)
+  })
+  it('a transcrição tem a página e as falas de cada lado', () => {
+    const t = transcricao([c(SAUDACAO), v('Quanto custa?')], { pagina: '/leads/', quando: new Date('2026-11-01T15:00:00Z') })
+    expect(t).toContain('Página: /leads/')
+    expect(t).toContain(`Clara: ${SAUDACAO}`)
+    expect(t).toContain('Visitante: Quanto custa?')
+  })
+})
+
+describe('o que a Clara sabe', () => {
+  const texto = instrucoes()
+  it('usa os preços e a oferta do site', () => {
+    for (const p of Object.values(PRECOS)) expect(texto).toContain(p.mensal)
+    expect(texto).toContain(PRE_RESERVA)
+    expect(texto).toContain(`${PROGRAMA.vencedores} consultores`)
+    expect(texto).toContain(PROGRAMA.fim)
+  })
+  it('pede o nome e o contacto e cumpre as regras da casa', () => {
+    expect(texto).toMatch(/como te chamas/)
+    expect(texto).toMatch(/telemóvel ou o email/)
+    expect(texto).toMatch(/Nunca fales em IVA/)
+    expect(texto).toMatch(/precisam de aprovação/)
+  })
+  it('com as vagas esgotadas fala da lista de espera', () => {
+    expect(instrucoes({ esgotado: true })).toMatch(/lista de espera/)
+    expect(instrucoes()).toBe(instrucoes())
+  })
+  it('o esquema obriga a todos os campos', () => {
+    expect(ESQUEMA.required.sort()).toEqual(['email', 'nome', 'resposta', 'sugestoes', 'telefone'])
+    expect(ESQUEMA.additionalProperties).toBe(false)
+  })
+})
+
+describe('pedirAoModelo (OpenAI)', () => {
+  const resposta = JSON.stringify({ resposta: 'Olá!', nome: '', email: '', telefone: '', sugestoes: [] })
+  const ok = (texto = resposta) => ({ status: 'completed', output: [{ type: 'reasoning' }, { type: 'message', role: 'assistant', content: [{ type: 'output_text', text: texto }] }] })
+  const falso = (corpo = ok(), estado = 200) => {
+    const pedidos = []
+    const pedir = async (url, o) => { pedidos.push({ url, cabecalhos: o.headers, corpo: JSON.parse(o.body) }); return { ok: estado < 400, status: estado, json: async () => corpo } }
+    return { pedidos, pedir }
+  }
+  it('pede JSON estrito, sem guardar, com o IP cifrado e só as últimas 16 mensagens', async () => {
+    const { pedidos, pedir } = falso()
+    const longa = Array.from({ length: 30 }, (_, i) => (i % 2 ? c(`r${i}`) : v(`p${i}`))).concat(v('Olá'))
+    expect(await pedirAoModelo({ chave: 'sk-teste', mensagens: longa, identificador: 'abc', pedir })).toEqual(JSON.parse(resposta))
+    const { url, cabecalhos, corpo } = pedidos[0]
+    expect(url).toBe('https://api.openai.com/v1/responses')
+    expect(cabecalhos.Authorization).toBe('Bearer sk-teste')
+    expect(corpo).toMatchObject({ model: MODELO, store: false, max_output_tokens: 800, reasoning: { effort: 'none' }, safety_identifier: 'abc' })
+    expect(corpo.text.format).toEqual({ type: 'json_schema', name: 'resposta_clara', strict: true, schema: ESQUEMA })
+    expect(corpo.instructions).toBe(instrucoes())
+    expect(corpo.input.length).toBeLessThanOrEqual(16)
+    expect(corpo.input.at(-1)).toEqual({ role: 'user', content: 'Olá' })
+  })
+  it('recusa, resposta cortada ou JSON partido dão null; erro da API lança', async () => {
+    expect(await pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso({ status: 'completed', output: [{ type: 'message', content: [{ type: 'refusal', refusal: 'não' }] }] }).pedir })).toBeNull()
+    expect(await pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso({ status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' }, output: [] }).pedir })).toBeNull()
+    expect(await pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso(ok('{"resp')).pedir })).toBeNull()
+    await expect(pedirAoModelo({ chave: 'k', mensagens: [v('x')], pedir: falso({}, 429).pedir })).rejects.toThrow(/429/)
+  })
+  it('limparResposta tira travessões, valida o contacto e corta as sugestões', () => {
+    const r = limparResposta({ resposta: 'Sim — claro', nome: 'Ana', email: 'ana@', telefone: '', sugestoes: ['a', 'b', 'c', 'd'] })
+    expect(r).toEqual({ resposta: 'Sim, claro', sugestoes: ['a', 'b', 'c'], contacto: { nome: 'Ana', email: '', telefone: '' } })
+  })
+})
+
+describe('respostaSemModelo (sem chave da API)', () => {
+  it('responde às sugestões e pede o nome', () => {
+    const r = respostaSemModelo([c(SAUDACAO), v('Quanto custa?')])
+    expect(r.resposta).toContain('53 €')
+    expect(r.resposta).toMatch(/como te chamas\?$/)
+    expect(r.resposta).not.toMatch(PROIBIDO)
+  })
+  it('guarda o nome, pede o contacto e agradece quando o recebe', () => {
+    const m = [c(SAUDACAO), v('Quanto custa?'), c('… Já agora, como te chamas?'), v('Ana Silva')]
+    const r1 = respostaSemModelo(m)
+    expect(r1.nome).toBe('Ana Silva')
+    expect(r1.resposta).toMatch(/Prazer, Ana! .*telemóvel ou email/)
+    const r2 = respostaSemModelo([...m, c(r1.resposta), v('o meu é 912 345 678')], { contacto: { nome: 'Ana Silva' } })
+    expect(r2).toMatchObject({ nome: 'Ana Silva', telefone: '912 345 678' })
+    expect(r2.resposta).toMatch(/Obrigada, Ana/)
+  })
+  it('com as vagas esgotadas a pré-reserva fala da lista de espera', () => {
+    expect(respostaSemModelo([v('Como funciona a pré-reserva?')], { esgotado: true }).resposta).toMatch(/lista de espera/)
+  })
+  it('nunca fala em limites, erros ou esperas: a conversa segue e a Clara pede o contacto', () => {
+    const casos = [
+      respostaSemModelo([c(SAUDACAO), v('Explica-me tudo sobre o mercado')]),
+      respostaSemModelo([c(SAUDACAO), v('Quanto custa?'), c('… Já agora, como te chamas?'), v('Ana'), c('Prazer, Ana! Deixas-me o teu telemóvel ou email?'), v('Isso tem app?')], { contacto: { nome: 'Ana' } }),
+      respostaSemModelo([c(SAUDACAO), v('E o CRM?')], { contacto: { nome: 'Ana', email: 'ana@rede.pt' } }),
+    ]
+    for (const r of casos) {
+      expect(r.resposta).not.toMatch(/limite|depressa|espera|erro|dificuldade|muitas mensagens|tenta outra vez/i)
+      expect(r.resposta).not.toMatch(PROIBIDO)
+    }
+    expect(casos[0].resposta).toMatch(/como te chamas/)
+    expect(casos[1].resposta).toMatch(/telemóvel ou email/)
+    expect(casos[2].resposta).toMatch(/pelo contacto que deixaste/)
+  })
+})
+
+describe('limites contra abusos (Netlify Blobs)', () => {
+  /* um Blobs em memória com etags, como o verdadeiro: escrita condicional falha se outro escreveu entretanto */
+  const loja = () => {
+    const dados = new Map()
+    let versao = 0
+    return {
+      dados,
+      async getWithMetadata(k) { const e = dados.get(k); return e ? { data: structuredClone(e.v), etag: e.etag, metadata: {} } : null },
+      async setJSON(k, v, o = {}) {
+        const e = dados.get(k)
+        if ((o.onlyIfNew && e) || (o.onlyIfMatch && (!e || e.etag !== o.onlyIfMatch))) return { modified: false }
+        dados.set(k, { v, etag: `e${++versao}` })
+        return { modified: true, etag: `e${versao}` }
+      },
+      async list() { return { blobs: [...dados.keys()].map(key => ({ key })) } },
+      async delete(k) { dados.delete(k) },
+    }
+  }
+  const agora = Date.parse('2026-11-01T15:00:00Z')
+
+  it('os valores por omissão e os das variáveis do site', () => {
+    expect(LIMITES_USO).toEqual({ ip10min: 30, ipDia: 150, dia: 3000 })
+    expect(limitesDoAmbiente({ ASSISTENTE_LIMITE_DIA: '500', ASSISTENTE_LIMITE_IP_10MIN: 'x' })).toEqual({ ip10min: 30, ipDia: 150, dia: 500 })
+  })
+  it('cada IP: no máximo 30 pedidos em 10 minutos; passados os 10 minutos, volta a poder', async () => {
+    const l = loja()
+    for (let i = 0; i < 30; i++) expect((await consumir({ loja: l, id: 'ip1', agora: agora + i })).permitido).toBe(true)
+    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 40 })).toMatchObject({ permitido: false, motivo: 'ip' })
+    expect((await consumir({ loja: l, id: 'ip2', agora: agora + 20 })).permitido).toBe(true)
+    expect((await consumir({ loja: l, id: 'ip1', agora: agora + 11 * 60 * 1000 })).permitido).toBe(true)
+  })
+  it('cada IP: no máximo 150 por dia', async () => {
+    const l = loja()
+    const limites = { ...LIMITES_USO, ip10min: 1000 }
+    for (let i = 0; i < 150; i++) await consumir({ loja: l, id: 'ip1', agora: agora + i, limites })
+    expect(await consumir({ loja: l, id: 'ip1', agora: agora + 151, limites })).toMatchObject({ permitido: false, motivo: 'ip' })
+  })
+  it('o site todo: teto diário, seja qual for o IP', async () => {
+    const l = loja()
+    const limites = { ip10min: 15, ipDia: 60, dia: 3 }
+    for (const id of ['a', 'b', 'c']) expect((await consumir({ loja: l, id, agora, limites })).permitido).toBe(true)
+    expect(await consumir({ loja: l, id: 'd', agora, limites })).toMatchObject({ permitido: false, motivo: 'total' })
+    expect((await consumir({ loja: l, id: 'd', agora: agora + 24 * 3600 * 1000, limites })).permitido).toBe(true)
+  })
+  it('pedidos ao mesmo tempo não passam o limite', async () => {
+    const l = loja()
+    const limites = { ip10min: 5, ipDia: 60, dia: 2000 }
+    const r = await Promise.all(Array.from({ length: 12 }, () => consumir({ loja: l, id: 'ip1', agora, limites })))
+    expect(r.filter(x => x.permitido).length).toBeLessThanOrEqual(5)
+  })
+  it('o primeiro pedido do dia apaga os contadores dos dias anteriores', async () => {
+    const l = loja()
+    await consumir({ loja: l, id: 'ip1', agora })
+    const amanha = await consumir({ loja: l, id: 'ip1', agora: agora + 24 * 3600 * 1000 })
+    await amanha.limpar()
+    expect([...l.dados.keys()].every(k => k.startsWith('2026-11-02/'))).toBe(true)
+  })
+})
+
+describe('registarConversa no GHL', () => {
+  const ghl = (respostas = {}) => {
+    const pedidos = []
+    const pedir = async (url, o) => {
+      pedidos.push({ url: url.replace('https://services.leadconnectorhq.com', ''), metodo: o.method, corpo: JSON.parse(o.body) })
+      const chave = `${o.method} ${url.split('/').slice(3, 6).join('/')}`
+      const r = respostas[chave] || { ok: true, status: 200, json: { contact: { id: 'abcDEF12345' }, note: { id: 'nota1234567' } } }
+      return { ok: r.ok, status: r.status, json: async () => r.json }
+    }
+    return { pedidos, pedir }
+  }
+  const base = { contacto: { nome: 'Ana Silva', email: 'ana@rede.pt', telefone: '912345678' }, conversa: 'Visitante: Olá', pagina: '/leads/', token: 't', localizacao: 'loc' }
+
+  it('primeira vez: contacto, etiquetas e uma nota nova', async () => {
+    const { pedidos, pedir } = ghl()
+    expect(await registarConversa({ ...base, pedir })).toEqual({ contacto: 'abcDEF12345', nota: 'nota1234567' })
+    expect(pedidos.map(p => `${p.metodo} ${p.url}`)).toEqual(['POST /contacts/upsert', 'POST /contacts/abcDEF12345/tags', 'POST /contacts/abcDEF12345/notes'])
+    expect(pedidos[0].corpo).toMatchObject({ locationId: 'loc', firstName: 'Ana', lastName: 'Silva', email: 'ana@rede.pt', phone: '+351912345678' })
+    expect(pedidos[1].corpo.tags).toEqual(expect.arrayContaining(['n5-clara', 'assistente']))
+  })
+  it('a seguir: atualiza a mesma nota, sem repetir etiquetas', async () => {
+    const { pedidos, pedir } = ghl()
+    expect(await registarConversa({ ...base, contactoId: 'abcDEF12345', notaId: 'nota1234567', pedir })).toEqual({ contacto: 'abcDEF12345', nota: 'nota1234567' })
+    expect(pedidos.map(p => `${p.metodo} ${p.url}`)).toEqual(['POST /contacts/upsert', 'PUT /contacts/abcDEF12345/notes/nota1234567'])
+  })
+  it('se a nota foi apagada no GHL, escreve outra', async () => {
+    const { pedidos, pedir } = ghl({ 'PUT contacts/abcDEF12345/notes': { ok: false, status: 404, json: {} } })
+    await registarConversa({ ...base, contactoId: 'abcDEF12345', notaId: 'nota1234567', pedir })
+    expect(pedidos.at(-1)).toMatchObject({ metodo: 'POST', url: '/contacts/abcDEF12345/notes' })
+  })
+  it('conversa de teste: só a etiqueta teste', async () => {
+    const { pedidos, pedir } = ghl()
+    await registarConversa({ ...base, teste: true, pedir })
+    expect(pedidos[1].corpo.tags).toEqual(['n5-clara', 'teste'])
+    expect(pedidos[2].corpo.body).toMatch(/^Conversa de teste\./)
+  })
+})

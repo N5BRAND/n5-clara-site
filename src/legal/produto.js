@@ -13,6 +13,7 @@ export const PRODUTO = {
     'usar as respostas ao diagnóstico, se o fizeres, para preparar contigo a configuração da tua Clara (as respostas de quem faz o diagnóstico sem se inscrever ficam guardadas sem nome nem contacto);',
     'reenviar-te a ligação do Passa a Clara, se a pedires com o email da inscrição;',
     'no inquérito para consultores, enviar-te por email o voucher e o plano feito com as tuas respostas, e usar as respostas para decidir o que a Clara faz primeiro;',
+    'responder às tuas perguntas no assistente do site e, se deixares o nome e um contacto, guardar a conversa para a equipa te responder;',
     'contactar-te sobre o lançamento, previsto para 1 de dezembro de 2026.',
   ],
   /* a oferta tem de dizer o mesmo que OFERTA em src/logica/pagamento.js */
