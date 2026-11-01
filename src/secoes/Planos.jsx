@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { LogoChatGPT, LogoClaude } from '../ilustracoes/LogosIA.jsx'
 import { PRECOS } from '../logica/pagamento.js'
 
-const MCP = { mcp: true, texto: 'MCP com o ChatGPT e o Claude' }
+const MCP = { mcp: true, texto: 'Ideal para ligar ao teu ChatGPT e ao teu Claude' }
 
 const PLANOS = [
   {

@@ -29,7 +29,7 @@ export default function MaisInfo() {
         <details className="mais-info-bloco">
           <summary>Com que ferramentas se liga</summary>
           <div className="chips">{LIGACOES.map(l => <span key={l} className="chip">{l}</span>)}</div>
-          <p>Na Clara Pro e na Clara Elite também falas com o sistema a partir do ChatGPT ou do Claude (MCP).</p>
+          <p>Na Clara Pro e na Clara Elite também ligas a Clara ao teu ChatGPT e ao teu Claude, e falas com o sistema a partir deles.</p>
         </details>
       </div>
     </section>
