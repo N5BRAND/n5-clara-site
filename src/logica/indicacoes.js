@@ -1,5 +1,5 @@
 /* Programa «Passa a Clara»: cada inscrito recebe um código de 6 letras e uma ligação pessoal (?ref=CÓDIGO).
-   Quem chega por essa ligação fica com o código guardado no navegador; o formulário leva-o em «Quem te indicou»
+   Quem chega por essa ligação fica com o código guardado no navegador; a inscrição leva-o em indicado_por
    e a pré-reserva leva-o para a Stripe (client_reference_id). Contam as pré-reservas pagas com o código.
    Não há dados pessoais nas ligações: só o código. */
 import { SITE } from './partilha.js'

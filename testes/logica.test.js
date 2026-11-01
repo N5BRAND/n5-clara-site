@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { cenaDe, passoDe } from '../src/logica/linha-tempo.js'
-import { validarInscricao, PLANOS } from '../src/logica/validar.js'
+import { validarInscricao, erroDoCampo, PLANOS } from '../src/logica/validar.js'
+import { PERGUNTAS, primeiroNome } from '../src/logica/inscricao.js'
 import { LANCAMENTO, tempoAte } from '../src/logica/contagem.js'
 import { codificar } from '../src/logica/netlify.js'
 import { horaDe } from '../src/logica/hora.js'
@@ -13,26 +14,45 @@ describe('cenaDe e passoDe', () => {
   })
 })
 
+describe('perguntas da inscrição', () => {
+  it('a Clara pergunta só o nome, o email e o telemóvel, por esta ordem', () => {
+    expect(PERGUNTAS.map(p => p.id)).toEqual(['nome', 'email', 'telefone'])
+  })
+  it('fala na primeira pessoa e trata a pessoa pelo primeiro nome', () => {
+    expect(PERGUNTAS[0].fala('')).toMatch(/Sou a Clara/)
+    expect(PERGUNTAS[1].fala(primeiroNome('  ana maria silva '))).toBe('Prazer, Ana! Qual é o teu email?')
+    expect(PERGUNTAS[2].fala('Rui')).toContain('Rui')
+  })
+  it('sem travessões nem aprovações', () => {
+    const texto = JSON.stringify(PERGUNTAS.map(p => [p.fala('Rui'), p.ajuda || '']))
+    expect(texto).not.toMatch(/aprovação|aprovar|ilustrativ|—|–/i)
+  })
+})
+
 describe('validarInscricao', () => {
-  const base = { nome: 'Rui', email: 'rui@agencia.pt', telefone: '', agencia: 'RE/MAX Benfica', plano: 'elite', consentimento: true }
+  const base = { nome: 'Rui', email: 'rui@agencia.pt', telefone: '912 345 678', plano: 'elite' }
 
   it('aceita uma inscrição completa', () => {
     expect(validarInscricao(base)).toEqual({ ok: true, erros: {} })
   })
-  it('exige nome, agência e consentimento', () => {
-    const r = validarInscricao({ ...base, nome: '', agencia: ' ', consentimento: false })
-    expect(Object.keys(r.erros).sort()).toEqual(['agencia', 'consentimento', 'nome'])
+  it('exige nome, email e telemóvel', () => {
+    const r = validarInscricao({ ...base, nome: ' ', email: '', telefone: '' })
+    expect(Object.keys(r.erros).sort()).toEqual(['email', 'nome', 'telefone'])
   })
   it('rejeita email inválido e telefone curto', () => {
     expect(validarInscricao({ ...base, email: 'rui@' }).erros.email).toBeTruthy()
     expect(validarInscricao({ ...base, telefone: '123' }).erros.telefone).toBeTruthy()
     expect(validarInscricao({ ...base, telefone: '+351 912 345 678' }).ok).toBe(true)
   })
-  it('o plano tem de ser um dos da lista', () => {
+  it('erroDoCampo valida uma pergunta de cada vez', () => {
+    expect(erroDoCampo('nome', { nome: 'Rui' })).toBeNull()
+    expect(erroDoCampo('email', { email: 'rui@agencia' })).toBeTruthy()
+    expect(erroDoCampo('telefone', { telefone: '' })).toBeTruthy()
+    expect(erroDoCampo('telefone', { telefone: '912345678' })).toBeNull()
+  })
+  it('o plano não se pergunta: pode seguir vazio', () => {
     expect(PLANOS.map(p => p.id)).toEqual(['clara', 'pro', 'elite', 'nao-sei'])
-    expect(validarInscricao({ ...base, plano: '' }).erros.plano).toBeTruthy()
-    expect(validarInscricao({ ...base, plano: 'gold' }).erros.plano).toBeTruthy()
-    expect(validarInscricao({ ...base, plano: 'nao-sei' }).ok).toBe(true)
+    expect(validarInscricao({ ...base, plano: '' }).ok).toBe(true)
   })
   it('quem te indicou é opcional, mas tem de ser o email válido de outra pessoa', () => {
     expect(validarInscricao({ ...base, indicado_por: '' }).ok).toBe(true)

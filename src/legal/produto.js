@@ -3,11 +3,11 @@ export const PRODUTO = {
   nome: 'N5 Clara',
   url: 'https://clara.numerocinco.pt',
   formulario: 'lista de espera',
-  campos: ['nome', 'email', 'telefone (opcional)', 'agência ou rede onde trabalhas', 'plano que te interessa', 'email do colega que te indicou (opcional)', 'as prioridades que escolhes (opcional, no passo seguinte)', 'a página do site onde te inscreves e o anúncio que te trouxe', 'as respostas ao diagnóstico, se o fizeres (opcional)'],
+  campos: ['nome', 'email', 'número de telemóvel', 'o plano que escolhes na página, se escolheres um', 'o código ou o nome do colega que te indicou, se vieres pela ligação dele ou o escreveres (opcional)', 'as prioridades que escolhes (opcional, no passo seguinte)', 'a página do site onde te inscreves e o anúncio que te trouxe', 'as respostas ao diagnóstico, se o fizeres (opcional)'],
   finalidades: [
     'gerir a lista de espera da N5 Clara;',
     'perceber que plano te interessa, para te mostrarmos o que faz sentido para ti;',
-    'contar as indicações: o email de quem te indicou serve só para somar a indicação a essa pessoa;',
+    'contar as indicações: o código ou o nome de quem te indicou serve só para somar a indicação a essa pessoa;',
     'perceber em que é que a Clara mais te ajudava, para te mostrarmos isso primeiro e decidirmos o que desenvolver primeiro;',
     'perceber que página e que anúncio te trouxeram, para sabermos que mensagens funcionam;',
     'usar as respostas ao diagnóstico, se o fizeres, para preparar contigo a configuração da tua Clara (as respostas de quem faz o diagnóstico sem se inscrever ficam guardadas sem nome nem contacto);',
