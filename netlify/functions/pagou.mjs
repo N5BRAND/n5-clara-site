@@ -20,7 +20,7 @@ export default async req => {
   } catch (e) {
     console.error('pagou: falhou:', e.message)
   }
-  return new Response('', { status: 204 })
+  return new Response(null, { status: 204 }) // um 204 não pode ter corpo, nem vazio
 }
 
 export const config = { path: '/api/pagou', rateLimit: { windowLimit: 30, windowSize: 60, aggregateBy: ['ip', 'domain'] } }
