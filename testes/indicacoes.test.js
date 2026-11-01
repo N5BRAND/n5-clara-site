@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { novoCodigo, codigoValido, meuCodigo, guardarMeuCodigo, lerRef, guardarRef, capturarRef, ligacaoPessoal, linkPagamento } from '../src/logica/indicacoes.js'
+import { novoCodigo, codigoValido, meuCodigo, guardarMeuCodigo, lerRef, guardarRef, capturarRef, ligacaoPessoal, linkPagamento, PROGRAMA, mesesGanhos } from '../src/logica/indicacoes.js'
 import { contarPreReservas, resumoContagem, listarSessoes } from '../netlify/contagem.js'
 
 const memoria = (inicial = {}) => {
@@ -98,5 +98,23 @@ describe('Passa a Clara: contagem das pré-reservas pagas', () => {
     expect(pedidos[0].url).not.toContain('rk_teste')
     expect(pedidos[0].op.headers.Authorization).toBe('Bearer rk_teste')
     expect(pedidos[1].url).toContain('starting_after=cs_1')
+  })
+})
+
+describe('prémio do Passa a Clara (desde 1/11/2026)', () => {
+  it('1 mês da Clara Elite por cada pré-reserva paga, até 6; no top 10, os 6', () => {
+    expect(PROGRAMA.plano).toBe('Clara Elite')
+    expect(mesesGanhos(0, null)).toBe(0)
+    expect(mesesGanhos(2, 25)).toBe(2)
+    expect(mesesGanhos(9, 11)).toBe(6)
+    expect(mesesGanhos(1, 10)).toBe(6)
+    expect(mesesGanhos(1, 11)).toBe(1)
+    expect(mesesGanhos(0, 3)).toBe(0)
+  })
+
+  it('os textos do programa falam da Clara Elite e já não do plano Clara', () => {
+    expect(PROGRAMA.resumo).toContain('1 mês da Clara Elite')
+    expect(PROGRAMA.resumo).toContain('os 6 meses')
+    expect(JSON.stringify(PROGRAMA)).not.toMatch(/plano Clara|—|–/)
   })
 })

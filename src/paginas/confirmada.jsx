@@ -31,7 +31,7 @@ function Confirmada() {
           <p>Tens uma das 25 vagas com as condições de lançamento: a 1 de dezembro a Clara começa a trabalhar contigo. A pré-reserva {OFERTA.resumo}. Tens também o copiloto para o CRM da tua marca durante 3 meses, uma sessão de configuração com a nossa equipa e 2 formações incluídas, para ti e para a tua equipa. Sem fidelização.</p>
           <OQuePagas compacto />
           <p>Se escolheste Multibanco, a inscrição fica feita assim que pagares a referência.</p>
-          <p><b>{PROGRAMA.nome}.</b> Os {PROGRAMA.vencedores} consultores que trouxerem mais colegas com pré-reserva paga até {PROGRAMA.fim} ganham {PROGRAMA.premio}.{codigo ? <> O teu código é <b>{codigo}</b>.</> : null}</p>
+          <p><b>{PROGRAMA.nome}.</b> {PROGRAMA.resumo}{codigo ? <> O teu código é <b>{codigo}</b>.</> : null}</p>
           <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(PARTILHA)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
           <Partilhar texto={TEXTOS.inscrito} codigo={codigo} rotulo="Partilhar no LinkedIn, Facebook ou Instagram" />
           <a className="confirmada-voltar" href={PROGRAMA.pagina}>Ver a minha contagem no {PROGRAMA.nome}</a>

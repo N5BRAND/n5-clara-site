@@ -170,7 +170,7 @@ export default function Formulario({ extra, plano = '' } = {}) {
             <h3>{ESGOTADO ? 'Estás na lista de espera.' : 'Estás na lista.'}</h3>
             <p>{ESGOTADO ? 'A partir de 1 de dezembro abrimos 30 vagas por semana, pela ordem da lista. A Clara avisa-te por email quando chegar a tua vez. Dá cá cinco 🖐️' : 'A Clara avisa-te assim que abrirmos. Dá cá cinco 🖐️'}</p>
             <div className="lista-indicar">
-              <p><b>{PROGRAMA.nome}.</b> Os {PROGRAMA.vencedores} consultores que trouxerem mais colegas com pré-reserva paga até {PROGRAMA.fim} ganham {PROGRAMA.premio}. O teu código é <b className="codigo">{codigo}</b>.</p>
+              <p><b>{PROGRAMA.nome}.</b> {PROGRAMA.resumo} O teu código é <b className="codigo">{codigo}</b>.</p>
               <p className="lista-indicar-ligacao">{ligacao}</p>
               <a className="botao" href={`https://wa.me/?text=${encodeURIComponent(whatsapp)}`} target="_blank" rel="noreferrer">Partilhar no WhatsApp</a>
               <Partilhar texto={TEXTOS.inscrito} codigo={codigo} rotulo="Partilhar no LinkedIn, Facebook ou Instagram" />

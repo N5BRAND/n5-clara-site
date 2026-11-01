@@ -9,7 +9,7 @@ import { iniciarPixel } from '../legal/pixel.js'
 import { iniciarAnalitica, marcar } from '../legal/analitica.js'
 import { EMPRESA } from '../legal/empresa.js'
 import { TEXTOS } from '../logica/partilha.js'
-import { PROGRAMA, meuCodigo, guardarMeuCodigo, codigoValido, ligacaoPessoal, iniciarIndicacoes } from '../logica/indicacoes.js'
+import { PROGRAMA, meuCodigo, guardarMeuCodigo, codigoValido, ligacaoPessoal, iniciarIndicacoes, mesesGanhos } from '../logica/indicacoes.js'
 import { codificar } from '../logica/netlify.js'
 import { emTeste } from '../legal/teste.js'
 import { PRE_RESERVA } from '../logica/pagamento.js'
@@ -93,7 +93,7 @@ const CONVITES = [
 const PASSOS = [
   ['Inscreve-te', 'Na inscrição recebes o teu código de 6 letras e a tua ligação pessoal.'],
   ['Passa a Clara', 'Partilha a ligação com colegas pelo WhatsApp, LinkedIn, Facebook ou Instagram, ou dá-lhes o teu código.'],
-  ['Soma pré-reservas', `Cada colega que faz a pré-reserva de ${PRE_RESERVA} soma um traço na tua contagem. A ${PROGRAMA.fim}, os ${PROGRAMA.vencedores} com mais traços ganham.`],
+  ['Soma meses da Clara Elite', `Cada colega que faz a pré-reserva de ${PRE_RESERVA} soma um traço e 1 mês da ${PROGRAMA.plano} grátis, até ${PROGRAMA.maximo}. A ${PROGRAMA.fim}, os ${PROGRAMA.vencedores} com mais traços ficam com os ${PROGRAMA.maximo} meses.`],
 ]
 
 /* a contagem ao vivo vem da função da Netlify, que lê a Stripe; só números, nunca nomes */
@@ -110,6 +110,7 @@ function Contagem({ codigo }) {
 
   if (!c) return <p className="passa-contagem-nota">A contar…</p>
   if (!c.disponivel) return <p className="passa-contagem-nota">A contagem ao vivo aparece aqui em breve. Entretanto, todas as pré-reservas com o teu código já estão a contar.</p>
+  const meses = mesesGanhos(c.contagem, c.posicao)
   return (
     <div className="passa-contagem">
       <div className="passa-contagem-num">
@@ -118,6 +119,9 @@ function Contagem({ codigo }) {
         <small>Pagas e não reembolsadas.</small>
       </div>
       <ul>
+        {meses
+          ? <li>Se o programa acabasse hoje, ficavas com <b>{meses} {meses === 1 ? 'mês' : 'meses'}</b> da {PROGRAMA.plano} grátis.</li>
+          : <li>Cada colega com pré-reserva paga dá-te <b>1 mês</b> da {PROGRAMA.plano} grátis.</li>}
         {c.posicao ? <li>Estás em <b>{c.posicao}.º</b> lugar.</li> : null}
         <li>Para estares hoje no top {PROGRAMA.vencedores}, precisas de <b>{c.corte}</b> {c.corte === 1 ? 'pré-reserva paga' : 'pré-reservas pagas'}.</li>
         <li><b>{c.participantes}</b> {c.participantes === 1 ? 'consultor já tem' : 'consultores já têm'} pelo menos uma.</li>
@@ -167,8 +171,8 @@ function PassaClara() {
             <div>
               <p className="eyebrow">Programa de indicações · até {PROGRAMA.fim}</p>
               <h1>{PROGRAMA.nome}.</h1>
-              <p className="passa-premio"><b>3 meses grátis</b> do plano Clara</p>
-              <p className="passa-condicao">Os {PROGRAMA.vencedores} consultores com mais pré-reservas referenciadas ganham 3 meses do plano Clara.</p>
+              <p className="passa-premio"><b>1 mês da {PROGRAMA.plano}</b> por cada colega</p>
+              <p className="passa-condicao">Cada colega que faz a pré-reserva pela tua ligação dá-te 1 mês da {PROGRAMA.plano} grátis, até {PROGRAMA.maximo} meses. Os {PROGRAMA.vencedores} consultores com mais pré-reservas referenciadas ficam com os {PROGRAMA.maximo} meses.</p>
               <p className="passa-lead">Conheces consultores que perdem leads por não responderem a tempo? Passa-lhes a Clara. Contam as pré-reservas pagas pela tua ligação ou com o teu código até {PROGRAMA.fim}.</p>
               {codigo
                 ? <a className="botao" href="#a-tua-ligacao">Partilhar a minha ligação</a>
@@ -247,10 +251,11 @@ function PassaClara() {
               <h2>Regras</h2>
               <ul>
                 <li>Contam as pré-reservas de {PRE_RESERVA} pagas até {PROGRAMA.fim} de 2026, às 23h59 de Lisboa, por colegas que se inscrevam pela tua ligação ou com o teu código.</li>
-                <li>Ganham os {PROGRAMA.vencedores} consultores com mais pré-reservas pagas, com pelo menos uma. Em caso de empate, ganha quem lá chegou primeiro. Não há sorteio.</li>
-                <li>O prémio são 3 meses do plano Clara grátis. Se já fizeste a pré-reserva, não pagas o 2.º, o 3.º e o 4.º mês.</li>
+                <li>Cada pré-reserva paga dá-te 1 mês da {PROGRAMA.plano} grátis, até {PROGRAMA.maximo} meses.</li>
+                <li>Os {PROGRAMA.vencedores} consultores com mais pré-reservas pagas, com pelo menos uma, ficam com os {PROGRAMA.maximo} meses, mesmo que tenham trazido menos colegas. Em caso de empate, fica à frente quem lá chegou primeiro. Não há sorteio.</li>
+                <li>Se já fizeste a pré-reserva, os meses grátis contam a seguir ao 1.º mês, que a pré-reserva já paga.</li>
                 <li>Não contam pré-reservas tuas, pré-reservas reembolsadas nem pagamentos feitos sem o teu código.</li>
-                <li>Os vencedores são anunciados por email a {PROGRAMA.anuncio}.</li>
+                <li>Os meses ganhos são comunicados por email a {PROGRAMA.anuncio}.</li>
               </ul>
               <p><a href="/termos/#passa-a-clara">Regulamento completo</a></p>
             </div>
@@ -270,7 +275,7 @@ function PassaClara() {
               </details>
               <details>
                 <summary>E se eu não ficar no top {PROGRAMA.vencedores}?</summary>
-                <p>Os colegas que trouxeste ficam com a Clara e com as condições da pré-reserva, como toda a gente que a faz.</p>
+                <p>Ficas na mesma com 1 mês da {PROGRAMA.plano} grátis por cada colega que fez a pré-reserva, até {PROGRAMA.maximo} meses. E os colegas que trouxeste ficam com a Clara e com as condições da pré-reserva, como toda a gente que a faz.</p>
               </details>
             </div>
           </div>

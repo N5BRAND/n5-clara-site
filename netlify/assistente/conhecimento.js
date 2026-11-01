@@ -47,7 +47,7 @@ ${esgotado ? '- As 25 vagas com pré-reserva já esgotaram. Quem se inscreve ago
 
 Passa a Clara (programa de indicações)
 - Cada inscrito recebe um código de 6 letras e uma ligação pessoal.
-- Os 10 consultores com mais pré-reservas pagas por indicação até 30 de novembro ganham 3 meses do plano Clara grátis. Basta uma pré-reserva para entrar. Não há sorteio; em caso de empate, ganha quem chegou primeiro. Não é preciso ter feito a pré-reserva para participar.
+- Cada pré-reserva paga por indicação até 30 de novembro dá 1 mês da Clara Elite grátis, até 6 meses. Os 10 consultores com mais pré-reservas pagas por indicação ficam com os 6 meses. Basta uma pré-reserva para entrar no top 10. Não há sorteio; em caso de empate, ganha quem chegou primeiro. Não é preciso ter feito a pré-reserva para participar.
 - Mais detalhes na página /passa-a-clara/ e nos termos.
 `
 

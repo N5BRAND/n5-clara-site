@@ -4,13 +4,26 @@
    Não há dados pessoais nas ligações: só o código. */
 import { SITE } from './partilha.js'
 
+/* prémio (decisão do Pedro a 1/11/2026): 1 mês da Clara Elite por cada pré-reserva paga por indicação, até 6;
+   os 10 com mais indicações ficam com os 6 meses. Antes eram 3 meses do plano Clara só para os 10 primeiros. */
+const VENCEDORES = 10, MAXIMO = 6, PLANO = 'Clara Elite', FIM = '30 de novembro'
 export const PROGRAMA = {
   nome: 'Passa a Clara',
   pagina: '/passa-a-clara/',
-  vencedores: 10,
-  premio: '3 meses do plano Clara grátis',
-  fim: '30 de novembro',
+  vencedores: VENCEDORES,
+  plano: PLANO,
+  maximo: MAXIMO,
+  premio: `1 mês da ${PLANO} grátis por cada colega com pré-reserva paga, até ${MAXIMO} meses`,
+  resumo: `Por cada colega que fizer a pré-reserva pela tua ligação até ${FIM}, ganhas 1 mês da ${PLANO} grátis, até ${MAXIMO} meses. Os ${VENCEDORES} que trouxerem mais ficam com os ${MAXIMO} meses.`,
+  fim: FIM,
   anuncio: '1 de dezembro',
+}
+
+/* meses da Clara Elite que a contagem dá hoje: 1 por pré-reserva, até ao máximo; no top 10 (com pelo menos uma), o máximo */
+export function mesesGanhos(contagem, posicao = null) {
+  const n = Math.max(0, Math.floor(Number(contagem) || 0))
+  if (!n) return 0
+  return posicao && posicao <= VENCEDORES ? MAXIMO : Math.min(n, MAXIMO)
 }
 
 const ALFABETO = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // sem I, O, 0 e 1, para não se confundirem
