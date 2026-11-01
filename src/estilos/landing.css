@@ -149,3 +149,29 @@
 
 /* o topo fixo não tapa o início das secções quando se salta para elas */
 #como, #lista, #diagnostico, #teste { scroll-margin-top: 68px; }
+
+/* símbolo do ChatGPT ou do Claude no topo de uma conversa */
+.avatar--logo { background: var(--cartao); color: var(--tinta); border: 1px solid var(--linha); }
+
+/* a peça que faltava (/ia/): o mesmo par de assistentes; em baixo, tu a colar contexto ou a Clara ligada aos dois */
+.pecas-grelha { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 3vw, 32px); }
+.pecas-painel { display: grid; gap: 14px; align-content: start; padding: clamp(20px, 3vw, 32px); border-radius: var(--raio); background: var(--cartao); border: 1px solid var(--linha); }
+.pecas-painel--clara { background: var(--tinta); color: var(--creme); border-color: transparent; }
+.pecas-topo, .pecas-fios { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pecas-assistente { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 14px 10px; border-radius: 14px; background: var(--creme); color: var(--tinta); border: 1px solid var(--linha); }
+.pecas-assistente b { font-size: 16px; }
+.pecas-assistente span { font-size: 13px; line-height: 1.35; color: var(--suave); }
+.pecas-fios { height: 34px; }
+.pecas-fios i { justify-self: center; width: 0; border-left: 2px dashed var(--linha-forte); transform-origin: top; }
+.pecas-painel--clara .pecas-fios i { border-left: 2px solid var(--dourado); }
+.pecas-meio { display: grid; gap: 10px; justify-items: center; text-align: center; }
+.pecas-meio .chips { justify-content: center; }
+.pecas-tu { width: 56px; height: 56px; font-size: 16px; }
+.pecas-colado { background: var(--dourado-claro); color: var(--dourado-escuro); }
+.pecas-painel--clara .chip { background: rgba(245, 244, 240, 0.1); color: var(--creme); }
+.pecas-legenda { margin: 4px 0 0; font-weight: 600; text-align: center; }
+.pecas-painel--clara .pecas-legenda { color: var(--dourado); }
+@media (max-width: 760px) {
+  .pecas-grelha { grid-template-columns: 1fr; }
+  .pecas-meio .chip { font-size: 13px; }
+}

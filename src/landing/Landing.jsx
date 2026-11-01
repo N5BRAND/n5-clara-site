@@ -10,6 +10,8 @@ import Lista from '../secoes/Lista.jsx'
 import Rodape from '../secoes/Rodape.jsx'
 import AvisoCookies from '../legal/AvisoCookies.jsx'
 import CenaAuto from './CenaAuto.jsx'
+import PecaQueFaltava from './PecaQueFaltava.jsx'
+import { LogoCanal } from '../ilustracoes/LogosIA.jsx'
 
 const subir = (atraso = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -59,9 +61,9 @@ function ConversaHero({ cena }) {
     <div className="telefone telefone--hero lp-telefone" aria-hidden="true">
       <div className="telefone-ecra">
         <div className="chat-topo">
-          {comClara ? <ClaraAvatar tamanho={36} viva={aEscrever} /> : <span className="avatar">{cena.canal.nome.split(' ').map(x => x[0]).join('').slice(0, 2)}</span>}
+          {comClara ? <ClaraAvatar tamanho={36} viva={aEscrever} /> : cena.canal.logo ? <LogoCanal logo={cena.canal.logo} /> : <span className="avatar">{cena.canal.nome.split(' ').map(x => x[0]).join('').slice(0, 2)}</span>}
           <div><b>{cena.canal.nome}</b><span className="suave">{comClara && aEscrever ? 'a escrever…' : cena.canal.sub}</span></div>
-          {!comClara && <span className="chat-clara-responde"><ClaraAvatar tamanho={22} /> Clara a responder</span>}
+          {!comClara && <span className="chat-clara-responde"><ClaraAvatar tamanho={22} /> {cena.canal.logo ? 'Clara ligada' : 'Clara a responder'}</span>}
         </div>
         <div className="chat-corpo">
           <AnimatePresence initial={false} mode="popLayout">
@@ -169,10 +171,11 @@ export default function Landing({ p }) {
       <TopoLanding />
       <main>
         <HeroLanding p={p} cena={p.cenas[0]} />
-        {/* na página do CRM, o copiloto a preencher o CRM vem primeiro: é a promessa do anúncio */}
+        {/* na página do CRM, o copiloto a preencher o CRM vem primeiro: é a promessa do anúncio; na do ChatGPT e do Claude, a peça que faltava */}
         {p.copiloto && <div id="como"><Copiloto {...p.copiloto} /></div>}
-        {/* na página do CRM o «como» é o copiloto; os exemplos contam como «cenas» na dashboard */}
-        <section id={p.copiloto ? undefined : 'como'} data-seccao={p.copiloto ? 'cenas' : undefined} className="seccao lp-cenas">
+        {p.pecas && <div id="como"><PecaQueFaltava {...p.pecas} /></div>}
+        {/* nessas páginas o «como» é a secção de cima; os exemplos contam como «cenas» na dashboard */}
+        <section id={p.copiloto || p.pecas ? undefined : 'como'} data-seccao={p.copiloto || p.pecas ? 'cenas' : undefined} className="seccao lp-cenas">
           <div className="contentor lp-cenas-lista">
             {p.cenas.map((c, i) => <Cena key={c.id} cena={c} i={i} />)}
           </div>

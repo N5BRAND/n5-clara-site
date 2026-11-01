@@ -14,3 +14,10 @@ export function LogoClaude({ tamanho = 18 }) {
     </svg>
   )
 }
+
+/* o símbolo do assistente no topo de uma conversa (canal.logo nas cenas) */
+const LOGOS = { chatgpt: LogoChatGPT, claude: LogoClaude }
+export function LogoCanal({ logo, tamanho = 20 }) {
+  const Logo = LOGOS[logo]
+  return Logo ? <span className="avatar avatar--logo"><Logo tamanho={tamanho} /></span> : null
+}

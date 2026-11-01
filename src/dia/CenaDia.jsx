@@ -4,6 +4,7 @@ import Revela from './Revela.jsx'
 import { Bolha } from '../secoes/Hero.jsx'
 import { ClaraAvatar, Onda } from '../ilustracoes/Clara.jsx'
 import { Pessoa } from '../ilustracoes/Pessoas.jsx'
+import { LogoCanal } from '../ilustracoes/LogosIA.jsx'
 
 const MOLA = { type: 'spring', stiffness: 220, damping: 22 }
 
@@ -48,9 +49,9 @@ function Telefone({ cena, passo, compacto }) {
     <div className="telefone telefone--dia">
       <div className="telefone-ecra">
         <div className="chat-topo">
-          {comClara ? <ClaraAvatar tamanho={36} /> : <span className="avatar">{cena.canal.nome.split(' ').map(p => p[0]).join('').slice(0, 2)}</span>}
+          {comClara ? <ClaraAvatar tamanho={36} /> : cena.canal.logo ? <LogoCanal logo={cena.canal.logo} /> : <span className="avatar">{cena.canal.nome.split(' ').map(p => p[0]).join('').slice(0, 2)}</span>}
           <div><b>{cena.canal.nome}</b><span className="suave">{cena.canal.sub}</span></div>
-          {!comClara && <span className="chat-clara-responde"><ClaraAvatar tamanho={22} /> Clara a responder</span>}
+          {!comClara && <span className="chat-clara-responde"><ClaraAvatar tamanho={22} /> {cena.canal.logo ? 'Clara ligada' : 'Clara a responder'}</span>}
         </div>
         <div className="chat-corpo">
           {cena.mensagens.filter(m => m.p <= passo).slice(compacto ? -2 : 0).map(m => <Mensagem key={m.texto} m={m} />)}
