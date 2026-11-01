@@ -9,6 +9,7 @@ export const COMECAR = [
 
 /* plano: só quando a página é de um plano acima do plano Clara */
 export const DORES = [
+  { href: '/tudo/', dor: 'Tenho tudo espalhado entre o Excel, o WhatsApp e a cabeça', resposta: 'A Clara junta os teus contactos, os teus proprietários e o teu dia num sítio.' },
   { href: '/leads/', dor: 'Perco leads porque não consigo responder a tempo', resposta: 'A Clara responde em minutos, a qualquer hora, e qualifica com o teu guião.' },
   { href: '/angariacao/', dor: 'Faltam-me angariações', resposta: 'Os particulares a vender sem agência nas tuas freguesias, por prioridade.', plano: 'Pro e Elite' },
   { href: '/proprietarios/', dor: 'Os proprietários das campanhas chegam-me por qualificar', resposta: 'Qualificados antes da reunião e documentos acompanhados depois.' },

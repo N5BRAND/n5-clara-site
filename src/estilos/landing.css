@@ -224,3 +224,57 @@
   .inq-linha .inq-quando { grid-row: auto; }
   .inq-semanas { grid-template-columns: 1fr; }
 }
+
+/* ===== tudo num sítio (/tudo/) ===== */
+/* a conta: três parcelas, os sinais entre elas e a Clara como resultado */
+.tudo-soma { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; align-items: stretch; }
+.tudo-parcela { display: grid; gap: 10px; align-content: start; padding: clamp(18px, 2.2vw, 26px); border-radius: var(--raio); background: var(--cartao); border: 1px solid var(--linha); }
+.tudo-parcela h3 { margin: 0; font-family: var(--titulo); font-size: clamp(19px, 1.8vw, 22px); line-height: 1.2; letter-spacing: -0.02em; }
+.tudo-parcela p { margin: 0; font-size: 15px; color: var(--suave); }
+.tudo-resultado { align-content: center; background: var(--tinta); color: var(--creme); border-color: transparent; }
+.tudo-resultado h3 { font-size: clamp(30px, 3vw, 40px); color: var(--dourado); }
+.tudo-resultado p { color: var(--creme); font-size: 18px; font-weight: 600; }
+.tudo-sinal { align-self: center; justify-self: center; font-family: var(--titulo); font-size: clamp(28px, 3vw, 40px); font-weight: 800; color: var(--dourado-escuro); }
+@media (max-width: 960px) {
+  .tudo-soma { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .tudo-sinal { font-size: 28px; line-height: 1; }
+}
+
+/* do Excel para a Clara */
+.tudo-excel-cabeca, .tudo-excel-linhas li { display: grid; grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1.4fr); gap: 16px; align-items: center; }
+.tudo-excel-cabeca { padding-bottom: 12px; font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dourado); }
+.tudo-excel-linhas { list-style: none; margin: 0; padding: 0; }
+.tudo-excel-linhas li { padding: 20px 0; border-top: 1px solid rgba(245, 244, 240, 0.16); }
+.tudo-antes { color: rgba(245, 244, 240, 0.62); text-decoration: line-through; text-decoration-color: rgba(232, 161, 60, 0.7); font-size: clamp(16px, 1.6vw, 19px); }
+.tudo-excel-linhas b { font-family: var(--titulo); font-size: clamp(19px, 2vw, 24px); line-height: 1.25; letter-spacing: -0.01em; }
+.tudo-seta { justify-self: center; color: var(--dourado); font-size: 22px; font-weight: 700; }
+@media (max-width: 700px) {
+  .tudo-excel-cabeca { display: none; }
+  .tudo-excel-linhas li { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .tudo-seta { justify-self: start; transform: rotate(90deg); }
+}
+
+/* a ficha do anúncio 06 */
+.tudo-ficha-grelha { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 64px); align-items: center; }
+.tudo-ficha .seccao-cabeca { margin-bottom: 0; }
+.tudo-ficha-cartao { display: grid; padding: clamp(20px, 3vw, 36px); border-radius: 24px; border: 2px solid var(--tinta); background: var(--cartao); box-shadow: var(--sombra); }
+.tudo-ficha-topo { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--linha); }
+.tudo-ficha-topo b { display: block; font-family: var(--titulo); font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.03em; line-height: 1.1; }
+.tudo-ficha-topo span { color: var(--suave); }
+.tudo-ficha-pontos { text-align: right; }
+.tudo-ficha-pontos b { color: var(--cobalto); font-size: clamp(36px, 4vw, 52px); }
+.tudo-ficha-pontos span { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+.tudo-ficha-linha { display: grid; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--linha); }
+.tudo-ficha-linha:last-child { border-bottom: 0; padding-bottom: 0; }
+.tudo-ficha-linha p { margin: 0; font-size: clamp(16px, 1.6vw, 19px); font-weight: 500; }
+.tudo-ficha-rotulo { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dourado-escuro); }
+@media (max-width: 860px) { .tudo-ficha-grelha { grid-template-columns: minmax(0, 1fr); } }
+
+/* já tens o CRM da tua marca? */
+.tudo-marca { padding-top: 0; }
+.tudo-marca-grelha { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+.tudo-marca .seccao-cabeca { margin-bottom: 0; }
+.tudo-marca-nota { display: grid; gap: 8px; padding: clamp(20px, 2.6vw, 28px); }
+.tudo-marca-nota p { margin: 0; }
+.tudo-marca-nota p:not(.eyebrow) { color: var(--suave); }
+@media (max-width: 860px) { .tudo-marca-grelha { grid-template-columns: minmax(0, 1fr); } }

@@ -413,3 +413,86 @@ export const INQUERITO = {
     texto: 'No fim, recebes por email o voucher e o teu plano com a Clara. Um voucher por pessoa, para ativar entre 1 e 31 de dezembro de 2026. Não se junta à pré-reserva de 27 €.',
   },
 }
+
+/* «Tudo num sítio» (/tudo/), para a leva 3 de criativos (Criativos/2026-11-01 N5 Clara leva 3 tudo num sitio).
+   Fica fora de PAGINAS, como o diagnóstico, porque tem secções próprias. O topo muda com ?perfil= (rede, conta-propria);
+   o resto é igual para todos, para os números se compararem. Só factos que o site já diz: a ficha de cada cliente, a etapa
+   de cada negócio, a qualificação dos proprietários e o plano do dia. Ficaram de fora as fichas de imóveis e o histórico. */
+const TUDO_DIA = {
+  id: 'tudo-dia',
+  hora: '08:00',
+  curto: 'Tudo num sítio',
+  passos: 3,
+  eyebrow: 'Quinta, 08:00 · Plano do dia',
+  titulo: 'Bom dia. O que importa já está no teu plano.',
+  texto: 'O que a Clara qualificou, o que disseste numa nota de voz e o próximo passo de cada proprietário, por ordem de prioridade.',
+  exemplo: 'Exemplo: nomes e imóveis fictícios.',
+  canal: { nome: 'Clara', sub: 'a tua assistente' },
+  mensagens: [
+    { de: 'rui', texto: 'Bom dia, Clara. O que tenho hoje?', p: 1 },
+    { de: 'clara', texto: 'Bom dia, Rui! Às 10:00, ligar ao Carlos Mendes para marcar a avaliação do T3 em Benfica. Aceitou-a na visita de terça.', p: 2 },
+    { de: 'clara', texto: 'Esta noite qualifiquei 2 leads de proprietários. Já estão nas fichas e no teu plano do dia.', p: 3 },
+  ],
+  cartoes: [],
+}
+
+export const PERFIS_TUDO = ['geral', 'rede', 'conta-propria']
+/* ?perfil=rede ou ?perfil=conta-propria; qualquer outro valor fica no topo geral */
+export function lerPerfil(pesquisa = '') {
+  const v = new URLSearchParams(pesquisa).get('perfil')
+  return v && PERFIS_TUDO.includes(v) ? v : 'geral'
+}
+
+export const TUDO = {
+  titulo: 'Tudo num sítio · N5 Clara',
+  descricao: 'Os teus contactos e imóveis, os teus proprietários e o teu dia, com IA a trabalhar em cada um. A N5 Clara junta tudo num sítio.',
+  eyebrow: 'N5 Clara · Tudo num sítio',
+  perfis: {
+    geral: { h1: 'Tudo num sítio.', lead: 'Os teus contactos e imóveis, os teus proprietários e o teu dia, com IA a trabalhar em cada um.' },
+    rede: { h1: 'Não precisas de trocar de CRM.', lead: 'O da tua marca continua. A Clara responde às tuas leads, qualifica os proprietários e monta o teu dia.' },
+    'conta-propria': { h1: 'A Clara é o teu CRM. Com IA a trabalhar por ti.', lead: 'Contactos, imóveis e pipeline num sítio. Proprietários que chegam qualificados. O teu dia por ordem de prioridade.' },
+  },
+  cena: TUDO_DIA,
+  conta: {
+    eyebrow: 'A conta é simples',
+    titulo: 'Um CRM, mais IA para os proprietários, mais IA para o teu dia.',
+    parcelas: [
+      { nome: 'CRM que se preenche pela conversa', texto: 'A ficha de cada cliente enche-se com as conversas da Clara com as tuas leads e com as tuas notas de voz, e cada negócio fica na sua etapa. Sem campos para preencher.' },
+      { nome: 'IA que qualifica os teus proprietários', texto: 'Cada lead de proprietário chega qualificada: motivação, prazo, preço e documentos, com a prioridade e os motivos.' },
+      { nome: 'IA que organiza o teu dia', texto: 'Por ordem de prioridade, no teu Google Calendar, com o que fazer primeiro.' },
+    ],
+    resultado: { nome: 'Clara', texto: 'Tudo num sítio.' },
+  },
+  excel: {
+    eyebrow: 'Do Excel para a Clara',
+    titulo: 'O que muda no teu dia a dia.',
+    linhas: [
+      ['Contactos num Excel', 'Fichas que se preenchem pela conversa, com a etapa de cada negócio'],
+      ['Proprietários perdidos no WhatsApp', 'Leads de proprietários qualificadas, com prioridade'],
+      ['O dia na cabeça', 'O dia por ordem de prioridade, no teu Google Calendar'],
+    ],
+  },
+  ficha: {
+    eyebrow: 'Ficha na Clara',
+    titulo: 'Uma ficha onde tudo se junta.',
+    texto: 'A lead qualificada, as notas de voz, a etapa do negócio e o próximo passo, que entra sozinho no teu plano do dia.',
+    exemplo: 'Exemplo: nome e imóvel fictícios.',
+    nome: 'Carlos Mendes',
+    sub: 'Proprietário · T3 em Benfica',
+    pontuacao: 78,
+    linhas: [
+      { rotulo: 'Lead de proprietário · qualificada pela Clara', texto: 'Quer vender em 3 meses. Já tem preço pensado.' },
+      { rotulo: 'Nota de voz · terça', texto: 'Visita feita. Aceita uma avaliação, prefere manhãs.' },
+      { rotulo: 'Pipeline', texto: 'Avaliação a marcar' },
+      { rotulo: 'No teu plano de quinta', texto: '10:00 · Ligar ao Carlos para marcar a avaliação' },
+    ],
+  },
+  crmMarca: {
+    eyebrow: 'Já tens o CRM da tua marca?',
+    titulo: 'Continua com ele. A Clara trata do resto.',
+    texto: 'Responde às tuas leads, qualifica os proprietários e monta o teu dia por ordem de prioridade. O CRM da tua marca fica como está.',
+    nota: PAGINAS.crm.nota,
+  },
+  reserva: { titulo: 'Junta tudo num sítio.', texto: 'Os teus contactos, os teus proprietários e o teu dia, com a Clara a trabalhar em cada um, a partir de 1 de dezembro.' },
+  plano: 'clara',
+}

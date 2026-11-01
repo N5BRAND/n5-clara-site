@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { PAGINAS, CENAS_LANDING, DIAGNOSTICO } from '../src/landing/paginas.js'
+import { PAGINAS, CENAS_LANDING, DIAGNOSTICO, TUDO, lerPerfil } from '../src/landing/paginas.js'
 import { PERGUNTAS, lerNumero, calcularDiagnostico, resumoDiagnostico } from '../src/logica/diagnostico.js'
 import { origemDe, etiquetaPagina, guardarAnuncio, anuncioGuardado } from '../src/logica/origem.js'
 import { paraGhl } from '../netlify/ghl.js'
@@ -74,7 +74,7 @@ describe('landing pages', () => {
   })
 
   it('o texto segue as regras do site: sem aprovação, ilustrativo, aviso de gravação nem travessões', () => {
-    const texto = JSON.stringify({ PAGINAS, CENAS_LANDING, DIAGNOSTICO, PERGUNTAS })
+    const texto = JSON.stringify({ PAGINAS, CENAS_LANDING, DIAGNOSTICO, PERGUNTAS, TUDO })
     expect(texto).not.toMatch(/aprovação|aprovar|ilustrativ|consentimento|aviso de grava|—|–/i)
   })
 })
@@ -153,5 +153,31 @@ describe('origem da inscrição', () => {
 
   it('o diagnóstico sem email não vai para o GHL', () => {
     expect(paraGhl('diagnostico', { respostas: 'x' })).toBeNull()
+  })
+})
+
+describe('tudo num sítio (/tudo/)', () => {
+  it('o topo muda com ?perfil= e um valor desconhecido fica no geral', () => {
+    expect(lerPerfil('?perfil=rede')).toBe('rede')
+    expect(lerPerfil('?perfil=conta-propria&utm_content=cla_pos_conta_propria')).toBe('conta-propria')
+    expect(lerPerfil('?perfil=outra')).toBe('geral')
+    expect(lerPerfil('')).toBe('geral')
+    expect(TUDO.perfis.geral.h1).toBe('Tudo num sítio.')
+    expect(TUDO.perfis.rede.h1).toBe('Não precisas de trocar de CRM.')
+    for (const p of Object.values(TUDO.perfis)) expect(p.h1 && p.lead).toBeTruthy()
+  })
+
+  it('o copiloto usa o texto da página /crm/ e a ficha diz que é um exemplo', () => {
+    expect(TUDO.crmMarca.nota).toBe(PAGINAS.crm.nota)
+    expect(TUDO.ficha.exemplo).toMatch(/^Exemplo/)
+    expect(TUDO.cena.exemplo).toMatch(/^Exemplo/)
+    for (const m of TUDO.cena.mensagens) expect(m.p).toBeLessThanOrEqual(TUDO.cena.passos)
+    expect(TUDO.plano).toBe('clara')
+  })
+
+  it('só diz o que o site já diz: sem fichas de imóveis nem histórico', () => {
+    const texto = JSON.stringify(TUDO)
+    expect(texto).not.toMatch(/fichas? de (contactos e )?imóveis|histórico/i)
+    expect(texto).not.toMatch(/\bIVA\b/)
   })
 })

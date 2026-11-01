@@ -7,11 +7,12 @@ import { iniciarIndicacoes } from '../logica/indicacoes.js'
 import { iniciarOrigem } from '../logica/origem.js'
 import { iniciarBrilho } from '../logica/brilho.js'
 import { iniciarAssistente } from '../assistente/iniciar.js'
-import { PAGINAS, DIAGNOSTICO, ARQUETIPO, INQUERITO } from './paginas.js'
+import { PAGINAS, DIAGNOSTICO, ARQUETIPO, INQUERITO, TUDO } from './paginas.js'
 import Landing from './Landing.jsx'
 import DiagnosticoPagina from './Diagnostico.jsx'
 import ArquetipoPagina from './Arquetipo.jsx'
 import InqueritoPagina from './Inquerito.jsx'
+import TudoPagina from './Tudo.jsx'
 import '../estilos/fontes.js'
 import '../estilos/base.css'
 import '../estilos/seccoes.css'
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')).render(
       {id === 'diagnostico' ? <DiagnosticoPagina p={DIAGNOSTICO} />
         : id === 'arquetipo' ? <ArquetipoPagina p={ARQUETIPO} />
         : id === 'inquerito' ? <InqueritoPagina p={INQUERITO} />
+        : id === 'tudo' ? <TudoPagina p={TUDO} />
         : <Landing p={PAGINAS[id]} />}
     </MotionConfig>
   </React.StrictMode>,
