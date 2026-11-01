@@ -58,7 +58,8 @@ describe('landing pages', () => {
     const { ia } = PAGINAS
     expect(ia.plano).toBe('pro')
     expect(ia.nota.texto).toMatch(/Clara Pro e da Clara Elite/)
-    expect(ia.nota.texto).toContain('segunda fase')
+    expect(ia.nota.texto).toContain('desde o lançamento, a 1 de dezembro')
+    expect(ia.nota.texto).not.toContain('segunda fase')
     expect(ia.nota.texto).toContain('Grok Bot')
     expect(ia.nota.texto).not.toMatch(/plano Clara/)
     expect(ia.pecas.titulo).toBeTruthy()

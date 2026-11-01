@@ -362,7 +362,7 @@ export const PAGINAS = {
       { titulo: 'Todos sabem o que a Clara sabe', texto: 'Leads, conversas do WhatsApp, visitas, imóveis, compradores e documentos ficam num só sítio. Os teus assistentes vão lá buscar o que precisam e continuam ligados ao que já ligaste neles.' },
       { titulo: 'Pedes onde estiveres', texto: 'No ChatGPT, no Claude, no Grok Bot ou no WhatsApp com a Clara: perguntas pelo teu dia, preparas reuniões e escreves mensagens sem explicar tudo outra vez.' },
     ],
-    nota: { titulo: 'Clara Pro e Elite', texto: `A ligação ao ChatGPT, ao Claude e ao Grok Bot faz parte da Clara Pro e da Clara Elite e chega numa segunda fase, depois do lançamento de 1 de dezembro. Usas a tua conta do ChatGPT, do Claude ou do Grok Bot; na sessão de configuração confirmamos contigo se o teu plano dessas aplicações aceita ligações externas. ${OFERTA.planoSuperior('pro-elite')}` },
+    nota: { titulo: 'Clara Pro e Elite', texto: `A ligação ao ChatGPT, ao Claude e ao Grok Bot faz parte da Clara Pro e da Clara Elite e está disponível desde o lançamento, a 1 de dezembro. Usas a tua conta do ChatGPT, do Claude ou do Grok Bot; na sessão de configuração confirmamos contigo se o teu plano dessas aplicações aceita ligações externas. ${OFERTA.planoSuperior('pro-elite')}` },
     reserva: { titulo: 'Junta a peça que faltava ao teu ChatGPT e ao teu Claude.', texto: 'A ligação ao ChatGPT, ao Claude e ao Grok Bot está na Clara Pro e na Clara Elite.' },
     plano: 'pro',
   },
