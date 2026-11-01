@@ -21,5 +21,5 @@ export const DORES = [
 
 export const MAIS = [
   { href: '/inquerito/', titulo: 'Inquérito para consultores', texto: 'Responde a 11 perguntas e recebe no email o voucher de 2 meses da Clara Elite.' },
-  { href: '/passa-a-clara/', titulo: 'Passa a Clara', texto: 'Indica colegas: os 10 com mais pré-reservas ganham 3 meses do plano Clara.' },
+  { href: '/passa-a-clara/', titulo: 'Passa a Clara', texto: 'Indica colegas: 1 mês da Clara Elite por cada pré-reserva, até 6 meses.' },
 ]

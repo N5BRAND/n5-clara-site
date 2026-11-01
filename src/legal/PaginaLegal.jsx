@@ -145,9 +145,10 @@ function Termos() {
           <li><b>Quem participa:</b> qualquer consultor inscrito na {PRODUTO.nome}. Ao inscrever-te recebes um código de 6 letras e uma ligação pessoal. A equipa da Nº5 não participa.</li>
           <li><b>O que conta:</b> cada pré-reserva de 27 € paga por outra pessoa que se inscreva pela tua ligação ou que escreva o teu código ao inscrever-se, entre a publicação do programa e 30 de novembro de 2026, às 23h59 (hora de Lisboa).</li>
           <li><b>O que não conta:</b> pré-reservas feitas por ti, pré-reservas reembolsadas, pagamentos feitos sem o teu código e inscrições sem pré-reserva paga.</li>
-          <li><b>Prémio:</b> os 10 participantes com mais pré-reservas contadas, com pelo menos uma, recebem 3 meses do plano Clara grátis. Para quem já fez a pré-reserva, não paga o 2.º, o 3.º e o 4.º mês; para os restantes, não paga os 3 primeiros meses. O prémio é pessoal e não pode ser trocado por dinheiro.</li>
+          <li><b>Prémio:</b> cada pré-reserva contada dá 1 mês da Clara Elite grátis, até 6 meses por participante. Os 10 participantes com mais pré-reservas contadas, com pelo menos uma, recebem os 6 meses, mesmo com menos de 6 pré-reservas. Para quem já fez a pré-reserva, os meses grátis contam a partir do 2.º mês; para os restantes, a partir do 1.º. O prémio é pessoal e não pode ser trocado por dinheiro.</li>
           <li><b>Desempate:</b> com o mesmo número de pré-reservas, fica à frente quem lá chegou primeiro.</li>
-          <li><b>Anúncio:</b> os vencedores são informados por email a 1 de dezembro de 2026. A contagem final é verificada por nós antes do anúncio.</li>
+          <li><b>Anúncio:</b> os meses ganhos são comunicados por email a 1 de dezembro de 2026. A contagem final é verificada por nós antes do anúncio.</li>
+          <li><b>Alteração de 1 de novembro de 2026:</b> o prémio passou a ser o descrito acima, mais favorável do que o anterior (3 meses do plano Clara grátis para os 10 participantes com mais pré-reservas). As pré-reservas já feitas contam para o prémio novo.</li>
           <li><b>Abusos:</b> podemos excluir indicações ou participantes quando houver sinais de fraude, como inscrições falsas ou pagamentos da mesma pessoa em nome de outras.</li>
         </ul>
         <p>Os dados usados no programa são os da inscrição e da pré-reserva, tratados como descrito na <a href="/privacidade/">política de privacidade</a>.</p>
