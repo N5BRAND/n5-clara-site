@@ -1,38 +1,57 @@
-import { motion } from 'motion/react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import { useEffect, useRef } from 'react'
 import { LogoChatGPT, LogoClaude, LogoGrokBot } from '../ilustracoes/LogosIA.jsx'
 import { PRECOS } from '../logica/pagamento.js'
 
 const MCP = { mcp: true, texto: 'Ideal para ligar ao teu ChatGPT, ao teu Claude e ao teu Grok Bot' }
 
-const PLANOS = [
+/* textos dos pacotes como o Pedro os pediu a 06/11; o destaque passou da Elite para a Pro */
+export const PLANOS = [
   {
     id: 'clara', nome: 'Clara', para: 'Para teres o dia organizado e nenhuma lead perdida.',
-    inclui: ['Qualificação automática com o teu guião', 'Plano do dia por prioridade', 'Notas de voz que se registam sozinhas', 'Checklist de documentos por imóvel'],
+    inclui: [
+      'Qualificação automática com o teu guião',
+      'Plano do dia por prioridade',
+      { texto: 'Registo e atualização de dados por voz no CRM', detalhe: 'As tuas notas de voz registam-se sozinhas na ficha do cliente, atualizam o pipeline, criam contactos e ajustam o calendário.' },
+      'Checklist de documentos por imóvel',
+    ],
     capacidade: 1,
   },
   {
-    id: 'pro', nome: 'Clara Pro', para: 'Para quem investe em anúncios e quer tirar mais da base.',
+    id: 'pro', nome: 'Clara Pro', para: 'Para quem investe em anúncios e quer tirar mais da base.', destaque: true, etiqueta: 'Recomendado',
     antes: 'Tudo da Clara, mais:',
-    inclui: [MCP, 'Reativação de contactos parados', 'Reativação trimestral de toda a tua base', 'Procura de particulares a vender sem agência nas tuas freguesias', 'Marketing com IA: a Clara ajuda-te a criar as campanhas e lanças tudo pela própria plataforma'],
+    inclui: [MCP, 'Reativação de contactos parados', 'Procura de particulares a vender sem agência nas tuas freguesias', 'Marketing com IA: a Clara faz os criativos e os textos dos anúncios e lança as campanhas na Meta'],
     capacidade: 5,
   },
   {
-    id: 'elite', nome: 'Clara Elite', para: 'Para quem vive ao telefone.', destaque: true,
-    antes: 'Tudo do Pro, mais:',
-    inclui: [MCP, 'Chamadas pela aplicação da Clara, com o teu número', 'Gravação e transcrição na ficha do cliente', 'Coaching diário das chamadas', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas por mês incluídos'],
+    id: 'elite', nome: 'Clara Elite', para: 'Para quem vive ao telefone.', etiqueta: 'Com chamadas',
+    antes: 'Tudo da Pro, mais:',
+    inclui: [MCP, 'Chamadas pela aplicação da Clara, com o teu número', 'IA que analisa as tuas chamadas e te diz o que melhorar para fechares negócios mais depressa', 'Relatórios diário, semanal e mensal', 'Copiloto para o CRM da tua marca', '500 minutos de chamadas por mês incluídos'],
     capacidade: 15,
   },
 ]
 
-/* capacidade de IA de cada plano em relação ao plano Clara; o plano base não tem barra */
+/* capacidade de IA de cada plano em relação ao plano Clara; o plano base não tem barra.
+   A barra é a tracejado e enche-se quando aparece no ecrã, depois de o cartão entrar */
 const MAX_CAPACIDADE = 15
-function Capacidade({ vezes }) {
+function Capacidade({ vezes, i }) {
+  const ref = useRef(null)
+  const visivel = useInView(ref, { once: true, amount: 0.8 })
+  const reduzir = useReducedMotion()
   return (
-    <div className="plano-capacidade">
+    <div ref={ref} className="plano-capacidade">
       <span className="plano-capacidade-rotulo">Capacidade de IA</span>
       <b>{vezes === 1 ? 'A base de referência' : `${vezes} vezes a do plano Clara`}</b>
-      {vezes > 1 && <span className="plano-capacidade-barra" aria-hidden="true"><span style={{ width: `${(vezes / MAX_CAPACIDADE) * 100}%` }} /></span>}
+      {vezes > 1 && (
+        <span className="plano-capacidade-barra" aria-hidden="true">
+          <motion.span
+            style={{ width: `${(vezes / MAX_CAPACIDADE) * 100}%` }}
+            initial={reduzir ? false : { clipPath: 'inset(0 100% 0 0)' }}
+            animate={visivel || reduzir ? { clipPath: 'inset(0 0% 0 0)' } : undefined}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.35 + i * 0.12 }}
+          />
+        </span>
+      )}
     </div>
   )
 }
@@ -93,7 +112,7 @@ function Plano({ p, i }) {
       transition={{ type: 'spring', stiffness: 140, damping: 20, delay: i * 0.12 }}
     >
       <span className="plano-rasto" aria-hidden="true"><span /></span>
-      {p.destaque && <span className="etiqueta plano-etiqueta">Com chamadas</span>}
+      {p.etiqueta && <span className="etiqueta plano-etiqueta">{p.etiqueta}</span>}
       <h3>{p.nome}</h3>
       {PRECOS[p.id].mensal
         ? <p className="plano-preco"><b>{PRECOS[p.id].mensal}</b><span>/mês</span></p>
@@ -106,9 +125,13 @@ function Plano({ p, i }) {
             <span className="plano-mcp-logos"><LogoChatGPT /><LogoClaude /><LogoGrokBot /></span>
             {item.texto}
           </li>
+        ) : item.detalhe ? (
+          <li key={item.texto}>
+            <span>{item.texto}<small className="plano-detalhe">{item.detalhe}</small></span>
+          </li>
         ) : <li key={item}>{item}</li>)}
       </ul>
-      <Capacidade vezes={p.capacidade} />
+      <Capacidade vezes={p.capacidade} i={i} />
       <button type="button" className={`botao ${p.destaque ? '' : 'botao--linha'} plano-botao`} onClick={() => escolher(p.id)}>
         Reservar a {p.nome}
       </button>

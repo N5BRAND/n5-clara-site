@@ -181,6 +181,8 @@
 .plano ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; flex: 1; align-content: start; }
 .plano li { display: flex; gap: 10px; font-size: 15px; }
 .plano li::before { content: '✓'; color: var(--dourado-escuro); font-weight: 700; }
+.plano-detalhe { display: block; margin-top: 3px; font-size: 13px; line-height: 1.45; color: var(--suave); }
+.plano--destaque .plano-detalhe { color: rgba(245, 244, 240, 0.65); }
 .plano-botao { justify-content: center; margin-top: 8px; }
 .plano--destaque { background: var(--tinta); color: var(--creme); border-color: var(--tinta); }
 .plano--destaque .plano-para { color: rgba(245, 244, 240, 0.7); }
@@ -261,15 +263,16 @@
   .chat-voz { min-width: 150px; }
 }
 
-/* capacidade de IA por plano: 1×, 5× e 15× o plano Clara */
+/* capacidade de IA por plano: 1×, 5× e 15× o plano Clara; a barra é a tracejado (traços de 10 px, 5 px de intervalo)
+   e o traço dourado fica por cima, alinhado com o da calha */
 .plano-capacidade { display: grid; gap: 6px; padding-top: 14px; border-top: 1px solid rgba(21, 24, 29, 0.1); }
 .plano-capacidade-rotulo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--suave); }
 .plano-capacidade b { font-size: 15px; }
-.plano-capacidade-barra { height: 8px; border-radius: 999px; background: rgba(21, 24, 29, 0.08); overflow: hidden; }
-.plano-capacidade-barra span { display: block; height: 100%; min-width: 8px; border-radius: inherit; background: var(--dourado); }
+.plano-capacidade-barra { --traco: rgba(21, 24, 29, 0.12); position: relative; display: block; height: 6px; background: repeating-linear-gradient(90deg, var(--traco) 0 10px, transparent 10px 15px); }
+.plano-capacidade-barra span { position: absolute; inset: 0 auto 0 0; min-width: 10px; background: repeating-linear-gradient(90deg, var(--dourado) 0 10px, transparent 10px 15px); }
 .plano--destaque .plano-capacidade { border-top-color: rgba(245, 244, 240, 0.14); }
 .plano--destaque .plano-capacidade-rotulo { color: rgba(245, 244, 240, 0.6); }
-.plano--destaque .plano-capacidade-barra { background: rgba(245, 244, 240, 0.14); }
+.plano--destaque .plano-capacidade-barra { --traco: rgba(245, 244, 240, 0.18); }
 
 /* linha do MCP: símbolos do ChatGPT, do Claude e do Grok Bot no lugar do visto */
 .plano li.plano-mcp { align-items: center; font-weight: 700; }
