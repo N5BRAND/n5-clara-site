@@ -315,7 +315,7 @@ export const PAGINAS = {
       { titulo: 'Cada chamada analisada', texto: 'Abertura, descoberta, objeções e próximo passo. A transcrição e o resumo ficam na ficha do cliente.' },
       { titulo: 'Coaching todas as manhãs', texto: 'O que correu bem, o que melhorar, a fila de hoje e a tua tendência ao longo da semana e do mês.' },
     ],
-    nota: { titulo: 'Clara Elite', texto: `As chamadas e o coaching fazem parte da Clara Elite, com 500 minutos por mês de chamadas pela aplicação da Clara incluídos. ${OFERTA.planoSuperior('elite')}` },
+    nota: { titulo: 'Clara Elite', texto: `As chamadas e a IA que as analisa fazem parte da Clara Elite, com 500 minutos por mês de chamadas pela aplicação da Clara incluídos. ${OFERTA.planoSuperior('elite')}` },
     reserva: { titulo: 'Reserva a Clara Elite.', texto: 'Análise, transcrição e coaching das tuas chamadas.' },
     plano: 'elite',
   },

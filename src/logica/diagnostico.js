@@ -34,9 +34,9 @@ export const PERGUNTAS = [
 
 /* o que a Clara faz para cada dificuldade; «onde» leva à página que explica */
 export const FOCOS = {
-  'falta-leads': { titulo: 'Mais negócio da base que já tens', texto: 'Na Clara Pro, a reativação trabalha os contactos parados e a Clara ajuda-te a criar e lançar campanhas pela própria plataforma.', onde: '/reativar/' },
+  'falta-leads': { titulo: 'Mais negócio da base que já tens', texto: 'Na Clara Pro, a reativação trabalha os contactos parados e a Clara faz os criativos e os textos dos anúncios e lança as campanhas na Meta.', onde: '/reativar/' },
   'leads-fracas': { titulo: 'Saber logo quem vale a pena', texto: 'A Clara qualifica cada lead com o teu guião e dá-lhe uma pontuação de 0 a 100, com os motivos.', onde: '/leads/' },
-  tempo: { titulo: 'Menos horas em tarefas', texto: 'Respostas às leads, plano do dia e notas de voz que se registam sozinhas.', onde: '/dia/' },
+  tempo: { titulo: 'Menos horas em tarefas', texto: 'Respostas às leads, plano do dia e o CRM atualizado pelas tuas notas de voz.', onde: '/dia/' },
   documentos: { titulo: 'Documentos sem andar atrás', texto: 'Checklist por imóvel, pedidos ao proprietário pelo WhatsApp e lembretes quando tarda.', onde: '/proprietarios/' },
   credito: { titulo: 'O crédito a tempo', texto: 'A Clara mede quanto demoras a passar o comprador ao intermediário de crédito e avisa-te quando está a demorar.', onde: '/' },
   angariacao: { titulo: 'Mais angariações', texto: 'Leads de proprietários qualificadas e, na Clara Pro e na Elite, os particulares a vender sem agência na tua zona, todas as segundas.', onde: '/angariacao/' },

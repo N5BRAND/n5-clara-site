@@ -35,9 +35,9 @@ O que é
 - Acompanhamento: no dia 1, um diagnóstico de dois minutos de conversa com a Clara sobre como o consultor trabalha; aos 30 dias, o primeiro «Antes e Depois»; aos 90 dias, o segundo.
 
 Planos (preços por consultor, por mês, sem fidelização)
-- Clara, 53 €: qualificação automática com o guião do consultor, plano do dia por prioridade, notas de voz que se registam sozinhas, checklist de documentos por imóvel.
-- Clara Pro, 97 €: tudo da Clara, mais a ligação ao ChatGPT, ao Claude e ao Grok Bot do consultor (ideal para falar com a Clara a partir deles), reativação de contactos parados, reativação trimestral de toda a base (a Clara envia sozinha), procura de particulares a vender sem agência nas freguesias do consultor (a partir de 1 de dezembro, sem exclusividade) e marketing com IA (a Clara ajuda a criar as campanhas e lançam-se pela própria plataforma).
-- Clara Elite, 147 €: tudo da Pro, mais chamadas pela aplicação da Clara com o número do consultor, gravação e transcrição na ficha do cliente, coaching diário das chamadas, relatórios diário, semanal e mensal, copiloto para o CRM da marca (preenche e grava o CRM sozinho) e 500 minutos de chamadas por mês. O preço dos minutos além dos 500 ainda não está definido.
+- Clara, 53 €: qualificação automática com o guião do consultor, plano do dia por prioridade, registo e atualização de dados por voz no CRM (as notas de voz registam-se sozinhas na ficha do cliente, atualizam o pipeline, criam contactos e ajustam o calendário), checklist de documentos por imóvel.
+- Clara Pro, 97 €: tudo da Clara, mais a ligação ao ChatGPT, ao Claude e ao Grok Bot do consultor (ideal para falar com a Clara a partir deles), reativação de contactos parados, procura de particulares a vender sem agência nas freguesias do consultor (a partir de 1 de dezembro, sem exclusividade) e marketing com IA (a Clara faz os criativos e os textos dos anúncios e lança as campanhas na Meta).
+- Clara Elite, 147 €: tudo da Pro, mais chamadas pela aplicação da Clara com o número do consultor (ficam gravadas e transcritas na ficha do cliente), IA que analisa as chamadas e diz ao consultor o que melhorar para fechar negócios mais depressa, relatórios diário, semanal e mensal, copiloto para o CRM da marca (preenche e grava o CRM sozinho) e 500 minutos de chamadas por mês. O preço dos minutos além dos 500 ainda não está definido.
 
 Lançamento e oferta
 - A Clara começa a trabalhar a 1 de dezembro de 2026.
