@@ -5,7 +5,9 @@ import { SUGESTOES, contactoDe } from './conversa.js'
    Serve a função do servidor e o navegador (se o pedido falhar mesmo depois de tentar outra vez) */
 const RESPOSTAS = esgotado => ({
   [SUGESTOES[0]]: 'Respondo e qualifico as tuas leads em minutos, faço os follow-ups, organizo o teu plano do dia e registo as tuas notas de voz na ficha certa. Tu ficas com o que só tu fazes: estar com clientes.',
-  [SUGESTOES[1]]: 'O plano Clara fica a 53 € por mês, a Pro a 97 € e a Elite a 147 €, por consultor e sem fidelização. A pré-reserva é de 27 € e paga o teu primeiro mês, com a Clara Elite completa.',
+  [SUGESTOES[1]]: esgotado
+    ? 'O plano Clara fica a 53 € por mês, a Pro a 97 € e a Elite a 147 €, por consultor e sem fidelização. As 25 vagas com pré-reserva já esgotaram, mas podes entrar na lista de espera.'
+    : 'O plano Clara fica a 53 € por mês, a Pro a 97 € e a Elite a 147 €, por consultor e sem fidelização. Com a pré-reserva de 27 €, o teu primeiro mês fica pago, com a Clara Elite completa, e se continuares na Pro ou na Elite tens 50% na primeira mensalidade. Só há 25 vagas: reservas no botão da página.',
   [SUGESTOES[2]]: esgotado
     ? 'As 25 vagas com pré-reserva já esgotaram. Se entrares na lista de espera, a partir de 1 de dezembro abrimos 30 vagas por semana, pela ordem da lista.'
     : 'Pagas 27 € e ficas com uma das 25 vagas para 1 de dezembro. Esses 27 € pagam o teu primeiro mês, com a Clara Elite completa, e se continuares na Pro ou na Elite tens 50% na primeira mensalidade.',
