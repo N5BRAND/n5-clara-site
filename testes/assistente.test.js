@@ -61,6 +61,22 @@ describe('o que a Clara sabe', () => {
     expect(texto).toMatch(/Nunca fales em IVA/)
     expect(texto).toMatch(/precisam de aprovação/)
   })
+  it('quando perguntam o preço, mostra também o valor da pré-reserva', () => {
+    const regra = texto.split('\n').find(l => l.startsWith('- Quando perguntarem o preço'))
+    expect(regra).toContain(`${PRE_RESERVA} agora pagam o primeiro mês`)
+    for (const p of Object.values(PRECOS)) expect(regra).toContain(p.mensal)
+    expect(regra).toContain(PRECOS.pro.desconto)
+    expect(regra).toContain(PRECOS.elite.desconto)
+    expect(regra).toMatch(/botão de reserva/)
+    expect(regra).not.toMatch(PROIBIDO)
+    const esgotada = instrucoes({ esgotado: true }).split('\n').find(l => l.startsWith('- Quando perguntarem o preço'))
+    expect(esgotada).toMatch(/esgotaram/)
+    expect(esgotada).not.toContain('agora pagam')
+  })
+  it('o copiloto é da Elite e, nos outros planos, só com a pré-reserva', () => {
+    expect(texto).toMatch(/O copiloto para o CRM da marca é da Clara Elite\. Na Clara e na Clara Pro só vem com a pré-reserva/)
+    expect(texto).toMatch(/Nunca digas que a Clara ou a Clara Pro incluem o copiloto sem a pré-reserva/)
+  })
   it('com as vagas esgotadas fala da lista de espera', () => {
     expect(instrucoes({ esgotado: true })).toMatch(/lista de espera/)
     expect(instrucoes()).toBe(instrucoes())
