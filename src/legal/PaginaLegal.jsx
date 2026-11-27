@@ -1,10 +1,17 @@
 import Simbolo from '../marca/Simbolo.jsx'
 import AvisoCookies, { abrirCookies } from './AvisoCookies.jsx'
 import LigacoesLegais from './LigacoesLegais.jsx'
-import { EMPRESA } from './empresa.js'
+import { MARCA, EMPRESAS, NOMES_EMPRESAS } from './empresa.js'
 import { PRODUTO } from './produto.js'
 
-const Email = () => <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a>
+const Email = () => <a href={`mailto:${MARCA.email}`}>{MARCA.email}</a>
+
+/* as empresas da marca, com o NIF e a sede, como a lei pede */
+const Empresas = () => (
+  <ul>
+    {EMPRESAS.map((e, i) => <li key={e.nif}><strong>{e.nome}</strong>, NIF {e.nif}, com sede na {e.sede}{i < EMPRESAS.length - 1 ? ';' : '.'}</li>)}
+  </ul>
+)
 
 function Seccao({ id, n, titulo, children }) {
   return (
@@ -19,12 +26,13 @@ function Privacidade() {
   return (
     <>
       <h1>Política de privacidade</h1>
-      <p className="legal-data">Atualizada a {EMPRESA.atualizado}</p>
+      <p className="legal-data">Atualizada a {MARCA.atualizado}</p>
       <p className="legal-intro">Esta política explica que dados trata o site do {PRODUTO.nome} ({PRODUTO.url.replace('https://', '')}), para quê e que direitos tens.</p>
 
       <Seccao id="responsavel" n="1" titulo="Quem trata os teus dados">
-        <p>O responsável pelo tratamento é a empresa <strong>{EMPRESA.nome}</strong>, NIF {EMPRESA.nif}, com sede na {EMPRESA.sede}. É a empresa da marca Nº5.</p>
-        <p>Para qualquer pedido sobre os teus dados, escreve para <Email />.</p>
+        <p>Os teus dados ficam em nome da marca <strong>{MARCA.nome}</strong>, a marca do {PRODUTO.nome}. A marca pertence a duas empresas, que decidem juntas para que servem os dados e como são tratados. São, por isso, responsáveis conjuntas pelo tratamento (artigo 26.º do Regulamento Geral sobre a Proteção de Dados, RGPD):</p>
+        <Empresas />
+        <p>As duas combinaram que os pedidos sobre os teus dados se tratam num só sítio, em nome da marca: escreve para <Email />. Se preferires, podes exercer os teus direitos junto de qualquer uma delas.</p>
       </Seccao>
 
       <Seccao id="dados" n="2" titulo="Que dados tratamos">
@@ -43,7 +51,7 @@ function Privacidade() {
       </Seccao>
 
       <Seccao id="fundamento" n="4" titulo="Com que fundamento">
-        <p>Tratamos os dados da inscrição com base no teu consentimento, que dás ao carregar no botão final do formulário, logo abaixo do aviso de autorização (artigo 6.º, n.º 1, alínea a) do Regulamento Geral sobre a Proteção de Dados, RGPD). Podes retirá-lo a qualquer momento, sem afetar o que foi feito antes.</p>
+        <p>Tratamos os dados da inscrição com base no teu consentimento, que dás ao carregar no botão final do formulário, logo abaixo do aviso de autorização (artigo 6.º, n.º 1, alínea a) do RGPD). Podes retirá-lo a qualquer momento, sem afetar o que foi feito antes.</p>
         <p>As conversas do assistente em que deixas o teu contacto tratamo-las para responder ao que nos pediste (artigo 6.º, n.º 1, alínea b) do RGPD).</p>
         <p>Os registos técnicos do alojamento assentam no nosso interesse legítimo em manter o site seguro e a funcionar. Os cookies de estatística e de marketing só são usados com o teu consentimento (ver <a href="#cookies">ponto 8</a>). Sem ele, a estatística conta a tua visita só de forma anónima, sem cookies, com base no nosso interesse legítimo em saber quantas pessoas visitam o site.</p>
       </Seccao>
@@ -106,11 +114,13 @@ function Termos() {
   return (
     <>
       <h1>Termos e condições</h1>
-      <p className="legal-data">Atualizados a {EMPRESA.atualizado}</p>
+      <p className="legal-data">Atualizados a {MARCA.atualizado}</p>
       <p className="legal-intro">Estes termos aplicam-se ao uso do site do {PRODUTO.nome} ({PRODUTO.url.replace('https://', '')}). Ao usar o site, aceitas estes termos.</p>
 
       <Seccao id="quem" n="1" titulo="Quem somos">
-        <p>O site é da <strong>{EMPRESA.nome}</strong>, NIF {EMPRESA.nif}, com sede na {EMPRESA.sede}, empresa da marca Nº5. Contacto: <Email />.</p>
+        <p>O site e o {PRODUTO.nome} são da marca <strong>{MARCA.nome}</strong>. Contacto: <Email />. A marca pertence a duas empresas:</p>
+        <Empresas />
+        <p>Nestes termos, «nós» é a marca {MARCA.nome} e estas duas empresas.</p>
       </Seccao>
 
       <Seccao id="objeto" n="2" titulo="O que é este site">
@@ -127,7 +137,7 @@ function Termos() {
       </Seccao>
 
       <Seccao id="pre-reserva" n="4" titulo="Pré-reserva e reembolso">
-        <p>A pré-reserva é um pagamento antecipado de {PRODUTO.reserva.valor} que te garante {PRODUTO.reserva.garante}. É feita no âmbito da tua atividade profissional, é paga na Stripe e é recebida pela 4IMPROVEMENTS, LDA. O valor é descontado na primeira mensalidade e, se sobrar, na segunda.</p>
+        <p>A pré-reserva é um pagamento antecipado de {PRODUTO.reserva.valor} que te garante {PRODUTO.reserva.garante}. É feita no âmbito da tua atividade profissional, é paga na Stripe e é recebida pela {EMPRESAS[1].nome}, uma das empresas da marca {MARCA.nome}. O valor é descontado na primeira mensalidade e, se sobrar, na segunda.</p>
         <p>Só há reembolso num destes casos, e o pedido só pode ser feito a partir do dia previsto para o lançamento, 1 de dezembro de 2026:</p>
         <ul>
           <li>o lançamento não acontece ou é adiado mais de 90 dias em relação a essa data;</li>
@@ -140,7 +150,7 @@ function Termos() {
       </Seccao>
 
       <Seccao id="passa-a-clara" n="5" titulo="Programa de indicações Passa a Clara">
-        <p>O Passa a Clara é um programa de indicações da {PRODUTO.nome}, organizado pela {EMPRESA.nome}. Não é um sorteio: os prémios são atribuídos pelo número de indicações.</p>
+        <p>O Passa a Clara é um programa de indicações da {PRODUTO.nome}, organizado pela marca {MARCA.nome}. Não é um sorteio: os prémios são atribuídos pelo número de indicações.</p>
         <ul>
           <li><b>Quem participa:</b> qualquer consultor inscrito na {PRODUTO.nome}. Ao inscrever-te recebes um código de 6 letras e uma ligação pessoal. A equipa da Nº5 não participa.</li>
           <li><b>O que conta:</b> cada pré-reserva de 27 € paga por outra pessoa que se inscreva pela tua ligação ou que escreva o teu código ao inscrever-se, entre a publicação do programa e 30 de novembro de 2026, às 23h59 (hora de Lisboa).</li>
@@ -155,7 +165,7 @@ function Termos() {
       </Seccao>
 
       <Seccao id="voucher" n="6" titulo="Voucher do inquérito para consultores">
-        <p>Quem responde até ao fim ao inquérito para consultores, em {PRODUTO.url.replace('https://', '')}/inquerito/, recebe por email um voucher da {PRODUTO.nome}, enviado pela {EMPRESA.nome}.</p>
+        <p>Quem responde até ao fim ao inquérito para consultores, em {PRODUTO.url.replace('https://', '')}/inquerito/, recebe por email um voucher da {PRODUTO.nome}, enviado pela equipa da {MARCA.nome}.</p>
         <ul>
           <li><b>O que dá:</b> os 2 primeiros meses da Clara Elite completa, sem pagar.</li>
           <li><b>Quantos:</b> um voucher por pessoa e por email. Responder outra vez com o mesmo email devolve o mesmo voucher. Cada voucher só se usa uma vez.</li>
@@ -168,7 +178,7 @@ function Termos() {
       </Seccao>
 
       <Seccao id="propriedade" n="7" titulo="Propriedade intelectual">
-        <p>Os textos, as ilustrações, o símbolo Nº5 e o resto do conteúdo do site pertencem à {EMPRESA.nome} ou são usados com autorização. Não os podes copiar nem usar para fins comerciais sem autorização escrita.</p>
+        <p>Os textos, as ilustrações, o símbolo Nº5 e o resto do conteúdo do site pertencem à marca {MARCA.nome} e às empresas que a detêm ({NOMES_EMPRESAS}) ou são usados com autorização. Não os podes copiar nem usar para fins comerciais sem autorização escrita.</p>
       </Seccao>
 
       <Seccao id="responsabilidade" n="8" titulo="Responsabilidade">
@@ -203,7 +213,7 @@ export default function PaginaLegal({ pagina }) {
       </main>
       <footer className="rodape">
         <div className="contentor rodape-linha">
-          <p className="rodape-nota">{EMPRESA.nome} · NIF {EMPRESA.nif} · {EMPRESA.sede}</p>
+          <p className="rodape-nota">Marca {MARCA.nome} · {NOMES_EMPRESAS}</p>
           <LigacoesLegais />
         </div>
       </footer>
