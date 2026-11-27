@@ -7,7 +7,7 @@ import AvisoCookies from '../legal/AvisoCookies.jsx'
 import LigacoesLegais from '../legal/LigacoesLegais.jsx'
 import { iniciarPixel } from '../legal/pixel.js'
 import { iniciarAnalitica, marcar } from '../legal/analitica.js'
-import { EMPRESA } from '../legal/empresa.js'
+import { MARCA } from '../legal/empresa.js'
 import { TEXTOS } from '../logica/partilha.js'
 import { PROGRAMA, meuCodigo, guardarMeuCodigo, codigoValido, ligacaoPessoal, iniciarIndicacoes, mesesGanhos } from '../logica/indicacoes.js'
 import { codificar } from '../logica/netlify.js'
@@ -211,7 +211,7 @@ function PassaClara() {
                   <a className="botao" href="/#lista">Inscrever-me</a>
                   {RECUPERAR_AUTOMATICO
                     ? <Recuperar />
-                    : <p className="passa-recuperar">Já te inscreveste noutro computador ou telemóvel? Escreve-nos para <a href={`mailto:${EMPRESA.email}`}>{EMPRESA.email}</a> com o email da inscrição e reenviamos a tua ligação: o mesmo código, sem perderes a contagem.</p>}
+                    : <p className="passa-recuperar">Já te inscreveste noutro computador ou telemóvel? Escreve-nos para <a href={`mailto:${MARCA.email}`}>{MARCA.email}</a> com o email da inscrição e reenviamos a tua ligação: o mesmo código, sem perderes a contagem.</p>}
                 </>
               )}
             </div>
@@ -271,7 +271,7 @@ function PassaClara() {
               </details>
               <details>
                 <summary>Perdi a minha ligação.</summary>
-                <p>O código fica guardado no navegador onde te inscreveste. Se mudaste de computador ou de telemóvel, {RECUPERAR_AUTOMATICO ? 'pede-a em «A tua ligação», com o email da inscrição' : `escreve-nos para ${EMPRESA.email} com o email da inscrição`}, e reenviamos a mesma ligação. O código não muda e a contagem não se perde.</p>
+                <p>O código fica guardado no navegador onde te inscreveste. Se mudaste de computador ou de telemóvel, {RECUPERAR_AUTOMATICO ? 'pede-a em «A tua ligação», com o email da inscrição' : `escreve-nos para ${MARCA.email} com o email da inscrição`}, e reenviamos a mesma ligação. O código não muda e a contagem não se perde.</p>
               </details>
               <details>
                 <summary>E se eu não ficar no top {PROGRAMA.vencedores}?</summary>
