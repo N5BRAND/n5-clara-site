@@ -7,8 +7,9 @@ export const MARCA = {
 }
 
 export const EMPRESAS = [
-  { nome: 'Os Caetanos, Lda', nif: '504428918', sede: 'Rua Manuel Ferreira n.º 19C, 2795-229 Linda-a-Velha' },
-  { nome: '4Improvements, Lda', nif: '518826015', sede: 'Av. Mouzinho de Albuquerque, n.º 48, 11.º B, 1170-265 Lisboa' },
+  /* as sedes como estão no contrato de cessão da marca (16/11/2026) */
+  { nome: 'Os Caetanos, Lda', nif: '504428918', sede: 'Rua Manuel Ferreira, n.º 19C, 2795-133 Linda-a-Velha, Oeiras' },
+  { nome: '4Improvements, Lda', nif: '518826015', sede: 'Avenida Mouzinho de Albuquerque, n.º 48, 11 B, 1170-265 Lisboa' },
 ]
 
 /* «Os Caetanos, Lda e 4Improvements, Lda» */
